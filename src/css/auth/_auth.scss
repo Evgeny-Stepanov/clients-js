@@ -1,0 +1,127 @@
+@use "./../media" as *;
+@use "./../mixins" as *;
+@use "./../utils" as *;
+
+body {
+	display: flex;
+	flex-direction: column;
+}
+
+main {
+	flex-grow: 1;
+}
+
+.auth {
+	display: flex;
+	justify-content: space-between;
+	padding-top: 7%;
+	padding-bottom: 7%;
+
+	@include tablet {
+		flex-direction: column;
+		align-items: center;
+		gap: 50px;
+		padding-top: 3%;
+		padding-bottom: 10%;
+	}
+
+	@include mobile-s {
+		gap: 30px;
+		padding-top: 7%;
+	}
+
+	&__info {
+		max-width: 50%;
+
+		@include tablet {
+			max-width: 100%;
+		}
+	}
+
+	&__title {
+		font-size: calc-font-size(2);
+
+		@include tablet {
+			text-align: center;
+		}
+
+		span {
+			position: relative;
+			display: inline-block;
+			font-family: var(--font-family-alt);
+			font-size: calc-font-size(2.5);
+			&::before {
+				content: attr(data-text);
+				background-color: var(--color-black);
+				position: absolute;
+				z-index: 1;
+				color: var(--color-accent);
+				pointer-events: none;
+				height: 0;
+				overflow: hidden;
+				transition: install-transition(height);
+			}
+		}
+	}
+
+	&__descr-wrapper {
+		font-size: calc-font-size(1);
+		display: grid;
+		grid-template-rows: 0fr;
+		transition: install-transition(grid-template-rows);
+		transition-duration: 0.5s;
+	}
+
+	&__descr {
+		margin-top: calc-font-size(1.5);
+
+		@include mobile-s {
+			display: none;
+			//? The animation only works because overflow is hidden
+			overflow: hidden;
+		}
+
+		&--is-mobile {
+			margin-top: calc-font-size(1.5);
+			display: none;
+
+			@include mobile-s {
+				display: block;
+			}
+		}
+	}
+
+	&__btn {
+		display: none;
+		margin-top: calc-font-size(0.3125);
+		padding: calc-font-size(0.3125);
+		cursor: pointer;
+		border-radius: var(--border-radius-small);
+		border: install-border(2px, var(--color-gray-dark));
+		color: var(--color-white);
+		background-color: transparent;
+
+		@include mobile-s {
+			display: block;
+		}
+	}
+}
+
+.auth__title-span--is-hover {
+	&::before {
+		height: 100% !important;
+		color: var(--color-black);
+	}
+}
+
+.auth__descr-wrapper--is-grow {
+	grid-template-rows: 1fr;
+}
+
+.auth__descr--is-visible {
+	display: block;
+}
+
+.auth__descr--is-hidden {
+	display: none;
+}

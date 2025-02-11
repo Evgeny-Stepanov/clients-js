@@ -1,0 +1,24 @@
+@use "./../media" as *;
+@use "./../mixins" as *;
+@use "./../utils" as *;
+
+.notif {
+	position: fixed;
+	display: none;
+	border: install-border(2px, var(--color-gray-dark));
+	border-radius: var(--border-radius-small);
+	box-shadow: install-shadow(var(--color-gray-dark));
+	padding: calc-font-size(0.625);
+	color: var(--color-black);
+	top: 5%;
+	right: -200%;
+
+	&--is-success {
+		background-color: var(--color-green-notif);
+	}
+
+	&--is-error {
+		background-color: var(--color-red-notif);
+		color: var(--color-white);
+	}
+}

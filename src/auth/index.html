@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+		/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="author" content="Evgeny Stepanov" />
+		<meta
+			name="description"
+			content="Pet project for recording clients in a barbershop. It's written in vanilla javascript."
+		/>
+		<link
+			rel="apple-touch-icon"
+			sizes="180x180"
+			href="./../images/favicon/apple-touch-icon.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="32x32"
+			href="./../images/favicon/favicon-32x32.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="16x16"
+			href="./../images/favicon/favicon-16x16.png"
+		/>
+		<title>Clients&nbsp;&nbsp;|&nbsp;&nbsp;Привет! &#128075;</title>
+		<!-- <title>Привет! &#x1F44B;</title> -->
+	</head>
+
+	<body>
+		<main>
+			<section class="auth container">
+				<div class="auth__info fade-in-left">
+					<h1 class="auth__title">
+						Добро пожаловать в
+						<span lang="en" data-text="Clients">Clients</span>
+					</h1>
+
+					<div class="auth__descr-wrapper">
+						<p class="auth__descr">
+							&ensp; С помощью нашего приложения пользователи могут легко и
+							быстро забронировать время для визита, выбрав удобного специалиста
+							и нужные услуги. Удобный интерфейс обеспечивает доступ к
+							расписанию мастеров, что позволяет избежать конфликтов и очередей.
+							Клиенты получают уведомления о предстоящих записях, что снижает
+							риск опозданий и снижает количество отказов. <br />
+							&ensp; Кроме того, приложение предоставляет владельцам барбершопов
+							инструмент для анализа данных о посещаемости, популярности услуг и
+							клиентах. Это позволяет эффективно планировать график работы,
+							вводить акции и улучшать качество обслуживания. <br />
+							&ensp; Интуитивно понятный дизайн и многофункциональность
+							приложения делают его незаменимым помощником как для клиентов, так
+							и для работников салона.
+						</p>
+
+						<p class="auth__descr--is-mobile">
+							&ensp; С помощью нашего приложения пользователи могут легко и
+							быстро забронировать время для визита, выбрав удобного специалиста
+							и нужные услуги...
+							<button class="auth__btn">Читать полностью</button>
+						</p>
+					</div>
+				</div>
+
+				<%= require('./html/auth-form.html').default %>
+			</section>
+		</main>
+		<%= require('./html/auth-footer.html').default %> <%=
+		require('./html/auth-notification.html').default %>
+	</body>
+</html>

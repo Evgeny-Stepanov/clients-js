@@ -1,0 +1,27 @@
+@use "mixins" as *;
+
+.container {
+	max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+	margin-inline: auto;
+	padding-inline: var(--container-padding-x);
+}
+
+.visually-hidden {
+	@include visually-hidden;
+}
+
+@function calc-font-size($n) {
+	@return calc(var(--font-size) * $n);
+}
+
+@function install-border($n, $color) {
+	@return $n solid $color;
+}
+
+@function install-shadow($color) {
+	@return 0px 5px 15px $color;
+}
+
+@function install-transition($property) {
+	@return $property var(--transition-duration) ease 0s;
+}

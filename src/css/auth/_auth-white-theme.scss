@@ -1,0 +1,125 @@
+@use "./../media" as *;
+@use "./../mixins" as *;
+@use "./../utils" as *;
+
+body:has(input#theme-color:checked) {
+	color: var(--color-black);
+	background-color: var(--color-white);
+	.auth {
+		&__title span::before {
+			background-color: var(--color-white);
+		}
+		&__btn {
+			color: var(--color-black);
+		}
+	}
+
+	.form {
+		&__input-name,
+		&__input-password {
+			input {
+				color: var(--color-black);
+				&::placeholder {
+					color: var(--color-black);
+				}
+				&:autofill,
+				&:autofill:hover,
+				&:autofill:focus,
+				&:autofill:active,
+				&:-webkit-autofill,
+				&:-webkit-autofill:hover,
+				&:-webkit-autofill:focus,
+				&:-webkit-autofill:active {
+					-webkit-background-clip: text;
+					-webkit-text-fill-color: var(--color-black);
+				}
+			}
+		}
+
+		fieldset {
+			input {
+				&:checked {
+					+ label {
+						&::before {
+							box-shadow: inset 0 0 0 3px var(--color-white) !important;
+						}
+					}
+				}
+				@include hover {
+					+ label {
+						&::before {
+							box-shadow: inset 0 0 0 3px var(--color-white) !important;
+						}
+					}
+				}
+			}
+		}
+
+		svg path {
+			fill: var(--color-black);
+		}
+
+		button {
+			color: var(--color-black);
+			@include hover {
+				color: var(--color-white);
+			}
+		}
+
+		&__no-account a {
+			color: var(--color-black);
+			@include hover {
+				color: var(--color-gray-dark);
+			}
+		}
+	}
+
+	.footer {
+		&__settings-btn {
+			color: var(--color-black);
+			@include hover {
+				color: var(--color-white);
+			}
+		}
+		&__contacts-btn {
+			color: var(--color-black);
+			@include hover {
+				color: var(--color-gray-dark);
+			}
+		}
+
+		.settings {
+			&__font-size input {
+				@include hover {
+					border: install-border(2px, var(--color-black));
+				}
+			}
+			&__switch-wrapper {
+				svg {
+					path {
+						fill: var(--color-black);
+						stroke: var(--color-black);
+					}
+				}
+			}
+		}
+
+		.contacts {
+			&__item {
+				border: install-border(2px, var(--color-black));
+				@include hover {
+					border: install-border(2px, var(--color-accent));
+					svg path {
+						fill: var(--color-accent);
+					}
+				}
+			}
+
+			&__link {
+				svg path {
+					fill: var(--color-black);
+				}
+			}
+		}
+	}
+}

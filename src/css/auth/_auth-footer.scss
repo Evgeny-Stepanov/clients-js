@@ -1,0 +1,329 @@
+@use "./../media" as *;
+@use "./../mixins" as *;
+@use "./../utils" as *;
+
+.footer {
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	height: 90px;
+
+	@include mobile-s {
+		flex-direction: column;
+		padding-block: calc-font-size(1.25);
+		height: auto;
+	}
+
+	&::before {
+		content: "";
+		position: absolute;
+		display: block;
+		top: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 100vw;
+		height: 2px;
+		background-color: var(--color-gray-dark);
+	}
+
+	&__settings {
+		&-wrapper {
+			position: relative;
+		}
+		&-btn {
+			cursor: pointer;
+			padding: calc-font-size(0.625);
+			border-radius: var(--border-radius-small);
+			background-color: transparent;
+			color: var(--color-white);
+			border: install-border(2px, var(--color-gray-dark));
+			transition: install-transition(all);
+			@include hover {
+				background-color: var(--color-accent);
+				box-shadow: install-shadow(var(--color-gray-dark));
+				border: install-border(2px, var(--color-accent));
+			}
+
+			@include mobile-s {
+				display: block;
+				margin: 0 auto;
+			}
+		}
+	}
+	&__contacts {
+		&-wrapper {
+			position: relative;
+
+			p {
+				margin: 0;
+				svg {
+					width: 20px;
+					height: 20px;
+					vertical-align: middle;
+					path {
+						fill: var(--color-accent);
+					}
+				}
+			}
+
+			@include mobile-s {
+				margin: calc-font-size(0.9375) auto 0 auto;
+				text-align: center;
+			}
+		}
+		&-btn {
+			background-color: transparent;
+			border: none;
+			padding: 0;
+			color: var(--color-white);
+			cursor: pointer;
+			text-decoration: underline;
+			transition: install-transition(color);
+			@include hover {
+				color: var(--color-gray-light);
+			}
+		}
+	}
+}
+
+.settings {
+	left: calc-font-size(8.125);
+	padding: calc-font-size(0.8125);
+	gap: 20px;
+
+	@include mobile-s {
+		padding: calc-font-size(1.25);
+	}
+
+	&__font-size {
+		grid-template-columns: 100px calc-font-size(1.875);
+		label {
+			grid-column: 1 / 3;
+		}
+		input {
+			-webkit-appearance: none;
+			appearance: none;
+			width: 100px;
+			height: 10px;
+			accent-color: var(--color-accent);
+			border-radius: 5px;
+			border: install-border(2px, var(--color-gray-dark));
+			transition: install-transition(border);
+			cursor: pointer;
+			@include hover {
+				border: install-border(2px, var(--color-gray-light));
+			}
+			&::-webkit-slider-thumb {
+				-webkit-appearance: none;
+				appearance: none;
+				cursor: ew-resize;
+				height: 20px;
+				width: 20px;
+				border-radius: 50%;
+				background: var(--color-accent);
+			}
+
+			&::-webkit-slider-runnable-track {
+				-webkit-appearance: none;
+				appearance: none;
+				box-shadow: none;
+				border: none;
+			}
+		}
+	}
+
+	&__switch {
+		position: relative;
+		display: inline-block;
+		width: 55px;
+		height: 28px;
+		input {
+			opacity: 0;
+			width: 0;
+			height: 0;
+			&:checked + .settings__switch-slider {
+				background-color: var(--color-accent);
+			}
+			&:focus + .settings__switch-slider {
+				box-shadow: 0 0 1px var(--color-accent);
+			}
+			&:checked + .settings__switch-slider::before {
+				transform: translateX(26px);
+			}
+		}
+		&-slider {
+			position: absolute;
+			cursor: pointer;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: var(--color-gray-light);
+			border-radius: 34px;
+			transition: install-transition(background-color);
+			&::before {
+				position: absolute;
+				content: "";
+				height: 20px;
+				border-radius: 50%;
+				width: 20px;
+				left: 4px;
+				bottom: 4px;
+				background-color: var(--color-white);
+				transition: install-transition(all);
+			}
+		}
+		&-wrapper {
+			grid-template-columns: 55px calc-font-size(1.56);
+			svg {
+				stroke: var(--color-black);
+				path {
+					fill: var(--color-white);
+					stroke: var(--color-white);
+				}
+			}
+		}
+		&-title {
+			margin-bottom: 0;
+			grid-column: 1 / 3;
+		}
+	}
+}
+
+.contacts {
+	right: calc-font-size(10);
+	padding: calc-font-size(1.25);
+	&__list {
+		display: flex;
+		gap: 25px;
+	}
+
+	&__item {
+		@include flex-center;
+		width: 40px;
+		height: 40px;
+		border: install-border(2px, var(--color-white));
+		border-radius: 50%;
+		transition: install-transition(border);
+
+		&:nth-child(3),
+		&:nth-child(4) {
+			.contacts__link svg {
+				left: 45%;
+			}
+		}
+
+		@include hover {
+			border: install-border(2px, var(--color-accent));
+			svg path {
+				fill: var(--color-accent);
+			}
+		}
+	}
+
+	&__link {
+		position: relative;
+		display: inline-block;
+		width: 100%;
+		height: 100%;
+		svg {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 25px !important;
+			height: 25px !important;
+			path {
+				transition: install-transition(fill);
+				fill: var(--color-white);
+			}
+		}
+	}
+}
+
+.contacts,
+.settings {
+	display: flex;
+	opacity: 0;
+	position: absolute;
+	visibility: hidden;
+	top: 50%;
+	transform: translateY(-50%);
+	transition: install-transition(all);
+
+	@include mobile-s {
+		top: -270%;
+	}
+}
+
+.settings {
+	@include mobile-s {
+		left: 50%;
+		transform: translateX(-50%);
+	}
+}
+
+.contacts {
+	@include mobile-s {
+		right: 50%;
+		transform: translateX(50%);
+	}
+}
+
+.settings {
+	&__font-size,
+	&__switch-wrapper {
+		display: grid;
+		grid-template-rows: 1fr 1fr;
+		row-gap: calc-font-size(0.313);
+		column-gap: calc-font-size(0.625);
+		align-items: center;
+	}
+}
+
+.footer__contacts svg,
+.settings__switch-wrapper svg {
+	vertical-align: middle;
+	width: calc-font-size(1.25);
+	height: calc-font-size(1.25);
+}
+
+.footer--is-visible {
+	opacity: 1;
+	visibility: visible;
+}
+
+.footer--is-hidden {
+	visibility: hidden;
+	opacity: 0;
+}
+
+.top-100 {
+	top: 100%;
+}
+
+.footer__contacts-wrapper--has-margin-top {
+	margin-top: calc-font-size(6.25);
+}
+
+//? If I apply it to webkit at the same time, it doesn't work in Chrome.
+.settings__font-size {
+	input {
+		&::-moz-range-thumb {
+			cursor: ew-resize;
+			height: 20px;
+			width: 20px;
+			border-radius: 50%;
+			border-color: var(--color-accent);
+			background: var(--color-accent);
+		}
+
+		&::-moz-range-track {
+			box-shadow: none;
+			border: none;
+			background: transparent;
+		}
+	}
+}

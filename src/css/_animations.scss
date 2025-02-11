@@ -1,0 +1,89 @@
+@keyframes form-animation {
+	from {
+		transform: translateY(-200%);
+	}
+	to {
+		transform: translateY(0) rotate(0);
+	}
+}
+
+@keyframes fade-in-left {
+	from {
+		transform: translateX(-100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+
+@keyframes fade-in-right {
+	from {
+		transform: translateX(100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+
+@keyframes fade-in-top {
+	0% {
+		transform: translateY(-300%);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+
+@keyframes notif-fade-in {
+	0% {
+		right: -200%;
+	}
+	100% {
+		right: 5%;
+	}
+}
+
+@keyframes notif-pause {
+	0% {
+		right: 5%;
+	}
+	100% {
+		right: 5%;
+	}
+}
+
+@keyframes notif-fade-out {
+	0% {
+		right: 5%;
+	}
+	100% {
+		right: -200%;
+	}
+}
+
+.fade-in-right {
+	animation-name: fade-in-right;
+	animation-duration: 1s;
+}
+
+.fade-in-left {
+	animation-name: fade-in-left;
+	animation-duration: 1s;
+}
+
+.fade-in-bottom {
+	animation-name: fade-in-top;
+	animation-duration: 1s;
+}
+
+.no-transition {
+	transition: none !important;
+}
+
+.notif-fade {
+	display: inline-block;
+	animation:
+		notif-fade-in 1s,
+		notif-pause 5s 1s,
+		notif-fade-out 1s 6s ease-in;
+}
