@@ -5,6 +5,7 @@
 .notif {
 	position: fixed;
 	display: none;
+	z-index: 100;
 	border: install-border(2px, var(--color-gray-dark));
 	border-radius: var(--border-radius-small);
 	box-shadow: install-shadow(var(--color-gray-dark));
@@ -12,6 +13,10 @@
 	color: var(--color-black);
 	top: 5%;
 	right: -200%;
+	@include mobile-s {
+		width: 90%;
+		text-align: center;
+	}
 
 	&--is-success {
 		background-color: var(--color-green-notif);
