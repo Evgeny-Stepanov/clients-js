@@ -131,25 +131,22 @@ function validateForm(formSelector) {
 		});
 	}
 
-	function checkUserPassword(user, loginPassword) {
-		let registrationPassword = user["password-registration"];
-		if (registrationPassword === loginPassword) {
-			alert("Вход выполнен");
-			window.location.assign(app.html);
-		} else {
-			showNotification("Неверный пароль", "notif--is-error");
-		}
-	}
+	function checkUser(formDataObj) {
+		let {
+			["name-login"]: name,
+			["password-login"]: loginPassword,
+			["who-login"]: who,
+			["remember-login"]: rememberCheckbox,
+		} = formDataObj;
 
-	function loginUser(formDataObj) {
-		let { ["name-login"]: name, ["password-login"]: password } = formDataObj;
-
-		if (localStorage.getItem(name)) {
-			let user = JSON.parse(localStorage.getItem(name));
-			checkUserPassword(user, password);
-		} else if (sessionStorage.getItem(name)) {
-			let user = JSON.parse(sessionStorage.getItem(name));
-			checkUserPassword(user, password);
+		if (localStorage.getItem(checkWho(name, who))) {
+			let userName = checkWho(name, who),
+				user = JSON.parse(localStorage.getItem(checkWho(name, who)));
+			loginUser(user, loginPassword, rememberCheckbox, userName);
+		} else if (sessionStorage.getItem(checkWho(name, who))) {
+			let userName = checkWho(name, who),
+				user = JSON.parse(sessionStorage.getItem(checkWho(name, who)));
+			loginUser(user, loginPassword, rememberCheckbox, userName);
 		} else {
 			showNotification(
 				"Пользователя с таким именем не существует",
@@ -159,22 +156,30 @@ function validateForm(formSelector) {
 		}
 	}
 
-	function createUser(formDataObj) {
-		let { ["name-registration"]: name, ["remember-registration"]: checkbox } =
-				formDataObj,
+	function loginUser(user, loginPassword, rememberCheckbox, userName) {
+		let registrationPassword = user["password-registration"],
 			storage = sessionStorage;
 
-		if (checkbox === "on") {
-			storage = localStorage;
+		if (registrationPassword === loginPassword) {
+			if (rememberCheckbox === "on") {
+				storage = localStorage;
+			}
+			storage.setItem("redirect", "true");
+			storage.setItem("online", userName);
+			window.location.assign("app.html");
+		} else {
+			showNotification("Неверный пароль", "notif--is-error");
 		}
+	}
 
+	function createNameInStorage(name, user, storage) {
 		if (localStorage.getItem(name) || sessionStorage.getItem(name)) {
 			showNotification(
-				"Пользователь с таким именем зарегистрирован. Введите другое имя",
+				"Пользователь с таким именем уже зарегистрирован",
 				"notif--is-error",
 			);
 		} else {
-			storage.setItem(name, JSON.stringify(formDataObj));
+			storage.setItem(name, JSON.stringify(user));
 			toggleFormVisibility(
 				document.querySelector(".form--login"),
 				document.querySelector(".form--registration"),
@@ -182,6 +187,29 @@ function validateForm(formSelector) {
 			showNotification("Регистрация прошла успешно", "notif--is-success");
 			form.reset();
 		}
+	}
+
+	function checkWho(name, who) {
+		if (who === "client") {
+			return `${name}-клиент`;
+		} else {
+			return `${name}-админ`;
+		}
+	}
+
+	function createUser(formDataObj) {
+		let {
+				["name-registration"]: name,
+				["who-registration"]: who,
+				["remember-registration"]: rememberCheckbox,
+			} = formDataObj,
+			storage = sessionStorage;
+
+		if (rememberCheckbox === "on") {
+			storage = localStorage;
+		}
+
+		createNameInStorage(checkWho(name, who), formDataObj, storage);
 	}
 
 	function validateOnSubmit(button) {
@@ -232,7 +260,7 @@ function validateForm(formSelector) {
 				if (button.getAttribute("data-button") === "registration") {
 					createUser(formDataObj);
 				} else {
-					loginUser(formDataObj);
+					checkUser(formDataObj);
 				}
 			}
 		});
