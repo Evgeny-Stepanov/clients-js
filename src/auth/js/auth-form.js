@@ -141,11 +141,11 @@ function validateForm(formSelector) {
 
 		if (localStorage.getItem(checkWho(name, who))) {
 			let userName = checkWho(name, who),
-				user = JSON.parse(localStorage.getItem(checkWho(name, who)));
+				user = JSON.parse(localStorage.getItem(userName));
 			loginUser(user, loginPassword, rememberCheckbox, userName);
 		} else if (sessionStorage.getItem(checkWho(name, who))) {
 			let userName = checkWho(name, who),
-				user = JSON.parse(sessionStorage.getItem(checkWho(name, who)));
+				user = JSON.parse(sessionStorage.getItem(userName));
 			loginUser(user, loginPassword, rememberCheckbox, userName);
 		} else {
 			showNotification(
@@ -164,9 +164,8 @@ function validateForm(formSelector) {
 			if (rememberCheckbox === "on") {
 				storage = localStorage;
 			}
-			storage.setItem("redirect", "true");
 			storage.setItem("online", userName);
-			window.location.assign("app.html");
+			window.location.assign("/app.html");
 		} else {
 			showNotification("Неверный пароль", "notif--is-error");
 		}

@@ -5,6 +5,6 @@ import "./js/auth-form.js";
 import "./js/auth-footer.js";
 import "./js/auth-notification.js";
 
-if (localStorage.getItem("redirect")) {
-	window.location.assign("app.html");
+if (localStorage.getItem("online")) {
+	window.location.assign("/app.html");
 }
