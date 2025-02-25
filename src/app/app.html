@@ -32,8 +32,23 @@
 		<title>Clients&nbsp;&nbsp;|&nbsp;&nbsp;</title>
 	</head>
 
-	<body>
-		<button type="button" id="back">Назад</button>
-		<%= require("./html/header.html").default %>
+	<body class="app">
+		<%= require("./html/aside.html").default %>
+
+		<main class="container">
+			<section class="app__actions">
+				<ul>
+					<li><button type="button">Услуги</button></li>
+					<li><button type="button">Мастера</button></li>
+					<li><button type="button">Записаться</button></li>
+					<li><button type="button" id="back">Выход</button></li>
+				</ul>
+			</section>
+
+			<section class="app__schedule">Расписание</section>
+		</main>
+
+		<%= require("./../auth/html/auth-footer.html").default %> <%=
+		require("./../auth/html/auth-notification.html").default %>
 	</body>
 </html>

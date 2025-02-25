@@ -1,11 +1,10 @@
-function backToIndex() {
-	const button = document.querySelector("#back");
-	button.addEventListener("click", () => {
-		localStorage.removeItem("online");
-		sessionStorage.removeItem("online");
-		window.location.assign("/index.html");
-	});
-}
+import "./../css/app.scss";
+
+import "./js/app-transition";
+import "./../db";
+import "./js/app-aside";
+import "./js/app-action-buttons";
+import "./../auth/js/auth-footer";
 
 function changeTitle() {
 	let userName =
@@ -16,7 +15,4 @@ function changeTitle() {
 
 	document.title += `${user["name-registration"]} ${String.fromCodePoint(128526)}`;
 }
-
 changeTitle();
-
-backToIndex();

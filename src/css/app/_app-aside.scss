@@ -1,0 +1,53 @@
+@use "./../media" as *;
+@use "./../mixins" as *;
+@use "./../utils" as *;
+
+.app__aside {
+	position: relative;
+	display: flex;
+	align-items: center;
+	height: 90px;
+	justify-content: space-between;
+
+	&::before {
+		content: "";
+		position: absolute;
+		display: block;
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 100vw;
+		height: 2px;
+		background-color: var(--color-gray-dark);
+	}
+
+	&-contacts {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+
+		&-address,
+		&-phone {
+			display: inline-block;
+			color: var(--color-white);
+		}
+		&-address {
+			&--is-cursor-default {
+				cursor: default;
+			}
+		}
+		&-phone {
+			cursor: default;
+			text-decoration: none;
+		}
+	}
+}
+
+.calendar {
+	@include flex-center;
+	flex-direction: column;
+	cursor: default;
+	&__time {
+		font-size: calc-font-size(1.5);
+	}
+}
