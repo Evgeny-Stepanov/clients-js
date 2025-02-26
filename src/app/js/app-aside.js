@@ -1,4 +1,4 @@
-import { phoneNumber, address } from "../../db";
+import { contactsDbObj } from "../../db";
 
 function changeTime() {
 	const hours = document.querySelector(".calendar__time-h"),
@@ -27,7 +27,7 @@ function showTime(hoursSpan, minutesSpan) {
 		minutesSpan.textContent = dateNow.getMinutes();
 	}
 
-	if (dateNow.getHours === 0) {
+	if (dateNow.getHours === 0 && dateNow.getMinutes === 0) {
 		showDate(dateNow);
 	}
 }
@@ -42,13 +42,13 @@ function showDate(dateNow) {
 	date.textContent = dateNow.toLocaleDateString("ru", dateOptions);
 }
 
-function createContacts(phone, address) {
+function createContacts({ phoneNumber, address, address2gisLink }) {
 	const contacts = document.querySelector(".app__aside-contacts");
 
 	if (checkWho() === "client") {
 		contacts.innerHTML = `
-			<a href="https://2gis.ru/magnitogorsk/geo/3659810352402709?m=58.992316%2C53.379106%2F17.55" target="_blank" title="Местоположение в 2ГИС" class="app__aside-contacts-address">${address}</a>
-			<a href="tel:+${+phone.replaceAll("-", "")}" class="app__aside-contacts-phone">${phone}</a>
+			<a href=${address2gisLink} target="_blank" title="Местоположение в 2ГИС" class="app__aside-contacts-address">${address}</a>
+			<a href="tel:+${+phoneNumber.replaceAll("-", "")}" class="app__aside-contacts-phone">${phoneNumber}</a>
 		`;
 
 		if (window.matchMedia("(min-width: 768px)").matches) {
@@ -60,7 +60,7 @@ function createContacts(phone, address) {
 	} else {
 		contacts.innerHTML = `
 			<div class="app__aside-contacts-address--is-cursor-default">${address}</div>
-			<div class="app__aside-contacts-phone">${phone}</div>
+			<div class="app__aside-contacts-phone">${phoneNumber}</div>
 		`;
 	}
 }
@@ -77,4 +77,4 @@ function checkWho() {
 }
 
 changeTime();
-createContacts(phoneNumber, address);
+createContacts(contactsDbObj);

@@ -9,6 +9,10 @@
 	height: 90px;
 	justify-content: space-between;
 
+	@include mobile-s {
+		justify-content: center;
+	}
+
 	&::before {
 		content: "";
 		position: absolute;
@@ -47,6 +51,11 @@
 	@include flex-center;
 	flex-direction: column;
 	cursor: default;
+
+	@include mobile-s {
+		display: none;
+	}
+
 	&__time {
 		font-size: calc-font-size(1.5);
 	}
