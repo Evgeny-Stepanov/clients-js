@@ -158,10 +158,11 @@ function validateForm(formSelector) {
 
 	function loginUser(user, loginPassword, rememberCheckbox, userName) {
 		let registrationPassword = user["password-registration"],
+			registrationCheckbox = user["remember-registration"],
 			storage = sessionStorage;
 
 		if (registrationPassword === loginPassword) {
-			if (rememberCheckbox === "on") {
+			if (rememberCheckbox === "on" && registrationCheckbox === "on") {
 				storage = localStorage;
 			}
 			storage.setItem("online", userName);
