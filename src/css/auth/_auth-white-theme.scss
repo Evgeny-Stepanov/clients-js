@@ -1,0 +1,123 @@
+@use "./../components/" as *;
+
+body:has(input#theme-color:checked) {
+	color: var(--color-black);
+	background-color: var(--color-white);
+
+	.button {
+		color: var(--color-black);
+
+		@include hover {
+			color: var(--color-white);
+		}
+	}
+
+	.info {
+		&__title span::before {
+			background-color: var(--color-white);
+		}
+	}
+
+	.form {
+		&__field-name,
+		&__field-password {
+			input {
+				color: var(--color-black);
+
+				&::placeholder {
+					color: var(--color-black);
+				}
+
+				&:autofill,
+				&:autofill:hover,
+				&:autofill:focus,
+				&:autofill:active,
+				&:-webkit-autofill,
+				&:-webkit-autofill:hover,
+				&:-webkit-autofill:focus,
+				&:-webkit-autofill:active {
+					-webkit-background-clip: text;
+					-webkit-text-fill-color: var(--color-black);
+				}
+			}
+		}
+
+		&__radios {
+			input {
+				&:checked {
+					+ label {
+						&::before {
+							box-shadow: inset 0 0 0 3px var(--color-white);
+						}
+					}
+				}
+
+				@include hover {
+					+ label {
+						&::before {
+							box-shadow: inset 0 0 0 3px var(--color-white) !important;
+						}
+					}
+				}
+			}
+		}
+
+		&__form-change-button-wrapper {
+			a {
+				color: var(--color-black);
+
+				@include hover {
+					color: var(--color-gray-dark);
+				}
+			}
+		}
+
+		svg {
+			path {
+				fill: var(--color-black);
+			}
+		}
+	}
+
+	.footer {
+		&__show-contacts-button {
+			color: var(--color-black);
+
+			@include hover {
+				color: var(--color-gray-dark);
+			}
+		}
+
+		.settings {
+			&__font-size {
+				input {
+					@include hover {
+						border: set-border(2px, var(--color-black));
+					}
+				}
+			}
+
+			&__theme-switcher-wrapper {
+				svg {
+					path {
+						stroke: var(--color-black);
+					}
+				}
+			}
+		}
+
+		.contacts {
+			&__list-item {
+				border: set-border(2px, var(--color-black));
+
+				&-link {
+					svg {
+						path {
+							fill: var(--color-black);
+						}
+					}
+				}
+			}
+		}
+	}
+}

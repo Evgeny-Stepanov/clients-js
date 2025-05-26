@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+		/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="author" content="Evgeny Stepanov" />
+		<meta
+			name="description"
+			content="Pet project for recording clients in a barbershop. It's written in vanilla javascript."
+		/>
+		<link
+			rel="apple-touch-icon"
+			sizes="180x180"
+			href="./../images/favicon/apple-touch-icon.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="32x32"
+			href="./../images/favicon/favicon-32x32.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="16x16"
+			href="./../images/favicon/favicon-16x16.png"
+		/>
+		<title>Clients&nbsp;&nbsp;|&nbsp;&nbsp;</title>
+	</head>
+
+	<body class="app container">
+		<%= require("./html/app-aside.html").default %>
+
+		<main class="app__main"><%= require("./html/main.html").default %></main>
+
+		<%= require("./../auth/html/auth-footer.html").default %> <%=
+		require("./html/modals.html").default %>
+
+		<div class="notification" data-notif="main"></div>
+	</body>
+</html>

@@ -1,0 +1,39 @@
+@font-face {
+	font-family: "Merienda";
+	src:
+		local("Merienda"),
+		local("Merienda Bold"),
+		local("Merienda-Bold"),
+		url("../fonts/Merienda-Bold.woff2") format("woff2");
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Open Sans";
+	src:
+		local("Open Sans"),
+		local("Open Sans Bold"),
+		local("Open-Sans-Bold"),
+		local("OpenSans-Bold"),
+		local("OpenSans Bold"),
+		url("../fonts/OpenSans-Bold.woff2") format("woff2");
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Open Sans";
+	src:
+		local("Open Sans"),
+		local("Open Sans Regular"),
+		local("Open-Sans-Regular"),
+		local("OpenSans-Regular"),
+		local("OpenSans Regular"),
+		url("../fonts/OpenSans-Regular.woff2") format("woff2");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}

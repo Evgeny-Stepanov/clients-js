@@ -1,0 +1,72 @@
+@use "./../components/" as *;
+
+.app {
+	display: flex;
+	flex-direction: column;
+}
+
+.aside {
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 90px;
+
+	@include mobile-s {
+		justify-content: center;
+	}
+
+	&::before {
+		content: "";
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		width: 100vw;
+		height: 2px;
+		background-color: var(--color-gray-dark);
+		transform: translateX(-50%);
+	}
+
+	&__contacts {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+
+		&-address,
+		&-phone {
+			color: var(--color-white);
+		}
+		&-address {
+			&--has-cursor-default {
+				/* 
+				For some unknown reason, the browser itself changes the 
+				default cursor of this div to another one
+				*/
+				cursor: default;
+			}
+		}
+		&-phone {
+			cursor: default;
+			text-decoration: none;
+		}
+	}
+}
+
+.time-and-date {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	/* 
+	For some unknown reason, the browser itself changes the 
+	default cursor of this div to another one
+	*/
+	cursor: default;
+
+	@include mobile-s {
+		display: none;
+	}
+
+	&__time {
+		font-size: calculate-from-font-size(1.5);
+	}
+}

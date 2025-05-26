@@ -1,0 +1,116 @@
+@use "./../components/" as *;
+
+//* To keep the footer pressed to the bottom
+body {
+	display: flex;
+	flex-direction: column;
+}
+
+main {
+	flex-grow: 1;
+}
+
+.auth {
+	display: flex;
+	justify-content: space-between;
+	padding-top: 7%;
+	padding-bottom: 7%;
+
+	@include tablet {
+		flex-direction: column;
+		align-items: center;
+		gap: 50px;
+		padding-top: 3%;
+		padding-bottom: 10%;
+	}
+
+	@include mobile-s {
+		gap: 30px;
+		padding-top: 7%;
+	}
+}
+
+.info {
+	max-width: 50%;
+
+	@include tablet {
+		max-width: 100%;
+	}
+
+	&__title {
+		font-size: calculate-from-font-size(2);
+
+		@include tablet {
+			text-align: center;
+		}
+
+		span {
+			position: relative;
+			display: inline-block;
+			font-size: calculate-from-font-size(2.5);
+			font-family: var(--font-family-alt);
+
+			&::before {
+				content: attr(data-recolored-text);
+				position: absolute;
+				height: 0;
+				color: var(--color-accent);
+				background-color: var(--color-black);
+				overflow: hidden;
+				transition: set-hover-transition(height);
+			}
+		}
+
+		&-span--is-recolored {
+			&::before {
+				height: 100% !important;
+			}
+		}
+	}
+
+	&__text-wrapper {
+		display: grid;
+		grid-template-rows: 0fr;
+		transition: set-long-animation-transition(grid-template-rows);
+
+		&--is-full {
+			grid-template-rows: 1fr;
+		}
+	}
+
+	&__text {
+		margin-top: calculate-from-font-size(1.5);
+
+		@include mobile-s {
+			display: none;
+			//* The animation only works because overflow is hidden
+			overflow: hidden;
+		}
+
+		&--is-visible {
+			display: block;
+		}
+
+		&-mobile {
+			display: none;
+			margin-top: calculate-from-font-size(1.5);
+
+			@include mobile-s {
+				display: block;
+			}
+
+			&--is-hidden {
+				display: none;
+			}
+
+			&-show-button {
+				margin-top: calculate-from-font-size(0.3125);
+				padding: calculate-from-font-size(0.3125);
+
+				@include mobile-s {
+					display: block;
+				}
+			}
+		}
+	}
+}

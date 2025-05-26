@@ -1,0 +1,33 @@
+@use "./../components/" as *;
+
+.notification {
+	position: fixed;
+	top: 5%;
+	right: -200%;
+	z-index: 1000;
+	display: none;
+	padding: calculate-from-font-size(0.625);
+	color: var(--color-black);
+	border: set-border(2px, var(--color-gray-dark));
+	border-radius: var(--border-radius-small);
+	box-shadow: set-box-shadow(var(--color-gray-dark));
+
+	@include mobile-s {
+		width: 90%;
+		text-align: center;
+	}
+
+	&--success {
+		background-color: var(--color-green);
+	}
+
+	&--error {
+		color: var(--color-white);
+		background-color: var(--color-red);
+	}
+}
+
+/* [data-notif="add-service"],
+[data-notif="add-master"] {
+	box-shadow: set-box-shadow(var(--color-black));
+} */

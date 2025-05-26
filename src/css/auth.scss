@@ -1,0 +1,11 @@
+@use "normalize";
+@use "fonts";
+@use "globals";
+@use "variables";
+@use "animations";
+
+@use "./auth/auth-main";
+@use "./auth/auth-form";
+@use "./auth/auth-footer";
+@use "./auth/auth-white-theme";
+@use "./auth/auth-notification";

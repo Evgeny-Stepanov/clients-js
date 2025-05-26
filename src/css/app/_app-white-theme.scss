@@ -1,0 +1,69 @@
+@use "./../components/" as *;
+
+body:has(input#theme-color:checked) {
+	color: var(--color-black);
+	background-color: var(--color-white);
+
+	.aside {
+		&__contacts-address,
+		&__contacts-phone {
+			color: var(--color-black);
+		}
+	}
+
+	.actions__btn {
+		color: var(--color-black);
+		@include hover {
+			color: var(--color-white);
+		}
+	}
+
+	.footer {
+		&__settings-btn {
+			color: var(--color-black);
+			@include hover {
+				color: var(--color-white);
+			}
+		}
+		&__contacts-btn {
+			color: var(--color-black);
+			@include hover {
+				color: var(--color-gray-dark);
+			}
+		}
+
+		.settings {
+			&__font-size input {
+				@include hover {
+					border: set-border(2px, var(--color-black));
+				}
+			}
+			&__switch-wrapper {
+				svg {
+					path {
+						fill: var(--color-black);
+						stroke: var(--color-black);
+					}
+				}
+			}
+		}
+
+		.contacts {
+			&__item {
+				border: set-border(2px, var(--color-black));
+				@include hover {
+					border: set-border(2px, var(--color-accent));
+					svg path {
+						fill: var(--color-accent);
+					}
+				}
+			}
+
+			&__link {
+				svg path {
+					fill: var(--color-black);
+				}
+			}
+		}
+	}
+}

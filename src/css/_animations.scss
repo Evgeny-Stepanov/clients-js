@@ -1,0 +1,95 @@
+@keyframes form-animation {
+	from {
+		transform: translateY(-200%);
+	}
+	to {
+		transform: translateY(0) rotate(0);
+	}
+}
+
+@keyframes fade-in-left {
+	from {
+		transform: translateX(-100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+
+@keyframes fade-in-right {
+	from {
+		transform: translateX(100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+
+@keyframes fade-in-top {
+	0% {
+		transform: translateY(-300%);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+
+@keyframes fade-in-notification {
+	0% {
+		right: -200%;
+	}
+	100% {
+		right: 5%;
+	}
+}
+
+@keyframes pause-notification {
+	0% {
+		right: 5%;
+	}
+	100% {
+		right: 5%;
+	}
+}
+
+@keyframes fade-out-notification {
+	0% {
+		right: 5%;
+	}
+	100% {
+		right: -200%;
+	}
+}
+
+.fade-in-right {
+	animation-name: fade-in-right;
+	animation-duration: var(--transition-long-animation-duration);
+}
+
+.fade-in-left {
+	animation-name: fade-in-left;
+	animation-duration: var(--transition-long-animation-duration);
+}
+
+.fade-in-bottom {
+	animation-name: fade-in-top;
+	animation-duration: var(--transition-long-animation-duration);
+}
+
+.form-animation {
+	display: flex;
+	animation-name: form-animation;
+	animation-duration: var(--transition-short-animation-duration);
+}
+
+.notification-animation {
+	display: inline-block !important;
+	animation:
+		fade-in-notification 1s,
+		pause-notification 5s 1s,
+		fade-out-notification 1s 6s ease-in;
+}
+
+.no-transition {
+	transition: none !important;
+}

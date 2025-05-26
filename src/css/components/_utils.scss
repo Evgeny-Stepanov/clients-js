@@ -1,0 +1,52 @@
+@use "mixins" as *;
+@use "media" as *;
+
+.container {
+	max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+	margin-inline: auto;
+	padding-inline: var(--container-padding-x);
+}
+
+.visually-hidden {
+	@include visually-hidden;
+}
+
+@function set-border($n, $color) {
+	@return $n solid $color;
+}
+
+@function calculate-from-font-size($n) {
+	@return calc(var(--font-size) * $n);
+}
+
+@function set-box-shadow($color) {
+	@return 0 5px 15px $color;
+}
+
+@function set-hover-transition($property) {
+	@return $property var(--transition-hover-duration) ease 0s;
+}
+
+@function set-short-animation-transition($property) {
+	@return $property var(--transition-short-animation-duration) ease 0s;
+}
+
+@function set-long-animation-transition($property) {
+	@return $property var(--transition-long-animation-duration) ease 0s;
+}
+
+.button {
+	padding: calculate-from-font-size(0.625);
+	cursor: pointer;
+	color: var(--color-white);
+	background-color: transparent;
+	border: set-border(2px, var(--color-gray-dark));
+	border-radius: var(--border-radius-small);
+	transition: set-hover-transition(all);
+
+	@include hover {
+		background-color: var(--color-accent);
+		border: set-border(2px, var(--color-accent));
+		box-shadow: set-box-shadow(var(--color-gray-dark));
+	}
+}
