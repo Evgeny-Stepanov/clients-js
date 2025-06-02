@@ -101,7 +101,7 @@
 		}
 	}
 
-	&__close-btn {
+	&__close-button {
 		position: absolute;
 		top: 10px;
 		right: 10px;
@@ -115,5 +115,124 @@
 			width: 100%;
 			height: 100%;
 		}
+	}
+}
+
+.form {
+	&__input {
+		border-radius: var(--border-radius-small);
+		border: set-border(2px, var(--color-gray-dark));
+		padding: 0 calculate-from-font-size(0.625);
+		height: calculate-from-font-size(2.5);
+		width: 100%;
+		background-color: transparent;
+		color: var(--color-black);
+		transition: set-hover-transition(border-color);
+		&::placeholder {
+			color: var(--color-black);
+		}
+		&:focus,
+		&:active {
+			outline: none;
+			border-color: var(--color-accent);
+		}
+		&:autofill,
+		&:autofill:hover,
+		&:autofill:focus,
+		&:autofill:active,
+		&:-webkit-autofill,
+		&:-webkit-autofill:hover,
+		&:-webkit-autofill:focus,
+		&:-webkit-autofill:active {
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: var(--color-black);
+		}
+
+		&--short {
+			width: 90%;
+		}
+
+		&--is-invalid {
+			border: set-border(2px, var(--color-red-notif)) !important;
+		}
+
+		&-error {
+			margin-top: calculate-from-font-size(0.3125);
+			display: block;
+			width: 100%;
+			height: 100%;
+			position: static;
+			transform: none;
+		}
+	}
+
+	p {
+		width: calculate-from-font-size(18.75);
+	}
+
+	&__inputs-wrap {
+		display: flex;
+		margin-top: calculate-from-font-size(0.625);
+		width: calculate-from-font-size(18.75);
+		align-items: center;
+		gap: calculate-from-font-size(1.5625);
+
+		p {
+			width: 66%;
+		}
+	}
+
+	&__select {
+		&-btn {
+			display: flex;
+			align-items: center;
+			cursor: pointer;
+			border-radius: var(--border-radius-small);
+			border: set-border(2px, var(--color-gray-dark));
+			padding: calculate-from-font-size(0.3125);
+			img {
+				width: 60px;
+				height: 60px;
+			}
+		}
+
+		&-dropdown {
+			position: relative;
+			width: 24px;
+			height: 50px;
+			svg:first-child {
+				position: absolute;
+				top: -10%;
+				right: 50%;
+				transform: translate(50%, 50%);
+			}
+			svg:last-child {
+				position: absolute;
+				top: 10%;
+				right: 50%;
+				transform: translate(50%, 50%);
+			}
+		}
+
+		&-list {
+			display: none;
+			position: absolute;
+			flex-direction: column;
+			background-color: var(--color-white);
+			border: set-border(2px, var(--color-gray-dark));
+			border-radius: var(--border-radius-small);
+
+			&-item {
+				padding-block: calculate-from-font-size(0.3125);
+			}
+
+			&--is-open {
+				display: flex;
+			}
+		}
+	}
+
+	&__button {
+		margin-top: calculate-from-font-size(0.625);
 	}
 }

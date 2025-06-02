@@ -33,13 +33,11 @@
 	</head>
 
 	<body class="app container">
-		<%= require("./html/app-aside.html").default %>
+		<%= require("./html/app-aside.html").default %> <%=
+		require("./html/app-main.html").default %> <%=
+		require("./../auth/html/auth-footer.html").default %> <%=
+		require("./html/app-modals.html").default %>
 
-		<main class="app__main"><%= require("./html/main.html").default %></main>
-
-		<%= require("./../auth/html/auth-footer.html").default %> <%=
-		require("./html/modals.html").default %>
-
-		<div class="notification" data-notif="main"></div>
+		<div class="notification" data-notification="body"></div>
 	</body>
 </html>
