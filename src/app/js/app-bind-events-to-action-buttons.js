@@ -58,13 +58,13 @@ function logout(triggerButton) {
 
 createAndShowServicesOrMastersModal(
 	servicesButton,
-	new ServicesModalForClient(dbServicesObj, dbMastersObj),
-	new ServicesModalForAdmin(dbServicesObj, dbMastersObj),
+	new ServicesModalForClient(dbServicesObj),
+	new ServicesModalForAdmin(dbServicesObj),
 );
 createAndShowServicesOrMastersModal(
 	mastersButton,
-	new MastersModalForClient(dbServicesObj, dbMastersObj),
-	new MastersModalForAdmin(dbServicesObj, dbMastersObj),
+	new MastersModalForClient(dbMastersObj),
+	new MastersModalForAdmin(dbMastersObj),
 );
 
 resetAllInStorageExceptUsers(resetButton);

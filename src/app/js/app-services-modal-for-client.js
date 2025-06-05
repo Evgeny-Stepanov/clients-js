@@ -1,30 +1,56 @@
 import { MastersModalForClient } from "./app-masters-modal-for-client";
-import { createAndFilterModalListItemsForServices } from "./app-general-functions";
+import { getOnlineUserStorage } from "./app-general-functions";
 import { showNotification } from "../../auth/js/auth-notification";
 
 class ServicesModalForClient extends MastersModalForClient {
-	constructor(dbServicesObj, dbMastersObj) {
-		super(dbServicesObj, dbMastersObj);
+	constructor(dbObject) {
+		super(dbObject);
 	}
 
-	createModalListItems(modal, dbServicesObj, dbMastersObj, list) {
-		createAndFilterModalListItemsForServices(
-			modal,
-			dbServicesObj,
-			dbMastersObj,
-			list,
-		);
-	}
-
-	setModalAttr(modal) {
+	setMainModalAttr(modal) {
 		modal.setAttribute("data-modal", "services");
 	}
 
-	setModalTitle(modalTitle) {
+	createMainModalListItems(dbObject, list) {
+		const deletedServicesFromStorage = JSON.parse(
+			getOnlineUserStorage().getItem("deletedServices"),
+		);
+
+		for (let i = 0; i < dbObject.length; i++) {
+			let matchingCondition = false;
+
+			if (deletedServicesFromStorage) {
+				for (let k = 0; k < deletedServicesFromStorage.length; k++) {
+					if (dbObject[i].name === deletedServicesFromStorage[k]) {
+						matchingCondition = true;
+						break;
+					}
+				}
+			}
+
+			if (!matchingCondition) {
+				this.createMainModalListItem(dbObject, list, i);
+			}
+		}
+	}
+
+	createMainModalListItemStructure(dbObject, listItem, i) {
+		listItem.innerHTML = `
+			<div class="content-list-item-text">
+				<div class="has-margin-top-0">
+					<span>${dbObject[i].name}: </span>
+					<span>${dbObject[i].price} &#8381;</span>
+				</div>
+			</div>
+			<img src="${dbObject[i].image}" alt="Иконка услуги" />
+		`;
+	}
+
+	setMainModalTitle(modalTitle) {
 		modalTitle.textContent = "Услуги";
 	}
 
-	createAndShowNotification() {
+	createAndShowMainModalNotification() {
 		showNotification(
 			"[data-notification='body']",
 			"Услуги отсутствуют",

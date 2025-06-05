@@ -1,18 +1,16 @@
 import {
-	showMainModal,
-	closeMainModal,
-	createAndFilterModalListItemsForMasters,
-	calculateHeightMainModal,
+	getOnlineUserStorage,
+	addBlockScroll,
+	removeBlockScroll,
 } from "./app-general-functions";
 import { showNotification } from "../../auth/js/auth-notification";
 
 class MastersModalForClient {
-	constructor(dbServicesObj, dbMastersObj) {
-		this.dbServicesObj = dbServicesObj;
-		this.dbMastersObj = dbMastersObj;
+	constructor(dbObject) {
+		this.dbObject = dbObject;
 	}
 
-	createModal() {
+	createMainModal() {
 		const {
 			modal,
 			modalDivForScroll,
@@ -20,22 +18,17 @@ class MastersModalForClient {
 			modalTitle,
 			modalList,
 			modalCloseButton,
-		} = this.createModalStructure();
+		} = this.createMainModalStructure();
 
-		this.setModalAttr(modal);
+		this.setMainModalAttr(modal);
 
-		this.createModalListItems(
-			modal,
-			this.dbServicesObj,
-			this.dbMastersObj,
-			modalList,
-		);
+		this.createMainModalListItems(this.dbObject, modalList);
 
-		if (modalList.children.length === 1) {
+		/* 		if (modalList.children.length === 1) {
 			modalList.style.display = "block";
-		}
+		} */
 
-		this.setModalTitle(modalTitle);
+		this.setMainModalTitle(modalTitle);
 
 		modalContent.append(modalTitle, modalList, modalCloseButton);
 		modalDivForScroll.append(modalContent);
@@ -44,7 +37,7 @@ class MastersModalForClient {
 		return modal;
 	}
 
-	createModalStructure() {
+	createMainModalStructure() {
 		const modal = document.createElement("dialog"),
 			modalDivForScroll = document.createElement("div"),
 			modalContent = document.createElement("div"),
@@ -53,11 +46,11 @@ class MastersModalForClient {
 			modalCloseButton = document.createElement("button");
 
 		modal.classList.add("app__modal", "modal");
-		modalDivForScroll.classList.add("modal__scroll-wrap");
+		modalDivForScroll.classList.add("modal__content-wrapper");
 		modalContent.classList.add("modal__content");
 		modalTitle.classList.add("visually-hidden");
-		modalList.classList.add("modal__list");
-		modalCloseButton.classList.add("modal__close-button");
+		modalList.classList.add("modal__content-list", "content-list");
+		modalCloseButton.classList.add("modal__content-close-button");
 		modalCloseButton.setAttribute("type", "button");
 		modalCloseButton.setAttribute("data-button-action", "close");
 
@@ -75,20 +68,59 @@ class MastersModalForClient {
 		};
 	}
 
-	createModalListItems(modal, dbServicesObj, dbMastersObj, list) {
-		createAndFilterModalListItemsForMasters(
-			modal,
-			dbServicesObj,
-			dbMastersObj,
-			list,
-		);
-	}
-
-	setModalAttr(modal) {
+	setMainModalAttr(modal) {
 		modal.setAttribute("data-modal", "masters");
 	}
 
-	setModalTitle(modalTitle) {
+	createMainModalListItems(dbObject, list) {
+		const deletedMastersFromStorage = JSON.parse(
+			getOnlineUserStorage().getItem("deletedMasters"),
+		);
+
+		for (let i = 0; i < dbObject.length; i++) {
+			let matchingCondition = false;
+
+			if (deletedMastersFromStorage) {
+				for (let k = 0; k < deletedMastersFromStorage.length; k++) {
+					if (
+						`${dbObject[i].firstName} ${dbObject[i].lastName}` ===
+						deletedMastersFromStorage[k]
+					) {
+						matchingCondition = true;
+						break;
+					}
+				}
+			}
+
+			if (!matchingCondition) {
+				this.createMainModalListItem(dbObject, list, i);
+			}
+		}
+	}
+
+	createMainModalListItem(dbObject, list, i) {
+		const listItem = document.createElement("li");
+		listItem.classList.add("content-list-item", "content-list-item--grid");
+
+		this.createMainModalListItemStructure(dbObject, listItem, i);
+
+		list.append(listItem);
+	}
+
+	createMainModalListItemStructure(dbObject, listItem, i) {
+		listItem.innerHTML = `
+			<div class="content-list-item-text">
+				<span>${dbObject[i].firstName} ${dbObject[i].lastName}</span>
+				<div>
+					<span>Стаж работы: </span>
+					<span>${dbObject[i].experience}</span>
+				</div>
+			</div>
+			<img src="${dbObject[i].photo}" alt="Фотография мастера" />
+		`;
+	}
+
+	setMainModalTitle(modalTitle) {
 		modalTitle.textContent = "Мастера";
 	}
 
@@ -97,20 +129,88 @@ class MastersModalForClient {
 			closeButton = modal.querySelector("[data-button-action='close']");
 
 		if (modal.querySelector("ul").children.length === 0) {
-			this.createAndShowNotification();
+			this.createAndShowMainModalNotification();
 		} else {
-			showMainModal(modal);
-			calculateHeightMainModal(modal);
-			closeMainModal(modal, closeButton);
+			document.body.append(modal);
+			modal.showModal();
+			addBlockScroll();
+
+			this.calculateHeightMainModal(modal);
+			this.closeMainModal(modal, closeButton);
 		}
 	}
 
-	createAndShowNotification() {
+	createAndShowMainModalNotification() {
 		showNotification(
 			"[data-notification='body']",
 			"Мастера отсутствуют",
 			"error",
 		);
+	}
+
+	calculateHeightMainModal(modal) {
+		const modalList = modal.querySelector("ul"),
+			modalListWrapper = modalList.closest("div"),
+			modalListItems = modalList.querySelectorAll("li"),
+			modalListItemsGap = getComputedStyle(modalList).gap;
+
+		let sumListItemsHeight = 0,
+			sumListItemsGap = 0,
+			sumModalPaddingY = 0;
+
+		if (window.matchMedia("(max-width: 767px)").matches) {
+			modalListItems.forEach(modalListItem => {
+				sumListItemsHeight += parseFloat(
+					getComputedStyle(modalListItem).height,
+				);
+			});
+			sumListItemsGap =
+				(modalListItems.length - 1) * parseFloat(modalListItemsGap);
+		} else {
+			modalListItems.forEach((modalListItem, i) => {
+				if (i < Math.ceil(modalListItems.length / 2)) {
+					sumListItemsHeight += parseFloat(
+						getComputedStyle(modalListItem).height,
+					);
+				}
+			});
+
+			if (modalListItems.length % 2 === 0) {
+				sumListItemsGap =
+					(modalListItems.length / 2 - 1) * parseFloat(modalListItemsGap);
+			} else {
+				sumListItemsGap =
+					Math.floor(modalListItems.length / 2) * parseFloat(modalListItemsGap);
+			}
+		}
+
+		sumModalPaddingY =
+			parseFloat(getComputedStyle(modalListWrapper).paddingTop) * 2;
+		modal.style.height = `${sumListItemsHeight + sumListItemsGap + sumModalPaddingY}px`;
+	}
+
+	closeMainModal(modal, closeButton) {
+		modal.addEventListener("click", ({ currentTarget, target }) => {
+			const isClickedOnBackdrop = target === currentTarget;
+			if (isClickedOnBackdrop) {
+				currentTarget.close();
+				modal.remove();
+				removeBlockScroll();
+			}
+		});
+
+		closeButton.addEventListener("click", () => {
+			modal.close();
+			modal.remove();
+			removeBlockScroll();
+		});
+
+		document.onkeyup = evt => {
+			if (evt.code === "Escape") {
+				modal.remove();
+				removeBlockScroll();
+			}
+		};
 	}
 }
 

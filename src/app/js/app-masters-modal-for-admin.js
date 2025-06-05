@@ -1,24 +1,26 @@
+import { MastersModalForClient } from "./app-masters-modal-for-client";
 import {
 	showMainModal,
 	createAndFilterModalListItemsForMasters,
 } from "./app-general-functions";
 import { showNotification } from "../../auth/js/auth-notification";
 
-class MastersModalForAdmin {
+class MastersModalForAdmin extends MastersModalForClient {
 	constructor(dbServicesObj, dbMastersObj) {
-		this.dbServicesObj = dbServicesObj;
-		this.dbMastersObj = dbMastersObj;
+		super(dbServicesObj, dbMastersObj);
 	}
 
 	createModal() {
 		const {
-			modal,
-			modalDivForScroll,
-			modalContent,
-			modalTitle,
-			modalList,
-			modalCloseButton,
-		} = this.createModalStructure();
+				modal,
+				modalDivForScroll,
+				modalContent,
+				modalTitle,
+				modalList,
+				modalCloseButton,
+			} = this.createModalStructure(),
+			modalAddButton = document.createElement("button"),
+			modalAddButtonListItem = document.createElement("li");
 
 		this.setModalAttr(modal);
 
@@ -28,6 +30,9 @@ class MastersModalForAdmin {
 			this.dbServicesObj,
 			modalList,
 		);
+
+		modalAddButtonListItem.append(modalAddButton);
+		modalList.append(modalAddButtonListItem);
 
 		/* 		if (modalList.children.length === 1) {
 			modalList.style.display = "block";
