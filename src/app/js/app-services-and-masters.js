@@ -1,43 +1,4 @@
-import * as dbObj from "../../db";
-import { checkWho, checkStorageOnline } from "../app";
-import { showNotification } from "../../auth/js/auth-notification";
-
 class ServicesForAdmins extends Services {
-	constructor(servicesDbObj) {
-		super();
-		this.servicesDbObj = servicesDbObj;
-	}
-
-	createModal() {
-		let { modal, modalDivForScroll, modalContent, modalTitle, list, closeBtn } =
-				createModalStructure(),
-			addBtn = document.createElement("button"),
-			addBtnLi = document.createElement("li");
-
-		createModalAddBtn(addBtn, addBtnLi, "Добавить услугу");
-		addBtnLi.append(addBtn);
-
-		this.createListItems(list);
-
-		list.append(addBtnLi);
-
-		if (list.children.length === 1) {
-			list.style.display = "block";
-		}
-
-		this.setModalTitle(modalTitle);
-
-		modalContent.append(modalTitle, list, closeBtn);
-		modalDivForScroll.append(modalContent);
-		modal.append(modalDivForScroll);
-		this.setModalAttr(modal);
-
-		return modal;
-	}
-
-	createListItems(list) {
-		filterListItems("services", list, this.servicesDbObj, null);
-	}
 
 	showModal() {
 		let modal = this.createModal(),

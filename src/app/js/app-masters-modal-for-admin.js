@@ -1,5 +1,5 @@
 import { MastersModalForClient } from "./app-masters-modal-for-client";
-import { addBlockScroll } from "./app-general-functions";
+import { getOnlineUserStorage, addBlockScroll } from "./app-general-functions";
 
 class MastersModalForAdmin extends MastersModalForClient {
 	constructor(dbObject) {
@@ -38,12 +38,12 @@ class MastersModalForAdmin extends MastersModalForClient {
 		modal.addEventListener("click", evt => {
 			if (evt.target.classList.contains("content-list-item-delete-button")) {
 				const modalListItem = evt.target.closest("li");
-				this.showDeleteModal(modalListItem);
+				this.showDeleteModal(modalListItem, modal);
 			}
 		});
 	}
 
-	showDeleteModal(modalListItem) {
+	showDeleteModal(modalListItem, mainModal) {
 		const deleteModal = document.querySelector("[data-modal='delete']"),
 			deleteModalTitle = deleteModal.querySelector("h2"),
 			deleteModalMessage = deleteModal.querySelector("p"),
@@ -66,6 +66,15 @@ class MastersModalForAdmin extends MastersModalForClient {
 			deleteModalNoButton,
 			deleteModalCloseButton,
 		);
+
+		deleteModalYesButton.onclick = () => {
+			this.setDeletedItemInStorage(modalListItem);
+			modalListItem.remove();
+			deleteModal.close();
+			mainModal.close();
+			mainModal.remove();
+			this.showMainModal();
+		};
 	}
 
 	setDeleteModalTitleAndMessage(title, message) {
@@ -88,6 +97,20 @@ class MastersModalForAdmin extends MastersModalForClient {
 		modalNoButton.onclick = () => {
 			modal.close();
 		};
+	}
+
+	setDeletedItemInStorage(modalListItem) {
+		const itemValue = modalListItem.querySelector("span").textContent,
+			storage = getOnlineUserStorage();
+		let itemsArray = [itemValue];
+
+		if (storage.getItem("deletedMasters")) {
+			itemsArray = JSON.parse(storage.getItem("deletedMasters"));
+			itemsArray.push(itemValue);
+			storage.setItem("deletedMasters", JSON.stringify(itemsArray));
+		} else {
+			storage.setItem("deletedMasters", JSON.stringify(itemsArray));
+		}
 	}
 }
 

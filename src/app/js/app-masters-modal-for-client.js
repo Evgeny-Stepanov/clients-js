@@ -24,9 +24,9 @@ class MastersModalForClient {
 
 		this.createMainModalListItems(this.dbObject, modalList);
 
-		/* 		if (modalList.children.length === 1) {
+		if (modalList.children.length === 1) {
 			modalList.style.display = "block";
-		} */
+		}
 
 		this.setMainModalTitle(modalTitle);
 

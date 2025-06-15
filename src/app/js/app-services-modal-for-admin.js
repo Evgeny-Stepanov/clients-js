@@ -63,6 +63,22 @@ class ServicesModalForAdmin extends MastersModalForAdmin {
 		title.textContent = "Удаление услуги";
 		message.textContent = "Вы уверены, что хотите удалить услугу?";
 	}
+
+	setDeletedItemInStorage(modalListItem) {
+		const itemValue = modalListItem
+				.querySelector("span")
+				.textContent.slice(0, -2),
+			storage = getOnlineUserStorage();
+		let itemsArray = [itemValue];
+
+		if (storage.getItem("deletedServices")) {
+			itemsArray = JSON.parse(storage.getItem("deletedServices"));
+			itemsArray.push(itemValue);
+			storage.setItem("deletedServices", JSON.stringify(itemsArray));
+		} else {
+			storage.setItem("deletedServices", JSON.stringify(itemsArray));
+		}
+	}
 }
 
 export { ServicesModalForAdmin };
