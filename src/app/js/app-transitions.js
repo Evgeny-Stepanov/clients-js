@@ -1,9 +1,10 @@
-import { setTransitionAfterPageLoad } from "../../auth/js/auth-transitions";
-
-/* window.addEventListener("load", () => {
-	setTransitionAfterPageLoad(".footer__settings-btn");
-	setTransitionAfterPageLoad(".footer__contacts-btn");
+window.addEventListener("load", () => {
+	setTransitionAfterPageLoad(".footer__show-settings-button");
+	setTransitionAfterPageLoad(".footer__show-contacts-button");
 	setTransitionAfterPageLoad(".footer__settings");
-	setTransitionAfterPageLoad(".contacts");
-}); 
-*/
+	setTransitionAfterPageLoad(".footer__contacts");
+});
+
+function setTransitionAfterPageLoad(selector) {
+	document.querySelector(selector).classList.remove("no-transition");
+}

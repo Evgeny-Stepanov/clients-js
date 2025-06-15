@@ -80,39 +80,9 @@ function closeModal(modal, closeBtn, noBtn) {
 
 //function closeAddModal() {}
 
-function createModalListItem(modal, list, i, dbServicesObj, dbMastersObj) {
-	const listItem = document.createElement("li");
-	listItem.classList.add("content-list-item", "content-list-item--grid");
-
-	createModalListItemStructure(modal, listItem, i, dbServicesObj, dbMastersObj);
-
-	if (getOnlineUserType() === "admin") {
-		createAndAddButtonToDeleteListItemForAdmin(modal, listItem);
-	}
-
-	list.append(listItem);
-}
-
 export {
 	getOnlineUserType,
 	getOnlineUserStorage,
 	addBlockScroll,
 	removeBlockScroll,
 };
-
-/* createAndAddButtonToDeleteListItemForAdmin(listItem) {
-	const deleteButton = document.createElement("button");
-	deleteButton.classList.add(
-		"actions__btn",
-		"actions__btn-delete",
-		"actions__btn--black-text",
-	);
-	deleteButton.setAttribute("type", "button");
-	this.setTextForButtonToDeleteListItemForAdmin(deleteButton);
-
-	listItem.append(deleteButton);
-}
-
-setTextForButtonToDeleteListItemForAdmin(deleteButton) {
-	deleteButton.textContent = "Удалить мастера";
-} */

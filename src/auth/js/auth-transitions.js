@@ -10,5 +10,3 @@ window.addEventListener("load", () => {
 function setTransitionAfterPageLoad(selector) {
 	document.querySelector(selector).classList.remove("no-transition");
 }
-
-export { setTransitionAfterPageLoad };

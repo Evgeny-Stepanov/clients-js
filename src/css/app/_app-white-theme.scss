@@ -11,37 +11,35 @@ body:has(input#theme-color:checked) {
 		}
 	}
 
-	.actions__btn {
+	.button {
 		color: var(--color-black);
+
 		@include hover {
 			color: var(--color-white);
 		}
 	}
 
 	.footer {
-		&__settings-btn {
+		&__show-contacts-button {
 			color: var(--color-black);
-			@include hover {
-				color: var(--color-white);
-			}
-		}
-		&__contacts-btn {
-			color: var(--color-black);
+
 			@include hover {
 				color: var(--color-gray-dark);
 			}
 		}
 
 		.settings {
-			&__font-size input {
-				@include hover {
-					border: set-border(2px, var(--color-black));
+			&__font-size {
+				input {
+					@include hover {
+						border: set-border(2px, var(--color-black));
+					}
 				}
 			}
-			&__switch-wrapper {
+
+			&__theme-switcher-wrapper {
 				svg {
 					path {
-						fill: var(--color-black);
 						stroke: var(--color-black);
 					}
 				}
@@ -49,19 +47,15 @@ body:has(input#theme-color:checked) {
 		}
 
 		.contacts {
-			&__item {
+			&__list-item {
 				border: set-border(2px, var(--color-black));
-				@include hover {
-					border: set-border(2px, var(--color-accent));
-					svg path {
-						fill: var(--color-accent);
-					}
-				}
-			}
 
-			&__link {
-				svg path {
-					fill: var(--color-black);
+				&-link {
+					svg {
+						path {
+							fill: var(--color-black);
+						}
+					}
 				}
 			}
 		}

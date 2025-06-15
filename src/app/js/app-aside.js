@@ -59,7 +59,7 @@ function createAndShowContacts({ phoneNumber, address, linkToAddressIn2gis }) {
 		}
 	} else {
 		contactsDiv.innerHTML = `
-			<div class="aside__contacts-address--has-cursor-default">${address}</div>
+			<div class="aside__contacts-address aside__contacts-address--has-cursor-default">${address}</div>
 			<div class="aside__contacts-phone">${phoneNumber}</div>
 		`;
 	}

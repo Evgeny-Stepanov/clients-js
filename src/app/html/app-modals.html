@@ -1,25 +1,29 @@
-<dialog class="modal" data-modal="delete">
+<dialog class="app__modal modal" data-modal="delete">
 	<div class="modal__content">
 		<h2 class="visually-hidden"></h2>
 		<p></p>
-		<div class="modal__confirm-btns">
+		<div class="modal__content-confirm-buttons">
 			<button
-				class="actions__btn actions__btn--black-text"
+				class="modal__content-confirm-button button button--black-text"
 				type="button"
-				data-confirm="yes"
+				data-button-confirm="yes"
 			>
 				Да
 			</button>
 			<button
-				class="actions__btn actions__btn--black-text"
+				class="modal__content-confirm-button button button--black-text"
 				type="button"
-				data-confirm="no"
+				data-button-confirm="no"
 			>
 				Нет
 			</button>
 		</div>
 
-		<button class="modal__close-btn" type="button" data-action="close">
+		<button
+			class="modal__content-close-button"
+			type="button"
+			data-button-action="close"
+		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				width="50"

@@ -125,8 +125,8 @@ class MastersModalForClient {
 	}
 
 	showMainModal() {
-		const modal = this.createModal(),
-			closeButton = modal.querySelector("[data-button-action='close']");
+		const modal = this.createMainModal(),
+			modalCloseButton = modal.querySelector("[data-button-action='close']");
 
 		if (modal.querySelector("ul").children.length === 0) {
 			this.createAndShowMainModalNotification();
@@ -136,7 +136,7 @@ class MastersModalForClient {
 			addBlockScroll();
 
 			this.calculateHeightMainModal(modal);
-			this.closeMainModal(modal, closeButton);
+			this.closeMainModal(modal, modalCloseButton);
 		}
 	}
 
@@ -189,7 +189,7 @@ class MastersModalForClient {
 		modal.style.height = `${sumListItemsHeight + sumListItemsGap + sumModalPaddingY}px`;
 	}
 
-	closeMainModal(modal, closeButton) {
+	closeMainModal(modal, modalCloseButton) {
 		modal.addEventListener("click", ({ currentTarget, target }) => {
 			const isClickedOnBackdrop = target === currentTarget;
 			if (isClickedOnBackdrop) {
@@ -199,14 +199,16 @@ class MastersModalForClient {
 			}
 		});
 
-		closeButton.addEventListener("click", () => {
+		modalCloseButton.addEventListener("click", () => {
 			modal.close();
 			modal.remove();
 			removeBlockScroll();
 		});
 
 		document.onkeyup = evt => {
-			if (evt.code === "Escape") {
+			const currentOpenModal = document.querySelector(".modal[open]");
+
+			if (evt.code === "Escape" && currentOpenModal !== modal) {
 				modal.remove();
 				removeBlockScroll();
 			}

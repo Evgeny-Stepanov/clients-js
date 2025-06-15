@@ -49,4 +49,11 @@
 		border: set-border(2px, var(--color-accent));
 		box-shadow: set-box-shadow(var(--color-gray-dark));
 	}
+
+	&--black-text {
+		color: var(--color-black);
+		@include hover {
+			color: var(--color-white);
+		}
+	}
 }
