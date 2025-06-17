@@ -72,14 +72,6 @@ function closeModal(modal, closeBtn, noBtn) {
 	}
 }
 
-//function showDeleteModal() {}
-
-//function closeDeleteModal() {}
-
-//function showAddModal() {}
-
-//function closeAddModal() {}
-
 export {
 	getOnlineUserType,
 	getOnlineUserStorage,

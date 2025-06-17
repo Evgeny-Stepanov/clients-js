@@ -109,7 +109,7 @@ class MastersModalForClient {
 
 	createMainModalListItemStructure(dbObject, listItem, i) {
 		listItem.innerHTML = `
-			<div class="content-list-item-text">
+			<div class="content-list-item__text">
 				<span>${dbObject[i].firstName} ${dbObject[i].lastName}</span>
 				<div>
 					<span>Стаж работы: </span>
@@ -189,27 +189,25 @@ class MastersModalForClient {
 		modal.style.height = `${sumListItemsHeight + sumListItemsGap + sumModalPaddingY}px`;
 	}
 
-	closeMainModal(modal, modalCloseButton) {
-		modal.addEventListener("click", ({ currentTarget, target }) => {
+	closeMainModal(mainModal, modalCloseButton) {
+		mainModal.addEventListener("click", ({ currentTarget, target }) => {
 			const isClickedOnBackdrop = target === currentTarget;
 			if (isClickedOnBackdrop) {
-				currentTarget.close();
-				modal.remove();
+				mainModal.remove();
 				removeBlockScroll();
 			}
 		});
 
 		modalCloseButton.addEventListener("click", () => {
-			modal.close();
-			modal.remove();
+			mainModal.remove();
 			removeBlockScroll();
 		});
 
 		document.onkeyup = evt => {
 			const currentOpenModal = document.querySelector(".modal[open]");
 
-			if (evt.code === "Escape" && currentOpenModal !== modal) {
-				modal.remove();
+			if (evt.code === "Escape" && currentOpenModal !== mainModal) {
+				mainModal.remove();
 				removeBlockScroll();
 			}
 		};

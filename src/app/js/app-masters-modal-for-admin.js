@@ -6,9 +6,62 @@ class MastersModalForAdmin extends MastersModalForClient {
 		super(dbObject);
 	}
 
+	createMainModal() {
+		const {
+				modal,
+				modalDivForScroll,
+				modalContent,
+				modalTitle,
+				modalList,
+				modalCloseButton,
+			} = this.createMainModalStructure(),
+			modalAddButton = document.createElement("button"),
+			modalAddButtonListItem = document.createElement("li");
+
+		modalAddButtonListItem.classList.add(
+			"content-list-item",
+			"content-list-item-add-button-wrapper",
+			"content-list-item--grid",
+		);
+
+		this.setModalAddButtonText(modalAddButton);
+
+		modalAddButton.classList.add(
+			"content-list-item__add-button",
+			"button",
+			"button--black-text",
+		);
+		modalAddButton.setAttribute("type", "button");
+		modalAddButton.setAttribute("data-button-action", "addListItem");
+
+		modalAddButtonListItem.append(modalAddButton);
+
+		this.setMainModalAttr(modal);
+
+		this.createMainModalListItems(this.dbObject, modalList);
+
+		modalList.append(modalAddButtonListItem);
+
+		if (modalList.children.length === 1) {
+			modalList.style.display = "block";
+		}
+
+		this.setMainModalTitle(modalTitle);
+
+		modalContent.append(modalTitle, modalList, modalCloseButton);
+		modalDivForScroll.append(modalContent);
+		modal.append(modalDivForScroll);
+
+		return modal;
+	}
+
+	setModalAddButtonText(button) {
+		button.textContent = "Добавить мастера";
+	}
+
 	createMainModalListItemStructure(dbObject, listItem, i) {
 		listItem.innerHTML = `
-			<div class="content-list-item-text">
+			<div class="content-list-item__text">
 				<span>${dbObject[i].firstName} ${dbObject[i].lastName}</span>
 				<div>
 					<span>Стаж работы: </span>
@@ -16,30 +69,37 @@ class MastersModalForAdmin extends MastersModalForClient {
 				</div>
 			</div>
 			<img src="${dbObject[i].photo}" alt="Фотография мастера" />
-			<button class="content-list-item-delete-button button button--black-text" type="button">Удалить мастера</button>
+			<button class="content-list-item__delete-button button button--black-text" type="button">Удалить мастера</button>
 		`;
 	}
 
 	showMainModal() {
 		const modal = this.createMainModal(),
+			modalAddButton = modal.querySelector(
+				"[data-button-action='addListItem']",
+			),
 			modalCloseButton = modal.querySelector("[data-button-action='close']");
 
-		if (modal.querySelector("ul").children.length === 0) {
-			this.createAndShowMainModalNotification();
-		} else {
-			document.body.append(modal);
-			modal.showModal();
-			addBlockScroll();
+		document.body.append(modal);
+		modal.showModal();
+		addBlockScroll();
 
-			this.calculateHeightMainModal(modal);
-			this.closeMainModal(modal, modalCloseButton);
-		}
+		modalAddButton.closest("li").style.height = getComputedStyle(
+			modal.querySelector("li"),
+		).height;
+
+		this.calculateHeightMainModal(modal);
+		this.closeMainModal(modal, modalCloseButton);
 
 		modal.addEventListener("click", evt => {
-			if (evt.target.classList.contains("content-list-item-delete-button")) {
+			if (evt.target.classList.contains("content-list-item__delete-button")) {
 				const modalListItem = evt.target.closest("li");
 				this.showDeleteModal(modalListItem, modal);
 			}
+		});
+
+		modalAddButton.addEventListener("click", () => {
+			this.showAddModal();
 		});
 	}
 
@@ -71,7 +131,6 @@ class MastersModalForAdmin extends MastersModalForClient {
 			this.setDeletedItemInStorage(modalListItem);
 			modalListItem.remove();
 			deleteModal.close();
-			mainModal.close();
 			mainModal.remove();
 			this.showMainModal();
 		};
@@ -111,6 +170,23 @@ class MastersModalForAdmin extends MastersModalForClient {
 		} else {
 			storage.setItem("deletedMasters", JSON.stringify(itemsArray));
 		}
+	}
+
+	showAddModal() {
+		const addModal = document.querySelector("[data-modal='add-master']");
+		/* 			deleteModalTitle = deleteModal.querySelector("h2"),
+			deleteModalMessage = deleteModal.querySelector("p"),
+			deleteModalYesButton = deleteModal.querySelector(
+				"[data-button-confirm='yes']",
+			),
+			deleteModalNoButton = deleteModal.querySelector(
+				"[data-button-confirm='no']",
+			),
+			deleteModalCloseButton = deleteModal.querySelector(
+				"[data-button-action='close']",
+			); */
+
+		addModal.showModal();
 	}
 }
 

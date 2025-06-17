@@ -36,7 +36,7 @@ class ServicesModalForClient extends MastersModalForClient {
 
 	createMainModalListItemStructure(dbObject, listItem, i) {
 		listItem.innerHTML = `
-			<div class="content-list-item-text">
+			<div class="content-list-item__text">
 				<div class="has-margin-top-0">
 					<span>${dbObject[i].name}: </span>
 					<span>${dbObject[i].price} &#8381;</span>

@@ -7,6 +7,10 @@ class ServicesModalForAdmin extends MastersModalForAdmin {
 		super(dbObject);
 	}
 
+	setModalAddButtonText(button) {
+		button.textContent = "Добавить услугу";
+	}
+
 	setMainModalAttr(modal) {
 		modal.setAttribute("data-modal", "services");
 	}
@@ -36,14 +40,14 @@ class ServicesModalForAdmin extends MastersModalForAdmin {
 
 	createMainModalListItemStructure(dbObject, listItem, i) {
 		listItem.innerHTML = `
-			<div class="content-list-item-text">
+			<div class="content-list-item__text">
 				<div class="has-margin-top-0">
 					<span>${dbObject[i].name}: </span>
 					<span>${dbObject[i].price} &#8381;</span>
 				</div>
 			</div>
 			<img src="${dbObject[i].image}" alt="Иконка услуги" />
-			<button class="content-list-item-delete-button button button--black-text" type="button">Удалить услугу</button>
+			<button class="content-list-item__delete-button button button--black-text" type="button">Удалить услугу</button>
 		`;
 	}
 

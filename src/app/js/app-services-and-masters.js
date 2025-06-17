@@ -1,5 +1,4 @@
 class ServicesForAdmins extends Services {
-
 	showModal() {
 		let modal = this.createModal(),
 			closeBtn = modal.querySelector("button[data-action='close']"),
@@ -26,32 +25,6 @@ class ServicesForAdmins extends Services {
 		});
 	}
 
-	showDeleteModal(item, itemModal) {
-		let modal = document.querySelector("dialog[data-modal='delete']"),
-			modalTitle = modal.querySelector("h2"),
-			modalMessage = modal.querySelector("p"),
-			closeBtn = modal.querySelector("button[data-action='close']"),
-			yesBtn = modal.querySelector("button[data-confirm='yes']"),
-			noBtn = modal.querySelector("button[data-confirm='no']");
-
-		this.setDeleteModalTitleAndMessage(modalTitle, modalMessage);
-
-		showModal(modal);
-		closeModal(modal, closeBtn, noBtn);
-
-		yesBtn.onclick = () => {
-			deleteItem(item);
-			itemModal.remove();
-			modal.close();
-			this.showModal();
-		};
-	}
-
-	setDeleteModalTitleAndMessage(modalTitle, modalMessage) {
-		modalTitle.textContent = "Удаление услуги";
-		modalMessage.textContent = "Вы уверены, что хотите удалить услугу?";
-	}
-
 	showAddModal(parentModal) {
 		let modal = document.querySelector("dialog[data-modal='add-service']"),
 			closeBtn = modal.querySelector("button[data-action='close']"),
@@ -71,55 +44,6 @@ class ServicesForAdmins extends Services {
 }
 
 class MastersForAdmins extends ServicesForAdmins {
-	constructor(mastersDbObj) {
-		super();
-		this.mastersDbObj = mastersDbObj;
-	}
-
-	createModal() {
-		let { modal, modalDivForScroll, modalContent, modalTitle, list, closeBtn } =
-				createModalStructure(),
-			addBtn = document.createElement("button"),
-			addBtnLi = document.createElement("li");
-
-		createModalAddBtn(addBtn, addBtnLi, "Добавить мастера");
-		addBtnLi.append(addBtn);
-
-		this.createListItems(list);
-
-		list.append(addBtnLi);
-
-		if (list.children.length === 1) {
-			list.style.display = "block";
-		}
-
-		this.setModalTitle(modalTitle);
-
-		modalContent.append(modalTitle, list, closeBtn);
-		modalDivForScroll.append(modalContent);
-		modal.append(modalDivForScroll);
-		this.setModalAttr(modal);
-
-		return modal;
-	}
-
-	setModalTitle(modalTitle) {
-		modalTitle.textContent = "Мастера";
-	}
-
-	setModalAttr(modal) {
-		modal.setAttribute("data-modal", "masters");
-	}
-
-	createListItems(list) {
-		filterListItems("masters", list, null, this.mastersDbObj);
-	}
-
-	setDeleteModalTitleAndMessage(modalTitle, modalMessage) {
-		modalTitle.textContent = "Удаление мастера";
-		modalMessage.textContent = "Вы уверены, что хотите удалить мастера?";
-	}
-
 	showAddModal() {
 		let modal = document.querySelector("dialog[data-modal='add-master']"),
 			addBtn = modal.querySelector("button[data-action='create-master']"),
@@ -164,48 +88,6 @@ function resetStates(modal) {
 
 	if (notif.textContent.length > 0) {
 		notif.textContent = "";
-	}
-}
-
-function createModalAddBtn(btn, btnLiWrap, btnText) {
-	btn.textContent = btnText;
-	btn.classList.add(
-		"actions__btn",
-		"actions__btn-add",
-		"actions__btn--black-text",
-	);
-	btn.setAttribute("type", "button");
-	btn.setAttribute("data-action", "add");
-
-	btnLiWrap.classList.add(
-		"modal__list-item",
-		"modal__list-item-add-btn",
-		"modal__list-item--grid",
-	);
-}
-
-function deleteItem(item) {
-	let itemName = item.querySelector("span").textContent,
-		itemsArr = [itemName];
-
-	if (document.querySelector("dialog[data-modal='services']")) {
-		itemName = item.querySelector("span").textContent.slice(0, -2);
-		itemsArr = [itemName];
-		setDeletedItemInStorage("deletedServices", itemName, itemsArr);
-	} else {
-		setDeletedItemInStorage("deletedMasters", itemName, itemsArr);
-	}
-}
-
-function setDeletedItemInStorage(itemKey, itemName, itemsArr) {
-	let storage = checkStorageOnline();
-
-	if (storage.getItem(itemKey)) {
-		let itemsArr = JSON.parse(storage.getItem(itemKey));
-		itemsArr.push(itemName);
-		storage.setItem(itemKey, JSON.stringify(itemsArr));
-	} else {
-		storage.setItem(itemKey, JSON.stringify(itemsArr));
 	}
 }
 
