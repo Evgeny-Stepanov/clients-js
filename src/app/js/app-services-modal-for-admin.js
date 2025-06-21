@@ -83,6 +83,23 @@ class ServicesModalForAdmin extends MastersModalForAdmin {
 			storage.setItem("deletedServices", JSON.stringify(itemsArray));
 		}
 	}
+
+	showAddModal() {
+		const addModal = document.querySelector("[data-modal='add-service']");
+		/* 			deleteModalTitle = deleteModal.querySelector("h2"),
+			deleteModalMessage = deleteModal.querySelector("p"),
+			deleteModalYesButton = deleteModal.querySelector(
+				"[data-button-confirm='yes']",
+			),
+			deleteModalNoButton = deleteModal.querySelector(
+				"[data-button-confirm='no']",
+			),
+			deleteModalCloseButton = deleteModal.querySelector(
+				"[data-button-action='close']",
+			); */
+
+		addModal.showModal();
+	}
 }
 
 export { ServicesModalForAdmin };

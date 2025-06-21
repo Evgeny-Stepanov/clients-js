@@ -186,7 +186,63 @@ class MastersModalForAdmin extends MastersModalForClient {
 				"[data-button-action='close']",
 			); */
 
+		this.addModalImagesDropdown(addModal);
+
 		addModal.showModal();
+	}
+
+	addModalImagesDropdown(addModal) {
+		const modalForm = addModal.querySelector(".modal__content-form"),
+			dropdownButton = modalForm.querySelector(
+				".content-form__field-dropdown-button",
+			),
+			dropdownButtonImage = dropdownButton.querySelector("img"),
+			dropdownList = modalForm.querySelector(
+				".content-form__field-dropdown-list",
+			),
+			dropdownListItems = dropdownList.querySelectorAll(
+				".content-form__field-dropdown-list-item",
+			);
+
+		dropdownButton.onclick = () => {
+			dropdownList.style.width = getComputedStyle(dropdownButton).width;
+			dropdownList.classList.toggle(
+				"content-form__field-dropdown-list--is-open",
+			);
+		};
+
+		dropdownButtonImage.src = dropdownListItems[0].querySelector("img").src;
+		dropdownButtonImage.setAttribute(
+			"data-image",
+			dropdownListItems[0].querySelector("img").getAttribute("data-image"),
+		);
+
+		dropdownListItems.forEach(listItem => {
+			listItem.onclick = () => {
+				const img = listItem.querySelector("img");
+				dropdownButtonImage.src = img.src;
+				dropdownButtonImage.setAttribute(
+					"data-image",
+					img.getAttribute("data-image"),
+				);
+				dropdownList.classList.remove(
+					"content-form__field-dropdown-list--is-open",
+				);
+			};
+		});
+
+		addModal.querySelector(".modal__content-wrapper").onclick = evt => {
+			if (
+				!dropdownButton.contains(evt.target) &&
+				!dropdownList
+					.querySelector(".content-form__field-dropdown-list-item")
+					.contains(evt.target)
+			) {
+				dropdownList.classList.remove(
+					"content-form__field-dropdown-list--is-open",
+				);
+			}
+		};
 	}
 }
 

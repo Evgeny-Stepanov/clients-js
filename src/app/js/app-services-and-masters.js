@@ -1,30 +1,4 @@
 class ServicesForAdmins extends Services {
-	showModal() {
-		let modal = this.createModal(),
-			closeBtn = modal.querySelector("button[data-action='close']"),
-			addBtn = modal.querySelector("li:last-child button");
-
-		showModal(modal);
-
-		addBtn.closest("li").style.height = getComputedStyle(
-			modal.querySelector("li"),
-		).height;
-
-		calcHeightModal(modal);
-		closeModal(modal, closeBtn, null);
-
-		modal.addEventListener("click", event => {
-			if (event.target.classList.contains("actions__btn-delete")) {
-				let item = event.target.closest("li");
-				this.showDeleteModal(item, modal);
-			}
-		});
-
-		addBtn.addEventListener("click", () => {
-			this.showAddModal(modal);
-		});
-	}
-
 	showAddModal(parentModal) {
 		let modal = document.querySelector("dialog[data-modal='add-service']"),
 			closeBtn = modal.querySelector("button[data-action='close']"),
