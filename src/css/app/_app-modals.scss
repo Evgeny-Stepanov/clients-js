@@ -132,7 +132,8 @@
 	&__field {
 		&-name,
 		&-surname,
-		&-experience {
+		&-experience,
+		&-price {
 			input {
 				width: 100%;
 				height: calculate-from-font-size(2.5);
@@ -159,6 +160,12 @@
 					-webkit-background-clip: text;
 					-webkit-text-fill-color: var(--color-black);
 				}
+			}
+		}
+
+		&-price {
+			input {
+				width: 91%;
 			}
 		}
 

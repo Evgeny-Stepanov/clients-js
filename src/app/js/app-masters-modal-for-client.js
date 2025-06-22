@@ -189,25 +189,25 @@ class MastersModalForClient {
 		modal.style.height = `${sumListItemsHeight + sumListItemsGap + sumModalPaddingY}px`;
 	}
 
-	closeMainModal(mainModal, modalCloseButton) {
-		mainModal.addEventListener("click", ({ currentTarget, target }) => {
+	closeMainModal(modal, modalCloseButton) {
+		modal.addEventListener("click", ({ currentTarget, target }) => {
 			const isClickedOnBackdrop = target === currentTarget;
 			if (isClickedOnBackdrop) {
-				mainModal.remove();
+				modal.remove();
 				removeBlockScroll();
 			}
 		});
 
 		modalCloseButton.addEventListener("click", () => {
-			mainModal.remove();
+			modal.remove();
 			removeBlockScroll();
 		});
 
 		document.onkeyup = evt => {
 			const currentOpenModal = document.querySelector(".modal[open]");
 
-			if (evt.code === "Escape" && currentOpenModal !== mainModal) {
-				mainModal.remove();
+			if (evt.code === "Escape" && currentOpenModal !== modal) {
+				modal.remove();
 				removeBlockScroll();
 			}
 		};

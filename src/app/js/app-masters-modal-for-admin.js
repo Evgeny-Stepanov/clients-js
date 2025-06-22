@@ -173,22 +173,16 @@ class MastersModalForAdmin extends MastersModalForClient {
 	}
 
 	showAddModal() {
-		const addModal = document.querySelector("[data-modal='add-master']");
-		/* 			deleteModalTitle = deleteModal.querySelector("h2"),
-			deleteModalMessage = deleteModal.querySelector("p"),
-			deleteModalYesButton = deleteModal.querySelector(
-				"[data-button-confirm='yes']",
-			),
-			deleteModalNoButton = deleteModal.querySelector(
-				"[data-button-confirm='no']",
-			),
-			deleteModalCloseButton = deleteModal.querySelector(
+		const addModal = document.querySelector("[data-modal='add-master']"),
+			addModalCloseButton = addModal.querySelector(
 				"[data-button-action='close']",
-			); */
+			);
 
 		this.addModalImagesDropdown(addModal);
 
 		addModal.showModal();
+
+		this.closeAddModal(addModal, addModalCloseButton);
 	}
 
 	addModalImagesDropdown(addModal) {
@@ -243,6 +237,64 @@ class MastersModalForAdmin extends MastersModalForClient {
 				);
 			}
 		};
+	}
+
+	closeAddModal(modal, modalCloseButton) {
+		modal.onclick = ({ currentTarget, target }) => {
+			const isClickedOnBackdrop = target === currentTarget;
+			if (isClickedOnBackdrop) {
+				currentTarget.close();
+				this.resetAddModalStates(modal);
+			}
+		};
+
+		modalCloseButton.onclick = () => {
+			modal.close();
+			this.resetAddModalStates(modal);
+		};
+
+		document.onkeyup = evt => {
+			if (evt.code === "Escape") {
+				this.resetAddModalStates(modal);
+			}
+		};
+	}
+
+	resetAddModalStates(modal) {
+		const formInputs = modal.querySelectorAll("input"),
+			formErrorSpans = modal.querySelectorAll(".content-form__field-error"),
+			dropdownList = modal.querySelector(".content-form__field-dropdown-list"),
+			modalNotification = modal.querySelector(".notification");
+
+		if (
+			dropdownList.classList.contains(
+				"content-form__field-dropdown-list--is-open",
+			)
+		) {
+			dropdownList.classList.remove(
+				"content-form__field-dropdown-list--is-open",
+			);
+		}
+
+		formInputs.forEach(input => {
+			if (input.classList.contains("content-form__field-control--is-invalid")) {
+				input.classList.remove("content-form__field-control--is-invalid");
+			}
+		});
+
+		formErrorSpans.forEach(errorSpan => {
+			if (errorSpan.textContent.length > 0) {
+				errorSpan.textContent = "";
+			}
+		});
+
+		/* 		if (modalNotification.classList.contains("notification-animation")) {
+			modalNotification.classList.remove("notification-animation");
+		} */
+
+		/* 		if (modalNotification.textContent.length > 0) {
+			modalNotification.textContent = "";
+		} */
 	}
 }
 

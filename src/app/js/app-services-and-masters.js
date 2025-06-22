@@ -34,37 +34,6 @@ class MastersForAdmins extends ServicesForAdmins {
 	}
 }
 
-function resetStates(modal) {
-	let inputs = modal.querySelectorAll("input"),
-		errorSpans = modal.querySelectorAll(".form__input-error"),
-		selectList = modal.querySelector(".form__select-list"),
-		notif = modal.querySelector(".notif");
-
-	if (selectList.classList.contains("form__select-list--is-open")) {
-		selectList.classList.remove("form__select-list--is-open");
-	}
-
-	inputs.forEach(input => {
-		if (input.classList.contains("form__input--is-invalid")) {
-			input.classList.remove("form__input--is-invalid");
-		}
-	});
-
-	errorSpans.forEach(errorSpan => {
-		if (errorSpan.textContent.length > 0) {
-			errorSpan.textContent = "";
-		}
-	});
-
-	if (notif.classList.contains("notif-fade")) {
-		notif.classList.remove("notif-fade");
-	}
-
-	if (notif.textContent.length > 0) {
-		notif.textContent = "";
-	}
-}
-
 function createService(formDataObj, servicesDbObj) {
 	let { name } = formDataObj,
 		addedServicesArr = [formDataObj],
@@ -109,43 +78,6 @@ function createService(formDataObj, servicesDbObj) {
 	} else {
 		storage.setItem("addedServices", JSON.stringify(addedServicesArr));
 	}
-}
-
-function imagesDropdown(modal) {
-	const form = modal.querySelector(".form"),
-		selectBtn = form.querySelector(".form__select-btn"),
-		selectBtnImage = selectBtn.querySelector("img"),
-		selectList = form.querySelector(".form__select-list"),
-		selectItems = selectList.querySelectorAll(".form__select-list-item");
-
-	selectBtn.onclick = () => {
-		selectList.style.width = getComputedStyle(selectBtn).width;
-		selectList.classList.toggle("form__select-list--is-open");
-	};
-
-	selectBtnImage.src = selectItems[0].querySelector("img").src;
-	selectBtnImage.setAttribute(
-		"data-image",
-		selectItems[0].querySelector("img").getAttribute("data-image"),
-	);
-
-	selectItems.forEach(selectItem => {
-		selectItem.onclick = () => {
-			let img = selectItem.querySelector("img");
-			selectBtnImage.src = img.src;
-			selectBtnImage.setAttribute("data-image", img.getAttribute("data-image"));
-			selectList.classList.remove("form__select-list--is-open");
-		};
-	});
-
-	modal.querySelector(".modal__scroll-wrap").onclick = evt => {
-		if (
-			!selectBtn.contains(evt.target) &&
-			!selectList.querySelector(".form__select-list-item").contains(evt.target)
-		) {
-			selectList.classList.remove("form__select-list--is-open");
-		}
-	};
 }
 
 function addServiceOrMaster(modal) {

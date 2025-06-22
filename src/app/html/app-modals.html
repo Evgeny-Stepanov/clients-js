@@ -40,35 +40,33 @@
 	</div>
 </dialog>
 
-<dialog class="modal" data-modal="add-service">
-	<div class="modal__scroll-wrap">
-		<form class="modal__content form" novalidate>
+<dialog class="app__modal modal" data-modal="add-service">
+	<div class="modal__content-wrapper">
+		<form class="modal__content modal__content-form content-form" novalidate>
 			<h2 class="visually-hidden">Добавление услуги</h2>
-			<p>
+			<p class="content-form__field-name">
 				<label for="name-service" class="visually-hidden">
 					Введите название услуги
 				</label>
 				<input
 					type="text"
-					class="form__input"
 					name="name"
 					id="name-service"
-					placeholder="Название услуги"
+					placeholder="Название"
 					required
-					pattern="^[а-яА-ЯёЁ ]+$"
+					pattern="^[а-яА-ЯёЁ]+$"
 					title="Название услуги должно состоять только из кириллицы (русский алфавит)."
 				/>
-				<span class="form__input-error"></span>
+				<span class="content-form__field-error"></span>
 			</p>
 
-			<div class="form__inputs-wrap">
-				<p>
+			<div class="content-form__fields-wrapper">
+				<p class="content-form__field-price">
 					<label for="price-service" class="visually-hidden">
 						Введите стоимость услуги
 					</label>
 					<input
 						type="text"
-						class="form__input form__input--short"
 						name="price"
 						id="price-service"
 						placeholder="Стоимость"
@@ -77,13 +75,13 @@
 						title="Стоимость услуги должна быть без пробелов и состоять только из цифр."
 					/>
 					₽
-					<span class="form__input-error"></span>
+					<span class="content-form__field-error"></span>
 				</p>
 
-				<div class="form__select">
-					<div class="form__select-btn">
+				<div class="content-form__field-dropdown">
+					<div class="content-form__field-dropdown-button">
 						<img alt="" />
-						<div class="form__select-dropdown">
+						<div class="content-form__field-dropdown-button-icons">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="24"
@@ -109,50 +107,50 @@
 						</div>
 					</div>
 
-					<ul class="form__select-list">
-						<li class="form__select-list-item">
+					<ul class="content-form__field-dropdown-list">
+						<li class="content-form__field-dropdown-list-item">
 							<img
 								src="./../../images/app/beard.png"
 								alt=""
 								data-image="beardIcon"
 							/>
 						</li>
-						<li class="form__select-list-item">
+						<li class="content-form__field-dropdown-list-item">
 							<img
 								src="./../../images/app/boy.png"
 								alt=""
 								data-image="boyIcon"
 							/>
 						</li>
-						<li class="form__select-list-item">
+						<li class="content-form__field-dropdown-list-item">
 							<img
 								src="./../../images/app/camouflage.png"
 								alt=""
 								data-image="camoIcon"
 							/>
 						</li>
-						<li class="form__select-list-item">
+						<li class="content-form__field-dropdown-list-item">
 							<img
 								src="./../../images/app/complex.png"
 								alt=""
 								data-image="complexIcon"
 							/>
 						</li>
-						<li class="form__select-list-item">
+						<li class="content-form__field-dropdown-list-item">
 							<img
 								src="./../../images/app/haircut.png"
 								alt=""
 								data-image="haircutIcon"
 							/>
 						</li>
-						<li class="form__select-list-item">
+						<li class="content-form__field-dropdown-list-item">
 							<img
 								src="./../../images/app/man.png"
 								alt=""
 								data-image="manIcon"
 							/>
 						</li>
-						<li class="form__select-list-item">
+						<li class="content-form__field-dropdown-list-item">
 							<img
 								src="./../../images/app/woman.png"
 								alt=""
@@ -164,14 +162,17 @@
 			</div>
 
 			<button
-				class="actions__btn actions__btn--black-text form__button"
+				class="content-form__button button button--black-text"
 				type="submit"
-				data-action="create-service"
 			>
 				Добавить
 			</button>
 
-			<button class="modal__close-btn" type="button" data-action="close">
+			<button
+				class="modal__content-close-button"
+				type="button"
+				data-button-action="close"
+			>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					width="50"
@@ -187,7 +188,7 @@
 			</button>
 		</form>
 	</div>
-	<div class="notif" data-notif="add-service"></div>
+	<div class="notification" data-notification="add-service"></div>
 </dialog>
 
 <dialog class="app__modal modal" data-modal="add-master">
@@ -205,7 +206,7 @@
 					placeholder="Имя"
 					required
 					pattern="^[а-яА-ЯёЁ]+$"
-					title="Имя должно состоять только из кириллицы (русский алфавит)."
+					title="Имя мастера должно состоять только из кириллицы (русский алфавит)."
 				/>
 				<span class="content-form__field-error"></span>
 			</p>
@@ -221,7 +222,7 @@
 					placeholder="Фамилия"
 					required
 					pattern="^[а-яА-ЯёЁ]+$"
-					title="Фамилия должна состоять только из кириллицы (русский алфавит)."
+					title="Фамилия мастера должна состоять только из кириллицы (русский алфавит)."
 				/>
 				<span class="content-form__field-error"></span>
 			</p>
@@ -327,7 +328,6 @@
 			<button
 				class="content-form__button button button--black-text"
 				type="submit"
-				data-action="create-master"
 			>
 				Добавить
 			</button>
@@ -352,4 +352,5 @@
 			</button>
 		</form>
 	</div>
+	<div class="notification" data-notification="add-master"></div>
 </dialog>
