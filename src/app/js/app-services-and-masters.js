@@ -85,56 +85,6 @@ function addServiceOrMaster(modal) {
 		image = form.querySelector(".form__select-btn img"),
 		submitButton = form.querySelector("button[type='submit']");
 
-	if (modal.getAttribute("data-modal") === "add-service") {
-		const nameInput = form.querySelector("#name-service"),
-			priceInput = form.querySelector("#price-service");
-
-		nameInput.addEventListener("blur", () => {
-			validateOnBlur(nameInput);
-		});
-
-		priceInput.addEventListener("blur", () => {
-			validateOnBlur(priceInput);
-		});
-
-		validateOnSubmit(submitButton, nameInput, priceInput);
-	} else if (modal.getAttribute("data-modal") === "add-master") {
-		console.log("master");
-	}
-
-	function createErrorMessage(input) {
-		const noPattern = input.validity.patternMismatch,
-			noValue = input.validity.valueMissing;
-
-		let errorMessage = "";
-
-		if (noPattern) {
-			errorMessage = `${input.title}`;
-		} else if (noValue) {
-			errorMessage = "Заполните поле";
-		}
-
-		return errorMessage;
-	}
-
-	function showErrorMessage(message, input) {
-		const messageSpan = input.parentElement.querySelector(".form__input-error");
-		messageSpan.textContent = message;
-	}
-
-	function changeInvalidInputColor(message, input) {
-		if (message) {
-			input.classList.add("form__input--is-invalid");
-		} else {
-			input.classList.remove("form__input--is-invalid");
-		}
-	}
-
-	function validateOnBlur(input) {
-		showErrorMessage(createErrorMessage(input), input);
-		changeInvalidInputColor(createErrorMessage(input), input);
-	}
-
 	function validateOnSubmit(button, ...inputs) {
 		button.onclick = evt => {
 			evt.preventDefault();

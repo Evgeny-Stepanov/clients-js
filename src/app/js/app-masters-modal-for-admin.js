@@ -1,5 +1,19 @@
 import { MastersModalForClient } from "./app-masters-modal-for-client";
 import { getOnlineUserStorage, addBlockScroll } from "./app-general-functions";
+import {
+	createInputErrorMessage,
+	showInputErrorMessage,
+	recolorInvalidInputBorder,
+} from "../../auth/js/auth-form-general-functions";
+import {
+	beardIcon,
+	boyIcon,
+	camoIcon,
+	complexIcon,
+	haircutIcon,
+	manIcon,
+	womanIcon,
+} from "../../db";
 
 class MastersModalForAdmin extends MastersModalForClient {
 	constructor(dbObject) {
@@ -174,6 +188,9 @@ class MastersModalForAdmin extends MastersModalForClient {
 
 	showAddModal() {
 		const addModal = document.querySelector("[data-modal='add-master']"),
+			selectedImageFromDropdownList = addModal.querySelector(
+				".content-form__field-dropdown-button img",
+			),
 			addModalCloseButton = addModal.querySelector(
 				"[data-button-action='close']",
 			);
@@ -182,11 +199,13 @@ class MastersModalForAdmin extends MastersModalForClient {
 
 		addModal.showModal();
 
+		this.validateAddModalForm(addModal, selectedImageFromDropdownList);
+
 		this.closeAddModal(addModal, addModalCloseButton);
 	}
 
-	addModalImagesDropdown(addModal) {
-		const modalForm = addModal.querySelector(".modal__content-form"),
+	addModalImagesDropdown(modal) {
+		const modalForm = modal.querySelector(".modal__content-form"),
 			dropdownButton = modalForm.querySelector(
 				".content-form__field-dropdown-button",
 			),
@@ -225,7 +244,7 @@ class MastersModalForAdmin extends MastersModalForClient {
 			};
 		});
 
-		addModal.querySelector(".modal__content-wrapper").onclick = evt => {
+		modal.querySelector(".modal__content-wrapper").onclick = evt => {
 			if (
 				!dropdownButton.contains(evt.target) &&
 				!dropdownList
@@ -261,9 +280,10 @@ class MastersModalForAdmin extends MastersModalForClient {
 	}
 
 	resetAddModalStates(modal) {
-		const formInputs = modal.querySelectorAll("input"),
-			formErrorSpans = modal.querySelectorAll(".content-form__field-error"),
-			dropdownList = modal.querySelector(".content-form__field-dropdown-list"),
+		const form = modal.querySelector(".modal__content-form"),
+			formInputs = form.querySelectorAll("input"),
+			formErrorSpans = form.querySelectorAll(".content-form__field-error"),
+			dropdownList = form.querySelector(".content-form__field-dropdown-list"),
 			modalNotification = modal.querySelector(".notification");
 
 		if (
@@ -277,8 +297,8 @@ class MastersModalForAdmin extends MastersModalForClient {
 		}
 
 		formInputs.forEach(input => {
-			if (input.classList.contains("content-form__field-control--is-invalid")) {
-				input.classList.remove("content-form__field-control--is-invalid");
+			if (input.classList.contains("form__field-control--is-invalid")) {
+				input.classList.remove("form__field-control--is-invalid");
 			}
 		});
 
@@ -288,6 +308,8 @@ class MastersModalForAdmin extends MastersModalForClient {
 			}
 		});
 
+		form.reset();
+
 		/* 		if (modalNotification.classList.contains("notification-animation")) {
 			modalNotification.classList.remove("notification-animation");
 		} */
@@ -295,6 +317,50 @@ class MastersModalForAdmin extends MastersModalForClient {
 		/* 		if (modalNotification.textContent.length > 0) {
 			modalNotification.textContent = "";
 		} */
+	}
+
+	validateAddModalForm(modal, selectedImage) {
+		const form = modal.querySelector(".modal__content-form"),
+			inputs = form.querySelectorAll("input"),
+			submitButton = form.querySelector("button[type='submit']"),
+			resetAddModalStates = this.resetAddModalStates;
+
+		inputs.forEach(input => {
+			bindBlurEvents(input);
+		});
+
+		validateOnSubmit(submitButton, modal);
+
+		function bindBlurEvents(input) {
+			input.onblur = () => {
+				showInputErrorMessage(createInputErrorMessage(input), input, null);
+				recolorInvalidInputBorder(createInputErrorMessage(input), input);
+			};
+		}
+
+		function validateOnSubmit(submitButton, modal) {
+			submitButton.onclick = evt => {
+				evt.preventDefault();
+
+				let countOfInvalidTextInputs = 0;
+
+				inputs.forEach(input => {
+					if (createInputErrorMessage(input)) {
+						showInputErrorMessage(createInputErrorMessage(input), input, null);
+						recolorInvalidInputBorder(createInputErrorMessage(input), input);
+						countOfInvalidTextInputs++;
+					}
+				});
+
+				if (countOfInvalidTextInputs === 0) {
+					const formData = new FormData(form);
+					formData.append("image", selectedImage.getAttribute("data-image"));
+					const formDataObj = Object.fromEntries(formData.entries());
+					modal.close();
+					resetAddModalStates(modal);
+				}
+			};
+		}
 	}
 }
 

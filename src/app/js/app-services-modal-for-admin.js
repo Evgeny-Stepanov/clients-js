@@ -86,6 +86,9 @@ class ServicesModalForAdmin extends MastersModalForAdmin {
 
 	showAddModal() {
 		const addModal = document.querySelector("[data-modal='add-service']"),
+			selectedImageFromDropdownList = addModal.querySelector(
+				".content-form__field-dropdown-button img",
+			),
 			addModalCloseButton = addModal.querySelector(
 				"[data-button-action='close']",
 			);
@@ -93,6 +96,8 @@ class ServicesModalForAdmin extends MastersModalForAdmin {
 		this.addModalImagesDropdown(addModal);
 
 		addModal.showModal();
+
+		this.validateAddModalForm(addModal, selectedImageFromDropdownList);
 
 		this.closeAddModal(addModal, addModalCloseButton);
 	}
