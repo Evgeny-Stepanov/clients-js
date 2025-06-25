@@ -83,7 +83,7 @@ class MastersModalForClient {
 			if (deletedMastersFromStorage) {
 				for (let k = 0; k < deletedMastersFromStorage.length; k++) {
 					if (
-						`${dbObject[i].firstName} ${dbObject[i].lastName}` ===
+						`${dbObject[i].name} ${dbObject[i].surname}` ===
 						deletedMastersFromStorage[k]
 					) {
 						matchingCondition = true;
@@ -110,7 +110,7 @@ class MastersModalForClient {
 	createMainModalListItemStructure(dbObject, listItem, i) {
 		listItem.innerHTML = `
 			<div class="content-list-item__text">
-				<span>${dbObject[i].firstName} ${dbObject[i].lastName}</span>
+				<span>${dbObject[i].name} ${dbObject[i].surname}</span>
 				<div>
 					<span>Стаж работы: </span>
 					<span>${dbObject[i].experience}</span>

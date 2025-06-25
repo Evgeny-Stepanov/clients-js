@@ -6,6 +6,16 @@ import haircutIcon from "./images/app/haircut.png";
 import manIcon from "./images/app/man.png";
 import womanIcon from "./images/app/woman.png";
 
+const dbIconsObj = {
+	beardIcon,
+	boyIcon,
+	camoIcon,
+	complexIcon,
+	haircutIcon,
+	manIcon,
+	womanIcon,
+};
+
 const dbContactsObj = {
 	phoneNumber: "8-999-999-99-99",
 	address: "пр. Ленина, 111в",
@@ -15,26 +25,26 @@ const dbContactsObj = {
 
 const dbMastersObj = [
 	{
-		firstName: "Никита",
-		lastName: "Майоров",
+		name: "Никита",
+		surname: "Майоров",
 		experience: "1 год",
 		photo: manIcon,
 	},
 	{
-		firstName: "Андрей",
-		lastName: "Яковлев",
+		name: "Андрей",
+		surname: "Яковлев",
 		experience: "2 года",
 		photo: manIcon,
 	},
 	{
-		firstName: "Алиса",
-		lastName: "Фомичева",
+		name: "Алиса",
+		surname: "Фомичева",
 		experience: "6 мес",
 		photo: womanIcon,
 	},
 	{
-		firstName: "Дарья",
-		lastName: "Лаврентьева",
+		name: "Дарья",
+		surname: "Лаврентьева",
 		experience: "5 лет",
 		photo: womanIcon,
 	},
@@ -68,15 +78,4 @@ const dbServicesObj = [
 	},
 ];
 
-export {
-	beardIcon,
-	boyIcon,
-	camoIcon,
-	complexIcon,
-	haircutIcon,
-	manIcon,
-	womanIcon,
-	dbContactsObj,
-	dbMastersObj,
-	dbServicesObj,
-};
+export { dbIconsObj, dbContactsObj, dbMastersObj, dbServicesObj };

@@ -5,15 +5,8 @@ import {
 	showInputErrorMessage,
 	recolorInvalidInputBorder,
 } from "../../auth/js/auth-form-general-functions";
-import {
-	beardIcon,
-	boyIcon,
-	camoIcon,
-	complexIcon,
-	haircutIcon,
-	manIcon,
-	womanIcon,
-} from "../../db";
+import { dbIconsObj, dbMastersObj } from "../../db";
+import { showNotification } from "../../auth/js/auth-notification";
 
 class MastersModalForAdmin extends MastersModalForClient {
 	constructor(dbObject) {
@@ -76,7 +69,7 @@ class MastersModalForAdmin extends MastersModalForClient {
 	createMainModalListItemStructure(dbObject, listItem, i) {
 		listItem.innerHTML = `
 			<div class="content-list-item__text">
-				<span>${dbObject[i].firstName} ${dbObject[i].lastName}</span>
+				<span>${dbObject[i].name} ${dbObject[i].surname}</span>
 				<div>
 					<span>Стаж работы: </span>
 					<span>${dbObject[i].experience}</span>
@@ -175,6 +168,7 @@ class MastersModalForAdmin extends MastersModalForClient {
 	setDeletedItemInStorage(modalListItem) {
 		const itemValue = modalListItem.querySelector("span").textContent,
 			storage = getOnlineUserStorage();
+
 		let itemsArray = [itemValue];
 
 		if (storage.getItem("deletedMasters")) {
@@ -310,35 +304,26 @@ class MastersModalForAdmin extends MastersModalForClient {
 
 		form.reset();
 
-		/* 		if (modalNotification.classList.contains("notification-animation")) {
+		if (modalNotification.classList.contains("notification-animation")) {
 			modalNotification.classList.remove("notification-animation");
-		} */
+		}
 
-		/* 		if (modalNotification.textContent.length > 0) {
+		if (modalNotification.textContent.length > 0) {
 			modalNotification.textContent = "";
-		} */
+		}
 	}
 
 	validateAddModalForm(modal, selectedImage) {
 		const form = modal.querySelector(".modal__content-form"),
 			inputs = form.querySelectorAll("input"),
-			submitButton = form.querySelector("button[type='submit']"),
-			resetAddModalStates = this.resetAddModalStates;
+			submitButton = form.querySelector("button[type='submit']");
 
 		inputs.forEach(input => {
 			bindBlurEvents(input);
 		});
 
-		validateOnSubmit(submitButton, modal);
-
-		function bindBlurEvents(input) {
-			input.onblur = () => {
-				showInputErrorMessage(createInputErrorMessage(input), input, null);
-				recolorInvalidInputBorder(createInputErrorMessage(input), input);
-			};
-		}
-
-		function validateOnSubmit(submitButton, modal) {
+		// Arrow function due to loss this
+		const validateOnSubmit = (submitButton, modal) => {
 			submitButton.onclick = evt => {
 				evt.preventDefault();
 
@@ -354,13 +339,77 @@ class MastersModalForAdmin extends MastersModalForClient {
 
 				if (countOfInvalidTextInputs === 0) {
 					const formData = new FormData(form);
-					formData.append("image", selectedImage.getAttribute("data-image"));
+					formData.append(
+						"image",
+						dbIconsObj[selectedImage.getAttribute("data-image")],
+					);
+
 					const formDataObj = Object.fromEntries(formData.entries());
-					modal.close();
-					resetAddModalStates(modal);
+
+					this.setAddedItemInStorage(formDataObj, modal);
 				}
 			};
+		};
+
+		validateOnSubmit(submitButton, modal);
+
+		function bindBlurEvents(input) {
+			input.onblur = () => {
+				showInputErrorMessage(createInputErrorMessage(input), input, null);
+				recolorInvalidInputBorder(createInputErrorMessage(input), input);
+			};
 		}
+	}
+
+	setAddedItemInStorage(formDataObj, modal) {
+		const { name, surname } = formDataObj,
+			formDataObjFullName = `${name} ${surname}`,
+			storage = getOnlineUserStorage();
+
+		let itemsArray = [formDataObj],
+			returnConditionCount = 0;
+
+		dbMastersObj.forEach(dbMaster => {
+			if (`${dbMaster.name} ${dbMaster.surname}` === formDataObjFullName) {
+				showNotification(
+					"[data-notification='add-master']",
+					"Такой мастер уже добавлен",
+					"error",
+				);
+				returnConditionCount++;
+			}
+		});
+
+		if (returnConditionCount > 0) {
+			return;
+		}
+
+		if (storage.getItem("addedMasters")) {
+			const itemsArray = JSON.parse(storage.getItem("addedMasters"));
+
+			itemsArray.forEach(itemArray => {
+				if (`${itemArray.name} ${itemArray.surname}` === formDataObjFullName) {
+					showNotification(
+						"[data-notification='add-master']",
+						"Такой мастер уже добавлен",
+						"error",
+					);
+					returnConditionCount++;
+				}
+			});
+
+			if (returnConditionCount > 0) {
+				return;
+			}
+
+			itemsArray.push(formDataObj);
+			storage.setItem("addedMasters", JSON.stringify(itemsArray));
+		} else {
+			storage.setItem("addedMasters", JSON.stringify(itemsArray));
+		}
+
+		modal.close();
+		this.resetAddModalStates(modal);
 	}
 }
 

@@ -27,7 +27,7 @@
 	}
 }
 
-/* [data-notif="add-service"],
-[data-notif="add-master"] {
+.notification[data-notification="add-service"],
+.notification[data-notification="add-master"] {
 	box-shadow: set-box-shadow(var(--color-black));
-} */
+}
