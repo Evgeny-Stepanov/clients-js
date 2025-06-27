@@ -28,25 +28,25 @@ const dbMastersObj = [
 		name: "Никита",
 		surname: "Майоров",
 		experience: "1 год",
-		photo: manIcon,
+		image: manIcon,
 	},
 	{
 		name: "Андрей",
 		surname: "Яковлев",
 		experience: "2 года",
-		photo: manIcon,
+		image: manIcon,
 	},
 	{
 		name: "Алиса",
 		surname: "Фомичева",
 		experience: "6 мес",
-		photo: womanIcon,
+		image: womanIcon,
 	},
 	{
 		name: "Дарья",
 		surname: "Лаврентьева",
 		experience: "5 лет",
-		photo: womanIcon,
+		image: womanIcon,
 	},
 ];
 

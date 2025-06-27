@@ -74,8 +74,11 @@ class MastersModalForClient {
 
 	createMainModalListItems(dbObject, list) {
 		const deletedMastersFromStorage = JSON.parse(
-			getOnlineUserStorage().getItem("deletedMasters"),
-		);
+				getOnlineUserStorage().getItem("deletedMasters"),
+			),
+			addedMastersFromStorage = JSON.parse(
+				getOnlineUserStorage().getItem("addedMasters"),
+			);
 
 		for (let i = 0; i < dbObject.length; i++) {
 			let matchingCondition = false;
@@ -94,6 +97,12 @@ class MastersModalForClient {
 
 			if (!matchingCondition) {
 				this.createMainModalListItem(dbObject, list, i);
+			}
+		}
+
+		if (addedMastersFromStorage) {
+			for (let i = 0; i < addedMastersFromStorage.length; i++) {
+				this.createMainModalListItem(addedMastersFromStorage, list, i);
 			}
 		}
 	}
@@ -116,7 +125,7 @@ class MastersModalForClient {
 					<span>${dbObject[i].experience}</span>
 				</div>
 			</div>
-			<img src="${dbObject[i].photo}" alt="Фотография мастера" />
+			<img src="${dbObject[i].image}" alt="Фотография мастера" />
 		`;
 	}
 

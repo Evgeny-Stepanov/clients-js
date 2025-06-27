@@ -75,7 +75,7 @@ class MastersModalForAdmin extends MastersModalForClient {
 					<span>${dbObject[i].experience}</span>
 				</div>
 			</div>
-			<img src="${dbObject[i].photo}" alt="Фотография мастера" />
+			<img src="${dbObject[i].image}" alt="Фотография мастера" />
 			<button class="content-list-item__delete-button button button--black-text" type="button">Удалить мастера</button>
 		`;
 	}
@@ -364,7 +364,8 @@ class MastersModalForAdmin extends MastersModalForClient {
 	setAddedItemInStorage(formDataObj, modal) {
 		const { name, surname } = formDataObj,
 			formDataObjFullName = `${name} ${surname}`,
-			storage = getOnlineUserStorage();
+			storage = getOnlineUserStorage(),
+			mainModal = document.querySelector("[data-modal='masters']");
 
 		let itemsArray = [formDataObj],
 			returnConditionCount = 0;
@@ -410,6 +411,8 @@ class MastersModalForAdmin extends MastersModalForClient {
 
 		modal.close();
 		this.resetAddModalStates(modal);
+		mainModal.remove();
+		this.showMainModal();
 	}
 }
 
