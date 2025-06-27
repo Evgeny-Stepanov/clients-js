@@ -13,8 +13,11 @@ class ServicesModalForClient extends MastersModalForClient {
 
 	createMainModalListItems(dbObject, list) {
 		const deletedServicesFromStorage = JSON.parse(
-			getOnlineUserStorage().getItem("deletedServices"),
-		);
+				getOnlineUserStorage().getItem("deletedServices"),
+			),
+			addedServicesFromStorage = JSON.parse(
+				getOnlineUserStorage().getItem("addedServices"),
+			);
 
 		for (let i = 0; i < dbObject.length; i++) {
 			let matchingCondition = false;
@@ -30,6 +33,12 @@ class ServicesModalForClient extends MastersModalForClient {
 
 			if (!matchingCondition) {
 				this.createMainModalListItem(dbObject, list, i);
+			}
+		}
+
+		if (addedServicesFromStorage) {
+			for (let i = 0; i < addedServicesFromStorage.length; i++) {
+				this.createMainModalListItem(addedServicesFromStorage, list, i);
 			}
 		}
 	}

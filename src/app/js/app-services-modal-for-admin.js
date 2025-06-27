@@ -1,5 +1,6 @@
 import { MastersModalForAdmin } from "./app-masters-modal-for-admin";
 import { getOnlineUserStorage } from "./app-general-functions";
+import { dbServicesObj } from "../../db";
 import { showNotification } from "../../auth/js/auth-notification";
 
 class ServicesModalForAdmin extends MastersModalForAdmin {
@@ -17,8 +18,11 @@ class ServicesModalForAdmin extends MastersModalForAdmin {
 
 	createMainModalListItems(dbObject, list) {
 		const deletedServicesFromStorage = JSON.parse(
-			getOnlineUserStorage().getItem("deletedServices"),
-		);
+				getOnlineUserStorage().getItem("deletedServices"),
+			),
+			addedServicesFromStorage = JSON.parse(
+				getOnlineUserStorage().getItem("addedServices"),
+			);
 
 		for (let i = 0; i < dbObject.length; i++) {
 			let matchingCondition = false;
@@ -34,6 +38,12 @@ class ServicesModalForAdmin extends MastersModalForAdmin {
 
 			if (!matchingCondition) {
 				this.createMainModalListItem(dbObject, list, i);
+			}
+		}
+
+		if (addedServicesFromStorage) {
+			for (let i = 0; i < addedServicesFromStorage.length; i++) {
+				this.createMainModalListItem(addedServicesFromStorage, list, i);
 			}
 		}
 	}
@@ -73,6 +83,7 @@ class ServicesModalForAdmin extends MastersModalForAdmin {
 				.querySelector("span")
 				.textContent.slice(0, -2),
 			storage = getOnlineUserStorage();
+
 		let itemsArray = [itemValue];
 
 		if (storage.getItem("deletedServices")) {
@@ -100,6 +111,59 @@ class ServicesModalForAdmin extends MastersModalForAdmin {
 		this.validateAddModalForm(addModal, selectedImageFromDropdownList);
 
 		this.closeAddModal(addModal, addModalCloseButton);
+	}
+
+	setAddedItemInStorage(formDataObj, modal) {
+		const { name } = formDataObj,
+			storage = getOnlineUserStorage(),
+			mainModal = document.querySelector("[data-modal='services']");
+
+		let itemsArray = [formDataObj],
+			returnConditionCount = 0;
+
+		dbServicesObj.forEach(dbService => {
+			if (dbService.name === name) {
+				showNotification(
+					"[data-notification='add-service']",
+					"Такая услуга уже добавлена",
+					"error",
+				);
+				returnConditionCount++;
+			}
+		});
+
+		if (returnConditionCount > 0) {
+			return;
+		}
+
+		if (storage.getItem("addedServices")) {
+			const itemsArray = JSON.parse(storage.getItem("addedServices"));
+
+			itemsArray.forEach(itemArray => {
+				if (itemArray.name === name) {
+					showNotification(
+						"[data-notification='add-service']",
+						"Такая услуга уже добавлена",
+						"error",
+					);
+					returnConditionCount++;
+				}
+			});
+
+			if (returnConditionCount > 0) {
+				return;
+			}
+
+			itemsArray.push(formDataObj);
+			storage.setItem("addedServices", JSON.stringify(itemsArray));
+		} else {
+			storage.setItem("addedServices", JSON.stringify(itemsArray));
+		}
+
+		modal.close();
+		this.resetAddModalStates(modal);
+		mainModal.remove();
+		this.showMainModal();
 	}
 }
 
