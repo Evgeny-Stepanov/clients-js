@@ -1,6 +1,9 @@
 import { MastersModalForAdmin } from "./app-masters-modal-for-admin";
-import { getOnlineUserStorage } from "./app-general-functions";
+
 import { dbServicesObj } from "../../db";
+
+import { getOnlineUserStorage } from "./app-general-functions";
+
 import { showNotification } from "../../auth/js/auth-notification";
 
 class ServicesModalForAdmin extends MastersModalForAdmin {
@@ -93,6 +96,8 @@ class ServicesModalForAdmin extends MastersModalForAdmin {
 		} else {
 			storage.setItem("deletedServices", JSON.stringify(itemsArray));
 		}
+
+		this.deleteEqualItemInStorage();
 	}
 
 	showAddModal() {
@@ -113,13 +118,13 @@ class ServicesModalForAdmin extends MastersModalForAdmin {
 		this.closeAddModal(addModal, addModalCloseButton);
 	}
 
-	setAddedItemInStorage(formDataObj, modal) {
+	setAddedItemInStorage(formDataObj, addModal) {
 		const { name } = formDataObj,
 			storage = getOnlineUserStorage(),
 			mainModal = document.querySelector("[data-modal='services']");
 
 		let itemsArray = [formDataObj],
-			returnConditionCount = 0;
+			matchingCondition = false;
 
 		dbServicesObj.forEach(dbService => {
 			if (dbService.name === name) {
@@ -128,11 +133,11 @@ class ServicesModalForAdmin extends MastersModalForAdmin {
 					"Такая услуга уже добавлена",
 					"error",
 				);
-				returnConditionCount++;
+				matchingCondition = true;
 			}
 		});
 
-		if (returnConditionCount > 0) {
+		if (matchingCondition) {
 			return;
 		}
 
@@ -146,11 +151,11 @@ class ServicesModalForAdmin extends MastersModalForAdmin {
 						"Такая услуга уже добавлена",
 						"error",
 					);
-					returnConditionCount++;
+					matchingCondition = true;
 				}
 			});
 
-			if (returnConditionCount > 0) {
+			if (matchingCondition) {
 				return;
 			}
 
@@ -160,10 +165,57 @@ class ServicesModalForAdmin extends MastersModalForAdmin {
 			storage.setItem("addedServices", JSON.stringify(itemsArray));
 		}
 
-		modal.close();
-		this.resetAddModalStates(modal);
+		this.deleteEqualItemInStorage();
+
+		addModal.close();
+		this.resetAddModalStates(addModal);
 		mainModal.remove();
 		this.showMainModal();
+	}
+
+	deleteEqualItemInStorage() {
+		const storage = getOnlineUserStorage(),
+			deletedServicesFromStorage = JSON.parse(
+				storage.getItem("deletedServices"),
+			),
+			addedServicesFromStorage = JSON.parse(storage.getItem("addedServices"));
+
+		if (deletedServicesFromStorage && addedServicesFromStorage) {
+			for (let i = 0; i < deletedServicesFromStorage.length; i++) {
+				for (let k = 0; k < addedServicesFromStorage.length; k++) {
+					if (
+						deletedServicesFromStorage[i] === addedServicesFromStorage[k].name
+					) {
+						const deletedServicesFilteredArray =
+							deletedServicesFromStorage.filter(
+								item => item !== addedServicesFromStorage[k].name,
+							);
+
+						const addedServicesFilteredArray = addedServicesFromStorage.filter(
+							item => item.name !== deletedServicesFromStorage[i],
+						);
+
+						if (deletedServicesFilteredArray.length === 0) {
+							storage.removeItem("deletedServices");
+						} else {
+							storage.setItem(
+								"deletedServices",
+								JSON.stringify(deletedServicesFilteredArray),
+							);
+						}
+
+						if (addedServicesFilteredArray.length === 0) {
+							storage.removeItem("addedServices");
+						} else {
+							storage.setItem(
+								"addedServices",
+								JSON.stringify(addedServicesFilteredArray),
+							);
+						}
+					}
+				}
+			}
+		}
 	}
 }
 

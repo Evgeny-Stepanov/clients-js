@@ -3,6 +3,7 @@ import {
 	addBlockScroll,
 	removeBlockScroll,
 } from "./app-general-functions";
+
 import { showNotification } from "../../auth/js/auth-notification";
 
 class MastersModalForClient {
@@ -212,14 +213,22 @@ class MastersModalForClient {
 			removeBlockScroll();
 		});
 
-		document.onkeyup = evt => {
+		document.addEventListener("keyup", closeMainModalWithEsc);
+
+		/*
+		The function was written via onclick() but in the class modal masters 
+		for the admin there is one more onclick. Which overwrites this one.
+		And without removeEventListener(), the handlers are summed up.
+		*/
+		function closeMainModalWithEsc(evt) {
 			const currentOpenModal = document.querySelector(".modal[open]");
 
 			if (evt.code === "Escape" && currentOpenModal !== modal) {
 				modal.remove();
 				removeBlockScroll();
+				document.removeEventListener("keyup", closeMainModalWithEsc);
 			}
-		};
+		}
 	}
 }
 

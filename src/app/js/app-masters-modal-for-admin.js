@@ -1,11 +1,15 @@
 import { MastersModalForClient } from "./app-masters-modal-for-client";
+
+import { dbIconsObj, dbMastersObj } from "../../db";
+
 import { getOnlineUserStorage, addBlockScroll } from "./app-general-functions";
+
 import {
 	createInputErrorMessage,
 	showInputErrorMessage,
 	recolorInvalidInputBorder,
 } from "../../auth/js/auth-form-general-functions";
-import { dbIconsObj, dbMastersObj } from "../../db";
+
 import { showNotification } from "../../auth/js/auth-notification";
 
 class MastersModalForAdmin extends MastersModalForClient {
@@ -101,6 +105,7 @@ class MastersModalForAdmin extends MastersModalForClient {
 		modal.addEventListener("click", evt => {
 			if (evt.target.classList.contains("content-list-item__delete-button")) {
 				const modalListItem = evt.target.closest("li");
+
 				this.showDeleteModal(modalListItem, modal);
 			}
 		});
@@ -178,6 +183,8 @@ class MastersModalForAdmin extends MastersModalForClient {
 		} else {
 			storage.setItem("deletedMasters", JSON.stringify(itemsArray));
 		}
+
+		this.deleteEqualItemInStorage();
 	}
 
 	showAddModal() {
@@ -266,11 +273,15 @@ class MastersModalForAdmin extends MastersModalForClient {
 			this.resetAddModalStates(modal);
 		};
 
-		document.onkeyup = evt => {
+		// Arrow function due to loss this
+		const closeAddModalWithEsc = evt => {
 			if (evt.code === "Escape") {
 				this.resetAddModalStates(modal);
+				document.removeEventListener("keyup", closeAddModalWithEsc);
 			}
 		};
+
+		document.addEventListener("keyup", closeAddModalWithEsc);
 	}
 
 	resetAddModalStates(modal) {
@@ -361,14 +372,14 @@ class MastersModalForAdmin extends MastersModalForClient {
 		}
 	}
 
-	setAddedItemInStorage(formDataObj, modal) {
+	setAddedItemInStorage(formDataObj, addModal) {
 		const { name, surname } = formDataObj,
 			formDataObjFullName = `${name} ${surname}`,
 			storage = getOnlineUserStorage(),
 			mainModal = document.querySelector("[data-modal='masters']");
 
 		let itemsArray = [formDataObj],
-			returnConditionCount = 0;
+			matchingCondition = false;
 
 		dbMastersObj.forEach(dbMaster => {
 			if (`${dbMaster.name} ${dbMaster.surname}` === formDataObjFullName) {
@@ -377,11 +388,11 @@ class MastersModalForAdmin extends MastersModalForClient {
 					"Такой мастер уже добавлен",
 					"error",
 				);
-				returnConditionCount++;
+				matchingCondition = true;
 			}
 		});
 
-		if (returnConditionCount > 0) {
+		if (matchingCondition) {
 			return;
 		}
 
@@ -395,11 +406,11 @@ class MastersModalForAdmin extends MastersModalForClient {
 						"Такой мастер уже добавлен",
 						"error",
 					);
-					returnConditionCount++;
+					matchingCondition = true;
 				}
 			});
 
-			if (returnConditionCount > 0) {
+			if (matchingCondition) {
 				return;
 			}
 
@@ -409,10 +420,59 @@ class MastersModalForAdmin extends MastersModalForClient {
 			storage.setItem("addedMasters", JSON.stringify(itemsArray));
 		}
 
-		modal.close();
-		this.resetAddModalStates(modal);
+		this.deleteEqualItemInStorage();
+
+		addModal.close();
+		this.resetAddModalStates(addModal);
 		mainModal.remove();
 		this.showMainModal();
+	}
+
+	deleteEqualItemInStorage() {
+		const storage = getOnlineUserStorage(),
+			deletedMastersFromStorage = JSON.parse(storage.getItem("deletedMasters")),
+			addedMastersFromStorage = JSON.parse(storage.getItem("addedMasters"));
+
+		if (deletedMastersFromStorage && addedMastersFromStorage) {
+			for (let i = 0; i < deletedMastersFromStorage.length; i++) {
+				for (let k = 0; k < addedMastersFromStorage.length; k++) {
+					if (
+						deletedMastersFromStorage[i] ===
+						`${addedMastersFromStorage[k].name} ${addedMastersFromStorage[k].surname}`
+					) {
+						const deletedMastersFilteredArray =
+							deletedMastersFromStorage.filter(
+								item =>
+									item !==
+									`${addedMastersFromStorage[k].name} ${addedMastersFromStorage[k].surname}`,
+							);
+
+						const addedMastersFilteredArray = addedMastersFromStorage.filter(
+							item =>
+								`${item.name} ${item.surname}` !== deletedMastersFromStorage[i],
+						);
+
+						if (deletedMastersFilteredArray.length === 0) {
+							storage.removeItem("deletedMasters");
+						} else {
+							storage.setItem(
+								"deletedMasters",
+								JSON.stringify(deletedMastersFilteredArray),
+							);
+						}
+
+						if (addedMastersFilteredArray.length === 0) {
+							storage.removeItem("addedMasters");
+						} else {
+							storage.setItem(
+								"addedMasters",
+								JSON.stringify(addedMastersFilteredArray),
+							);
+						}
+					}
+				}
+			}
+		}
 	}
 }
 

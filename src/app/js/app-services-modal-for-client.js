@@ -1,5 +1,7 @@
 import { MastersModalForClient } from "./app-masters-modal-for-client";
+
 import { getOnlineUserStorage } from "./app-general-functions";
+
 import { showNotification } from "../../auth/js/auth-notification";
 
 class ServicesModalForClient extends MastersModalForClient {
