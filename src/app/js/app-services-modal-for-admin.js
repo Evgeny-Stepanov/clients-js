@@ -121,21 +121,37 @@ class ServicesModalForAdmin extends MastersModalForAdmin {
 	setAddedItemInStorage(formDataObj, addModal) {
 		const { name } = formDataObj,
 			storage = getOnlineUserStorage(),
+			deletedServicesFromStorage = JSON.parse(
+				storage.getItem("deletedServices"),
+			),
 			mainModal = document.querySelector("[data-modal='services']");
 
 		let itemsArray = [formDataObj],
 			matchingCondition = false;
 
-		dbServicesObj.forEach(dbService => {
-			if (dbService.name === name) {
-				showNotification(
-					"[data-notification='add-service']",
-					"Такая услуга уже добавлена",
-					"error",
-				);
-				matchingCondition = true;
-			}
-		});
+		if (deletedServicesFromStorage) {
+			deletedServicesFromStorage.forEach(deletedService => {
+				if (deletedService === name) {
+					showNotification(
+						"[data-notification='add-service']",
+						'Данная услуга была добавлена изначально, но вы ее удалили. Для сброса изменений нажмите кнопку "Сбросить"',
+						"error",
+					);
+					matchingCondition = true;
+				}
+			});
+		} else {
+			dbServicesObj.forEach(dbService => {
+				if (dbService.name === name) {
+					showNotification(
+						"[data-notification='add-service']",
+						"Данная услуга уже добавлена",
+						"error",
+					);
+					matchingCondition = true;
+				}
+			});
+		}
 
 		if (matchingCondition) {
 			return;
@@ -148,7 +164,7 @@ class ServicesModalForAdmin extends MastersModalForAdmin {
 				if (itemArray.name === name) {
 					showNotification(
 						"[data-notification='add-service']",
-						"Такая услуга уже добавлена",
+						"Данная услуга уже добавлена",
 						"error",
 					);
 					matchingCondition = true;

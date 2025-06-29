@@ -376,21 +376,35 @@ class MastersModalForAdmin extends MastersModalForClient {
 		const { name, surname } = formDataObj,
 			formDataObjFullName = `${name} ${surname}`,
 			storage = getOnlineUserStorage(),
+			deletedMastersFromStorage = JSON.parse(storage.getItem("deletedMasters")),
 			mainModal = document.querySelector("[data-modal='masters']");
 
 		let itemsArray = [formDataObj],
 			matchingCondition = false;
 
-		dbMastersObj.forEach(dbMaster => {
-			if (`${dbMaster.name} ${dbMaster.surname}` === formDataObjFullName) {
-				showNotification(
-					"[data-notification='add-master']",
-					"Такой мастер уже добавлен",
-					"error",
-				);
-				matchingCondition = true;
-			}
-		});
+		if (deletedMastersFromStorage) {
+			deletedMastersFromStorage.forEach(deletedMaster => {
+				if (deletedMaster === formDataObjFullName) {
+					showNotification(
+						"[data-notification='add-master']",
+						'Данный мастер был добавлен изначально, но вы его удалили. Для сброса изменений нажмите кнопку "Сбросить"',
+						"error",
+					);
+					matchingCondition = true;
+				}
+			});
+		} else {
+			dbMastersObj.forEach(dbMaster => {
+				if (`${dbMaster.name} ${dbMaster.surname}` === formDataObjFullName) {
+					showNotification(
+						"[data-notification='add-master']",
+						"Данный мастер уже добавлен",
+						"error",
+					);
+					matchingCondition = true;
+				}
+			});
+		}
 
 		if (matchingCondition) {
 			return;
@@ -403,7 +417,7 @@ class MastersModalForAdmin extends MastersModalForClient {
 				if (`${itemArray.name} ${itemArray.surname}` === formDataObjFullName) {
 					showNotification(
 						"[data-notification='add-master']",
-						"Такой мастер уже добавлен",
+						"Данный мастер уже добавлен",
 						"error",
 					);
 					matchingCondition = true;
