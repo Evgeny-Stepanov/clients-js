@@ -35,8 +35,7 @@ class MastersModalForAdmin extends MastersModalForClient {
 			"content-list-item--grid",
 		);
 
-		this.setModalAddButtonText(modalAddButton);
-
+		modalAddButton.textContent = "Добавить";
 		modalAddButton.classList.add(
 			"content-list-item__add-button",
 			"button",
@@ -66,10 +65,6 @@ class MastersModalForAdmin extends MastersModalForClient {
 		return modal;
 	}
 
-	setModalAddButtonText(button) {
-		button.textContent = "Добавить мастера";
-	}
-
 	createMainModalListItemStructure(dbObject, listItem, i) {
 		listItem.innerHTML = `
 			<div class="content-list-item__text">
@@ -80,7 +75,7 @@ class MastersModalForAdmin extends MastersModalForClient {
 				</div>
 			</div>
 			<img src="${dbObject[i].image}" alt="Фотография мастера" />
-			<button class="content-list-item__delete-button button button--black-text" type="button">Удалить мастера</button>
+			<button class="content-list-item__delete-button button button--black-text" type="button">Удалить</button>
 		`;
 	}
 

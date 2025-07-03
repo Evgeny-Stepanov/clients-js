@@ -11,10 +11,6 @@ class ServicesModalForAdmin extends MastersModalForAdmin {
 		super(dbObject);
 	}
 
-	setModalAddButtonText(button) {
-		button.textContent = "Добавить услугу";
-	}
-
 	setMainModalAttr(modal) {
 		modal.setAttribute("data-modal", "services");
 	}
@@ -60,7 +56,7 @@ class ServicesModalForAdmin extends MastersModalForAdmin {
 				</div>
 			</div>
 			<img src="${dbObject[i].image}" alt="Иконка услуги" />
-			<button class="content-list-item__delete-button button button--black-text" type="button">Удалить услугу</button>
+			<button class="content-list-item__delete-button button button--black-text" type="button">Удалить</button>
 		`;
 	}
 

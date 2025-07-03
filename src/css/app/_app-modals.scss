@@ -23,6 +23,10 @@
 		position: relative;
 		padding: calculate-from-font-size(2.5);
 
+		p {
+			margin: 0;
+		}
+
 		&-confirm-buttons {
 			display: flex;
 			gap: calculate-from-font-size(0.9375);
@@ -43,10 +47,6 @@
 			background-color: transparent;
 			border: none;
 			cursor: pointer;
-		}
-
-		p {
-			margin: 0;
 		}
 	}
 }
@@ -103,7 +103,6 @@
 			grid-template-columns: auto max-content;
 
 			@include mobile-s {
-				//grid-template-columns: auto;
 				grid-template-columns: inherit;
 				justify-content: center;
 				justify-items: center;
@@ -167,9 +166,21 @@
 			margin-top: calculate-from-font-size(0.625) !important;
 		}
 
+		&-experience,
 		&-price {
+			@include mobile-s {
+				align-self: flex-start;
+				width: 100%;
+			}
+
 			input {
 				width: 91%;
+			}
+		}
+
+		&-experience {
+			input {
+				width: 100%;
 			}
 		}
 
@@ -239,6 +250,12 @@
 		gap: calculate-from-font-size(1.5625);
 		width: calculate-from-font-size(18.5);
 		margin-top: calculate-from-font-size(0.625);
+
+		@include mobile-s {
+			flex-direction: column;
+			gap: calculate-from-font-size(0.625);
+			width: 100%;
+		}
 	}
 
 	&__button {
@@ -249,4 +266,10 @@
 
 .form__field-control--is-invalid {
 	border: set-border(2px, var(--color-red)) !important;
+}
+
+[data-modal="delete"] p {
+	@include mobile-s {
+		text-align: center;
+	}
 }
