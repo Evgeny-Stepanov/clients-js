@@ -4,6 +4,7 @@
 	display: flex;
 	justify-content: space-between;
 	flex-grow: 1;
+	gap: 100px;
 }
 
 .actions {
@@ -18,13 +19,25 @@
 	}
 }
 
-/* &-add {
-	grid-column: span 2;
-	grid-row: span 2;
-	height: 100%;
+.schedule {
+	width: 100%;
+	&-table {
+		td {
+			width: 100px;
+			height: 40px;
+			border: 1px solid white;
 
-	@include mobile-s {
-		grid-column: auto;
-		grid-row: auto;
+			&:first-child {
+				border: none;
+			}
+		}
+
+		&__month-day-header {
+			display: block;
+		}
+
+		&__week-day-header {
+			display: block;
+		}
 	}
-} */
+}
