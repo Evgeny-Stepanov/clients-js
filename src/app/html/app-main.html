@@ -1,45 +1,98 @@
 <main class="app__main">
-	<div class="app__main-actions actions">
-		<ul class="actions__list">
-			<li class="actions__list-item">
+	<ul class="app__main-actions actions actions-list">
+		<li class="actions-list-item">
+			<button
+				class="actions-list-item__button button"
+				type="button"
+				data-button-action="services"
+			>
+				Услуги
+			</button>
+		</li>
+		<li class="actions-list-item">
+			<button
+				class="actions-list-item__button button"
+				type="button"
+				data-button-action="masters"
+			>
+				Мастера
+			</button>
+		</li>
+		<li class="actions-list-item">
+			<button
+				class="actions-list-item__button button"
+				type="button"
+				data-button-action="createAppointment"
+			>
+				Записаться
+			</button>
+		</li>
+		<li class="actions-list-item">
+			<button
+				class="actions-list-item__button button"
+				type="button"
+				data-button-action="reset"
+			>
+				Сбросить
+			</button>
+		</li>
+		<li class="actions-list-item">
+			<button
+				class="actions-list-item__button button"
+				type="button"
+				data-button-action="logout"
+			>
+				Выход
+			</button>
+		</li>
+	</ul>
+
+	<div class="app__main-actions-mobile-wrapper">
+		<h1 class="app__main-actions-mobile-title">
+			<span lang="en" data-recolored-text="Clients">Clients</span>
+		</h1>
+		<button class="app__main-actions-mobile-menu-button" type="button"></button>
+
+		<ul class="app__main-actions-mobile actions actions-list">
+			<li class="actions-list-item">
 				<button
-					class="actions__list-item-button button"
+					class="actions-list-item__button button"
 					type="button"
 					data-button-action="services"
 				>
 					Услуги
 				</button>
 			</li>
-			<li class="actions__list-item">
+			<li class="actions-list-item">
 				<button
-					class="actions__list-item-button button"
+					class="actions-list-item__button button"
 					type="button"
 					data-button-action="masters"
 				>
 					Мастера
 				</button>
 			</li>
-			<li class="actions__list-item">
+			<li class="actions-list-item">
 				<button
-					class="actions__button button"
+					class="actions-list-item__button button"
 					type="button"
 					data-button-action="createAppointment"
 				>
 					Записаться
 				</button>
 			</li>
-			<li class="actions__list-item">
+			<li class="actions-list-item">
 				<button
-					class="actions__list-item-button button"
+					class="actions-list-item__button button"
 					type="button"
 					data-button-action="reset"
 				>
 					Сбросить
 				</button>
 			</li>
-			<li class="actions__list-item">
+			<li class="actions-list-item">
 				<button
-					class="actions__list-item-button button"
+					class="actions-list-item__button button"
 					type="button"
 					data-button-action="logout"
 				>
@@ -50,187 +103,187 @@
 	</div>
 
 	<div class="app__main-schedule schedule">
-		<table class="schedule-table">
-			<caption>
+		<table>
+			<caption class="visually-hidden">
 				Расписание записей
 			</caption>
 
 			<thead>
 				<tr>
 					<td></td>
-					<th>
-						<span class="schedule-table__month-day-header"></span>
-						<span class="schedule-table__week-day-header"></span>
+					<th class="schedule-column-header">
+						<span class="schedule-column-header__month-day"></span>
+						<span class="schedule-column-header__week-day"></span>
 					</th>
-					<th>
-						<span class="schedule-table__month-day-header"></span>
-						<span class="schedule-table__week-day-header"></span>
+					<th class="schedule-column-header">
+						<span class="schedule-column-header__month-day"></span>
+						<span class="schedule-column-header__week-day"></span>
 					</th>
-					<th>
-						<span class="schedule-table__month-day-header"></span>
-						<span class="schedule-table__week-day-header"></span>
+					<th class="schedule-column-header">
+						<span class="schedule-column-header__month-day"></span>
+						<span class="schedule-column-header__week-day"></span>
 					</th>
-					<th>
-						<span class="schedule-table__month-day-header"></span>
-						<span class="schedule-table__week-day-header"></span>
+					<th class="schedule-column-header">
+						<span class="schedule-column-header__month-day"></span>
+						<span class="schedule-column-header__week-day"></span>
 					</th>
-					<th>
-						<span class="schedule-table__month-day-header"></span>
-						<span class="schedule-table__week-day-header"></span>
+					<th class="schedule-column-header">
+						<span class="schedule-column-header__month-day"></span>
+						<span class="schedule-column-header__week-day"></span>
 					</th>
-					<th>
-						<span class="schedule-table__month-day-header"></span>
-						<span class="schedule-table__week-day-header"></span>
+					<th class="schedule-column-header">
+						<span class="schedule-column-header__month-day"></span>
+						<span class="schedule-column-header__week-day"></span>
 					</th>
-					<th>
-						<span class="schedule-table__month-day-header"></span>
-						<span class="schedule-table__week-day-header"></span>
+					<th class="schedule-column-header">
+						<span class="schedule-column-header__month-day"></span>
+						<span class="schedule-column-header__week-day"></span>
 					</th>
 				</tr>
 			</thead>
 
 			<tbody>
 				<tr>
-					<th>09:00</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<th class="schedule-row-header">09:00</th>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
 				</tr>
 
 				<tr>
-					<th>10:00</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<th class="schedule-row-header">10:00</th>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
 				</tr>
 
 				<tr>
-					<th>11:00</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<th class="schedule-row-header">11:00</th>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
 				</tr>
 
 				<tr>
-					<th>12:00</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<th class="schedule-row-header">12:00</th>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
 				</tr>
 
 				<tr>
-					<th>13:00</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<th class="schedule-row-header">13:00</th>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
 				</tr>
 
 				<tr>
-					<th>14:00</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<th class="schedule-row-header">14:00</th>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
 				</tr>
 
 				<tr>
-					<th>15:00</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<th class="schedule-row-header">15:00</th>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
 				</tr>
 
 				<tr>
-					<th>16:00</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<th class="schedule-row-header">16:00</th>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
 				</tr>
 
 				<tr>
-					<th>17:00</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<th class="schedule-row-header">17:00</th>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
 				</tr>
 
 				<tr>
-					<th>18:00</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<th class="schedule-row-header">18:00</th>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
 				</tr>
 
 				<tr>
-					<th>19:00</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<th class="schedule-row-header">19:00</th>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
 				</tr>
 
 				<tr>
-					<th>20:00</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<th class="schedule-row-header">20:00</th>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
 				</tr>
 
 				<tr>
-					<th>21:00</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<th class="schedule-row-header">21:00</th>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
+					<td><div></div></td>
 				</tr>
 			</tbody>
 		</table>

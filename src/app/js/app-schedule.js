@@ -1,28 +1,34 @@
 function setDateAndDayInTableHeaders() {
 	const monthDayTableHeaders = document.querySelectorAll(
-			".schedule-table__month-day-header",
+			".schedule-column-header__month-day",
 		),
 		weekDayTableHeaders = document.querySelectorAll(
-			".schedule-table__week-day-header",
+			".schedule-column-header__week-day",
 		),
 		weekDays = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
-		today = new Date(),
-		nextDay = new Date(today);
+		currentDate = new Date(),
+		nextDate = new Date(currentDate);
 
 	for (let i = 0; i < weekDays.length; i++) {
 		if (i === 0) {
-			monthDayTableHeaders[i].textContent = today.toLocaleDateString("ru", {
-				day: "numeric",
-				month: "long",
-			});
-			weekDayTableHeaders[i].textContent = weekDays[today.getDay()];
+			monthDayTableHeaders[i].textContent = currentDate.toLocaleDateString(
+				"ru",
+				{
+					day: "numeric",
+					month: "long",
+				},
+			);
+
+			weekDayTableHeaders[i].textContent = weekDays[currentDate.getDay()];
 		} else {
-			nextDay.setDate(nextDay.getDate() + 1);
-			monthDayTableHeaders[i].textContent = nextDay.toLocaleDateString("ru", {
+			nextDate.setDate(nextDate.getDate() + 1);
+
+			monthDayTableHeaders[i].textContent = nextDate.toLocaleDateString("ru", {
 				day: "numeric",
 				month: "long",
 			});
-			weekDayTableHeaders[i].textContent = weekDays[nextDay.getDay()];
+
+			weekDayTableHeaders[i].textContent = weekDays[nextDate.getDay()];
 		}
 	}
 }
