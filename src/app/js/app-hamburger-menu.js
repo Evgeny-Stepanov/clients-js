@@ -1,17 +1,38 @@
 function showMobileMenu() {
-	const showMobileMenuButton = document.querySelector(
+	const mobileMenuWrapper = document.querySelector(
+			".app__main-actions-mobile-wrapper",
+		),
+		showMobileMenuButton = mobileMenuWrapper.querySelector(
 			".app__main-actions-mobile-menu-button",
 		),
-		mobileMenu = document.querySelector(".app__main-actions-mobile");
-
-	showMobileMenuButton.addEventListener("click", () => {
-		showMobileMenuButton.classList.toggle(
-			"app__main-actions-mobile-menu-button--is-clicked",
+		mobileMenu = mobileMenuWrapper.querySelector(".app__main-actions-mobile"),
+		mobileMenuBackdrop = mobileMenuWrapper.querySelector(
+			".app__main-actions-mobile-backdrop",
 		);
 
-		mobileMenu.classList.toggle("app__main-actions-mobile--is-shown");
+	mobileMenuWrapper.addEventListener("click", evt => {
+		if (evt.target === showMobileMenuButton) {
+			showMobileMenuButton.classList.toggle(
+				"app__main-actions-mobile-menu-button--is-clicked",
+			);
 
-		recolorClientsText();
+			mobileMenu.classList.toggle("app__main-actions-mobile--is-shown");
+
+			recolorClientsText();
+		}
+
+		if (
+			mobileMenu.classList.contains("app__main-actions-mobile--is-shown") &&
+			evt.target === mobileMenuBackdrop
+		) {
+			showMobileMenuButton.classList.toggle(
+				"app__main-actions-mobile-menu-button--is-clicked",
+			);
+
+			mobileMenu.classList.toggle("app__main-actions-mobile--is-shown");
+
+			recolorClientsText();
+		}
 	});
 
 	function recolorClientsText() {

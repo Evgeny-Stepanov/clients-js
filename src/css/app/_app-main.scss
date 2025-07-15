@@ -12,116 +12,128 @@
 		padding: 0 0 calculate-from-font-size(1.25) 0;
 	}
 
-	&-actions-mobile-wrapper {
-		display: none;
-
-		@include mobile {
-			position: sticky;
-			top: 0;
-			z-index: 1000;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			padding-block: calculate-from-font-size(0.625);
-			background-color: var(--color-black);
-		}
-	}
-
-	&-actions-mobile-title {
-		font-size: calculate-from-font-size(1.875);
-		font-family: var(--font-family-alt);
-
-		span {
-			position: relative;
-			display: inline-block;
-
-			&::before {
-				content: attr(data-recolored-text);
-				position: absolute;
-				width: 0;
-				color: var(--color-accent);
-				background-color: var(--color-black);
-				transition: set-hover-transition(width);
-				overflow: hidden;
-			}
-		}
-
-		&-span--is-recolored {
-			&::before {
-				width: 100% !important;
-			}
-		}
-	}
-
-	&-actions-mobile-menu-button {
-		position: relative;
-		width: 35px;
-		height: 26px;
-		background-color: transparent;
-		border: none;
-
-		&::before,
-		&::after {
-			content: "";
+	&-actions {
+		&-mobile {
 			position: absolute;
+			top: 100%;
 			left: 0;
-			width: 100%;
-			height: 4px;
-			background-color: var(--color-gray-dark);
-			border-radius: var(--border-radius-small);
-		}
+			z-index: 1000;
+			display: flex !important;
+			padding: calculate-from-font-size(1.25);
+			transform: translateX(-200%);
+			visibility: hidden;
+			background-color: var(--color-black);
+			border-radius: 0 var(--border-radius-small) var(--border-radius-small) 0;
+			transition: set-short-animation-transition(transform);
 
-		&::before {
-			top: 0;
-			box-shadow: 0 11px 0 var(--color-gray-dark);
-			transition:
-				box-shadow 0.3s 0.15s,
-				top 0.3s 0.15s,
-				transform 0.3s;
-		}
-
-		&::after {
-			bottom: 0;
-			transition:
-				bottom 0.3s 0.15s,
-				transform 0.3s;
-		}
-
-		&--is-clicked {
-			&::before {
-				top: 11px;
-				transform: rotate(45deg);
-				box-shadow: 0 6px 0 rgba(0, 0, 0, 0);
-				transition:
-					box-shadow 0.15s,
-					top 0.3s,
-					transform 0.3s 0.15s;
+			&--is-shown {
+				transform: translateX(0);
+				visibility: visible;
 			}
 
-			&::after {
-				bottom: 11px;
-				transform: rotate(-45deg);
-				transition:
-					bottom 0.3s,
-					transform 0.3s 0.15s;
+			&-wrapper {
+				display: none;
+
+				@include mobile {
+					position: sticky;
+					top: 0;
+					z-index: 1000;
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					padding-block: calculate-from-font-size(0.625);
+					background-color: var(--color-black);
+				}
 			}
-		}
-	}
 
-	&-actions-mobile {
-		position: absolute;
-		top: 100%;
-		left: 0;
-		z-index: 1000;
-		display: flex !important;
-		padding: calculate-from-font-size(1.25);
-		transform: translateX(-200%);
-		background-color: var(--color-black);
-		border-radius: 0 var(--border-radius-small) var(--border-radius-small) 0;
-		transition: set-short-animation-transition(transform);
+			&-title {
+				font-size: calculate-from-font-size(1.875);
+				font-family: var(--font-family-alt);
 
-		&--is-shown {
-			transform: translateX(0);
+				span {
+					position: relative;
+					display: inline-block;
+
+					&::before {
+						content: attr(data-recolored-text);
+						position: absolute;
+						width: 0;
+						color: var(--color-accent);
+						background-color: var(--color-black);
+						transition: set-hover-transition(width);
+						overflow: hidden;
+					}
+				}
+
+				&-span--is-recolored {
+					&::before {
+						width: 100% !important;
+					}
+				}
+			}
+
+			&-menu-button {
+				position: relative;
+				width: 35px;
+				height: 26px;
+				background-color: transparent;
+				border: none;
+
+				&::before,
+				&::after {
+					content: "";
+					position: absolute;
+					left: 0;
+					width: 100%;
+					height: 4px;
+					background-color: var(--color-gray-dark);
+					border-radius: var(--border-radius-small);
+				}
+
+				&::before {
+					top: 0;
+					box-shadow: 0 11px 0 var(--color-gray-dark);
+					transition:
+						box-shadow 0.3s 0.15s,
+						top 0.3s 0.15s,
+						transform 0.3s;
+				}
+
+				&::after {
+					bottom: 0;
+					transition:
+						bottom 0.3s 0.15s,
+						transform 0.3s;
+				}
+
+				&--is-clicked {
+					&::before {
+						top: 11px;
+						transform: rotate(45deg);
+						box-shadow: 0 6px 0 rgba(0, 0, 0, 0);
+						transition:
+							box-shadow 0.15s,
+							top 0.3s,
+							transform 0.3s 0.15s;
+					}
+
+					&::after {
+						bottom: 11px;
+						transform: rotate(-45deg);
+						transition:
+							bottom 0.3s,
+							transform 0.3s 0.15s;
+					}
+				}
+			}
+
+			&-backdrop {
+				position: absolute;
+				top: 100%;
+				left: 0;
+				width: 100%;
+				height: 100vh;
+			}
 		}
 	}
 }
