@@ -42,7 +42,7 @@ class MastersModalForAdmin extends MastersModalForClient {
 			"button--black-text",
 		);
 		modalAddButton.setAttribute("type", "button");
-		modalAddButton.setAttribute("data-button-action", "addListItem");
+		modalAddButton.setAttribute("data-action-button", "addListItem");
 
 		modalAddButtonListItem.append(modalAddButton);
 
@@ -82,9 +82,9 @@ class MastersModalForAdmin extends MastersModalForClient {
 	showMainModal() {
 		const modal = this.createMainModal(),
 			modalAddButton = modal.querySelector(
-				"[data-button-action='addListItem']",
+				"[data-action-button='addListItem']",
 			),
-			modalCloseButton = modal.querySelector("[data-button-action='close']");
+			modalCloseButton = modal.querySelector("[data-action-button='close']");
 
 		document.body.append(modal);
 		modal.showModal();
@@ -121,7 +121,7 @@ class MastersModalForAdmin extends MastersModalForClient {
 				"[data-button-confirm='no']",
 			),
 			deleteModalCloseButton = deleteModal.querySelector(
-				"[data-button-action='close']",
+				"[data-action-button='close']",
 			);
 
 		this.setDeleteModalTitleAndMessage(deleteModalTitle, deleteModalMessage);
@@ -188,7 +188,7 @@ class MastersModalForAdmin extends MastersModalForClient {
 				".content-form__field-dropdown-button img",
 			),
 			addModalCloseButton = addModal.querySelector(
-				"[data-button-action='close']",
+				"[data-action-button='close']",
 			);
 
 		this.addModalImagesDropdown(addModal);

@@ -102,7 +102,7 @@ class ServicesModalForAdmin extends MastersModalForAdmin {
 				".content-form__field-dropdown-button img",
 			),
 			addModalCloseButton = addModal.querySelector(
-				"[data-button-action='close']",
+				"[data-action-button='close']",
 			);
 
 		this.addModalImagesDropdown(addModal);

@@ -11,14 +11,29 @@ import { ServicesModalForClient } from "./app-services-modal-for-client";
 import { ServicesModalForAdmin } from "./app-services-modal-for-admin";
 
 const servicesButton = document.querySelector(
-		"[data-button-action='services']",
+		"[data-action-button='services']",
 	),
-	mastersButton = document.querySelector("[data-button-action='masters']"),
+	mastersButton = document.querySelector("[data-action-button='masters']"),
 	createAppointmentButton = document.querySelector(
-		"[data-button-action='createAppointment']",
+		"[data-action-button='createAppointment']",
 	),
-	resetButton = document.querySelector("[data-button-action='reset']"),
-	logoutButton = document.querySelector("[data-button-action='logout']");
+	resetButton = document.querySelector("[data-action-button='reset']"),
+	logoutButton = document.querySelector("[data-action-button='logout']"),
+	servicesButtonOnMobile = document.querySelector(
+		"[data-mobile-action-button='services']",
+	),
+	mastersButtonOnMobile = document.querySelector(
+		"[data-mobile-action-button='masters']",
+	),
+	createAppointmentButtonOnMobile = document.querySelector(
+		"[data-mobile-action-button='createAppointment']",
+	),
+	resetButtonOnMobile = document.querySelector(
+		"[data-mobile-action-button='reset']",
+	),
+	logoutButtonOnMobile = document.querySelector(
+		"[data-mobile-action-button='logout']",
+	);
 
 function createAndShowServicesOrMastersModal(
 	triggerButton,
@@ -66,6 +81,19 @@ createAndShowServicesOrMastersModal(
 	new MastersModalForClient(dbMastersObj),
 	new MastersModalForAdmin(dbMastersObj),
 );
+createAndShowServicesOrMastersModal(
+	servicesButtonOnMobile,
+	new ServicesModalForClient(dbServicesObj),
+	new ServicesModalForAdmin(dbServicesObj),
+);
+createAndShowServicesOrMastersModal(
+	mastersButtonOnMobile,
+	new MastersModalForClient(dbMastersObj),
+	new MastersModalForAdmin(dbMastersObj),
+);
 
 resetAllInStorageExceptUsers(resetButton);
+resetAllInStorageExceptUsers(resetButtonOnMobile);
+
 logout(logoutButton);
+logout(logoutButtonOnMobile);
