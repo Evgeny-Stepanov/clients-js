@@ -115,10 +115,10 @@ class MastersModalForAdmin extends MastersModalForClient {
 			deleteModalTitle = deleteModal.querySelector("h2"),
 			deleteModalMessage = deleteModal.querySelector("p"),
 			deleteModalYesButton = deleteModal.querySelector(
-				"[data-button-confirm='yes']",
+				"[data-confirm-button='yes']",
 			),
 			deleteModalNoButton = deleteModal.querySelector(
-				"[data-button-confirm='no']",
+				"[data-confirm-button='no']",
 			),
 			deleteModalCloseButton = deleteModal.querySelector(
 				"[data-action-button='close']",

@@ -10,4 +10,5 @@ import "./js/app-services-modal-for-client";
 import "./js/app-services-modal-for-admin";
 import "./js/app-masters-modal-for-client";
 import "./js/app-masters-modal-for-admin";
+import "./js/app-appointment";
 import "./../auth/js/auth-footer";
