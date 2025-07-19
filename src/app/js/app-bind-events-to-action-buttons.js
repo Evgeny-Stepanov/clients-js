@@ -101,8 +101,11 @@ createAndShowServicesOrMastersModal(
 	new MastersModalForAdmin(dbMastersObj),
 );
 
-createAppointment(createAppointmentButton, new Appointment());
-createAppointment(createAppointmentButtonOnMobile, new Appointment());
+createAppointment(createAppointmentButton, new Appointment(dbServicesObj));
+createAppointment(
+	createAppointmentButtonOnMobile,
+	new Appointment(dbServicesObj),
+);
 
 resetAllInStorageExceptUsers(resetButton);
 resetAllInStorageExceptUsers(resetButtonOnMobile);

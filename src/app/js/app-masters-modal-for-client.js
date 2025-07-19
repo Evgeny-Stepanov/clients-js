@@ -1,7 +1,7 @@
 import {
 	getOnlineUserStorage,
 	addBlockScroll,
-	closeModal,
+	closeModalWithRemoveAndEsc,
 } from "./app-general-functions";
 
 import { showNotification } from "../../auth/js/auth-notification";
@@ -200,7 +200,7 @@ class MastersModalForClient {
 	}
 
 	closeMainModal(modal, modalCloseButton) {
-		closeModal(modal, modalCloseButton);
+		closeModalWithRemoveAndEsc(modal, modalCloseButton);
 	}
 }
 

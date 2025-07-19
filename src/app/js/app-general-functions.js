@@ -24,7 +24,7 @@ function addBlockScroll() {
 	document.body.style.overflow = "hidden";
 }
 
-function closeModal(modal, modalCloseButton) {
+function closeModalWithRemoveAndEsc(modal, modalCloseButton) {
 	modal.addEventListener("click", ({ currentTarget, target }) => {
 		const isClickedOnBackdrop = target === currentTarget;
 		if (isClickedOnBackdrop) {
@@ -60,4 +60,9 @@ function closeModal(modal, modalCloseButton) {
 	}
 }
 
-export { getOnlineUserType, getOnlineUserStorage, addBlockScroll, closeModal };
+export {
+	getOnlineUserType,
+	getOnlineUserStorage,
+	addBlockScroll,
+	closeModalWithRemoveAndEsc,
+};

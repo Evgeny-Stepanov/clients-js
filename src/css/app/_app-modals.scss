@@ -132,7 +132,8 @@
 		&-name,
 		&-surname,
 		&-experience,
-		&-price {
+		&-price,
+		&-phone {
 			input {
 				width: 100%;
 				height: calculate-from-font-size(2.5);

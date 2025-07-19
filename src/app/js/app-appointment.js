@@ -1,76 +1,74 @@
-import { addBlockScroll, closeModal } from "./app-general-functions";
+import { dbServicesObj, dbMastersObj } from "../../db";
+
+import { ServicesModalForClient } from "./app-services-modal-for-client";
+import { MastersModalForClient } from "./app-masters-modal-for-client";
 
 class Appointment {
 	constructor() {}
 
-	createModal() {
-		const { modal, modalDivForScroll, modalForm, modalCloseButton } =
-			this.createModalStructure();
-
-		this.setModalAttr(modal);
-
-		this.createModalFormStructure(modalForm);
-
-		modalForm.append(modalCloseButton);
-		modalDivForScroll.append(modalForm);
-		modal.append(modalDivForScroll);
-
-		return modal;
-	}
-
-	createModalStructure() {
-		const modal = document.createElement("dialog"),
-			modalDivForScroll = document.createElement("div"),
-			modalForm = document.createElement("form"),
-			modalCloseButton = document.createElement("button");
-
-		modal.classList.add("app__modal", "modal");
-		modalDivForScroll.classList.add("modal__content-wrapper");
-		modalForm.classList.add(
-			"modal__content",
-			"modal__content-form",
-			"content-form",
-		);
-		modalForm.setAttribute("novalidate", "");
-		modalCloseButton.classList.add("modal__content-close-button");
-		modalCloseButton.setAttribute("type", "button");
-		modalCloseButton.setAttribute("data-action-button", "close");
-
-		modalCloseButton.innerHTML = `
-			<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 1024 1024"><path fill="#010101" fill-rule="evenodd" d="M512 64c247.4 0 448 200.6 448 448S759.4 960 512 960S64 759.4 64 512S264.6 64 512 64m0 76c-205.4 0-372 166.6-372 372s166.6 372 372 372s372-166.6 372-372s-166.6-372-372-372m128.013 198.826c.023.007.042.018.083.059l45.02 45.019c.04.04.05.06.058.083a.118.118 0 0 1 0 .07c-.007.022-.018.041-.059.082L557.254 512l127.861 127.862a.268.268 0 0 1 .05.06l.009.023a.118.118 0 0 1 0 .07c-.007.022-.018.041-.059.082l-45.019 45.02c-.04.04-.06.05-.083.058a.118.118 0 0 1-.07 0c-.022-.007-.041-.018-.082-.059L512 557.254L384.14 685.115c-.042.041-.06.052-.084.059a.118.118 0 0 1-.07 0c-.022-.007-.041-.018-.082-.059l-45.02-45.019a.199.199 0 0 1-.058-.083a.118.118 0 0 1 0-.07c.007-.022.018-.041.059-.082L466.745 512l-127.86-127.86a.268.268 0 0 1-.05-.061l-.009-.023a.118.118 0 0 1 0-.07c.007-.022.018-.041.059-.082l45.019-45.02c.04-.04.06-.05.083-.058a.118.118 0 0 1 .07 0c.022.007.041.018.082.059L512 466.745l127.862-127.86c.04-.041.06-.052.083-.059a.118.118 0 0 1 .07 0Z"/></svg>
-				`;
-
-		return {
-			modal,
-			modalDivForScroll,
-			modalForm,
-			modalCloseButton,
-		};
-	}
-
-	setModalAttr(modal) {
-		modal.setAttribute("data-modal", "create-appointment");
-	}
-
-	createModalFormStructure(modalForm) {
-		modalForm.innerHTML = `
-			<h2 class="visually-hidden">Создать запись</h2>
-		`;
-	}
-
 	showModal() {
-		const modal = this.createModal(),
-			modalCloseButton = modal.querySelector("[data-action-button='close']");
+		const appointmentModal = document.querySelector(
+				"[data-modal='create-appointment']",
+			),
+			appointmentModalCloseButton = appointmentModal.querySelector(
+				"[data-action-button='close']",
+			);
 
-		document.body.append(modal);
-		modal.showModal();
-		addBlockScroll();
+		this.createModalFormServicesOptions(appointmentModal);
+		this.createModalFormMastersOptions(appointmentModal);
 
-		this.closeModal(modal, modalCloseButton);
+		appointmentModal.showModal();
+
+		//this.validate
+
+		this.closeModal(appointmentModal, appointmentModalCloseButton);
+	}
+
+	createModalFormServicesOptions(appointmentModal) {
+		const select = appointmentModal.querySelector("select#service"),
+			servicesModal = new ServicesModalForClient(
+				dbServicesObj,
+			).createMainModal(),
+			servicesModalListItems = servicesModal.querySelectorAll("li");
+
+		servicesModalListItems.forEach(listItem => {
+			const serviceName = listItem
+					.querySelector("div span:first-child")
+					.textContent.slice(0, -2),
+				option = document.createElement("option");
+
+			option.textContent = serviceName;
+
+			select.append(option);
+		});
+	}
+
+	createModalFormMastersOptions(appointmentModal) {
+		const select = appointmentModal.querySelector("select#master"),
+			mastersModal = new MastersModalForClient(dbMastersObj).createMainModal(),
+			mastersModalListItems = mastersModal.querySelectorAll("li");
+
+		mastersModalListItems.forEach(listItem => {
+			const masterName = listItem.querySelector("div span").textContent,
+				option = document.createElement("option");
+
+			option.textContent = masterName;
+
+			select.append(option);
+		});
 	}
 
 	closeModal(modal, modalCloseButton) {
-		closeModal(modal, modalCloseButton);
+		modal.onclick = ({ currentTarget, target }) => {
+			const isClickedOnBackdrop = target === currentTarget;
+			if (isClickedOnBackdrop) {
+				currentTarget.close();
+			}
+		};
+
+		modalCloseButton.onclick = () => {
+			modal.close();
+		};
 	}
 }
 
