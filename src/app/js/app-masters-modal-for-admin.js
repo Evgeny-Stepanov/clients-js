@@ -152,7 +152,7 @@ class MastersModalForAdmin extends MastersModalForClient {
 		modal.onclick = ({ currentTarget, target }) => {
 			const isClickedOnBackdrop = target === currentTarget;
 			if (isClickedOnBackdrop) {
-				currentTarget.close();
+				modal.close();
 			}
 		};
 
@@ -258,7 +258,7 @@ class MastersModalForAdmin extends MastersModalForClient {
 		modal.onclick = ({ currentTarget, target }) => {
 			const isClickedOnBackdrop = target === currentTarget;
 			if (isClickedOnBackdrop) {
-				currentTarget.close();
+				modal.close();
 				this.resetAddModalStates(modal);
 			}
 		};
@@ -349,6 +349,7 @@ class MastersModalForAdmin extends MastersModalForClient {
 						"image",
 						dbIconsObj[selectedImage.getAttribute("data-image")],
 					);
+					formData.append("id", (Math.random().toFixed(5) * 1e5).toFixed(0));
 
 					const formDataObj = Object.fromEntries(formData.entries());
 
@@ -372,10 +373,10 @@ class MastersModalForAdmin extends MastersModalForClient {
 			formDataObjFullName = `${name} ${surname}`,
 			storage = getOnlineUserStorage(),
 			deletedMastersFromStorage = JSON.parse(storage.getItem("deletedMasters")),
-			mainModal = document.querySelector("[data-modal='masters']");
+			mainModal = document.querySelector("[data-modal='masters']"),
+			itemsArray = [formDataObj];
 
-		let itemsArray = [formDataObj],
-			matchingCondition = false;
+		let matchingCondition = false;
 
 		if (deletedMastersFromStorage) {
 			deletedMastersFromStorage.forEach(deletedMaster => {

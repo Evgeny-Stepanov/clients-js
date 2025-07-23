@@ -29,24 +29,28 @@ const dbMastersObj = [
 		surname: "Майоров",
 		experience: "1 год",
 		image: manIcon,
+		id: 1,
 	},
 	{
 		name: "Андрей",
 		surname: "Яковлев",
 		experience: "2 года",
 		image: manIcon,
+		id: 2,
 	},
 	{
 		name: "Алиса",
 		surname: "Фомичева",
 		experience: "6 мес",
 		image: womanIcon,
+		id: 3,
 	},
 	{
 		name: "Дарья",
 		surname: "Лаврентьева",
 		experience: "5 лет",
 		image: womanIcon,
+		id: 4,
 	},
 ];
 
@@ -55,26 +59,31 @@ const dbServicesObj = [
 		name: "Мужская стрижка",
 		price: "1500",
 		image: haircutIcon,
+		id: 5,
 	},
 	{
 		name: "Детская стрижка",
 		price: "750",
 		image: boyIcon,
+		id: 6,
 	},
 	{
 		name: "Оформление бороды",
 		price: "800",
 		image: beardIcon,
+		id: 7,
 	},
 	{
 		name: "Комплекс",
 		price: "2000",
 		image: complexIcon,
+		id: 8,
 	},
 	{
 		name: "Камуфляж седины",
 		price: "1000",
 		image: camoIcon,
+		id: 9,
 	},
 ];
 

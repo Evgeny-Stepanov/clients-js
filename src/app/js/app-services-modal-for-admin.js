@@ -120,10 +120,10 @@ class ServicesModalForAdmin extends MastersModalForAdmin {
 			deletedServicesFromStorage = JSON.parse(
 				storage.getItem("deletedServices"),
 			),
-			mainModal = document.querySelector("[data-modal='services']");
+			mainModal = document.querySelector("[data-modal='services']"),
+			itemsArray = [formDataObj];
 
-		let itemsArray = [formDataObj],
-			matchingCondition = false;
+		let matchingCondition = false;
 
 		if (deletedServicesFromStorage) {
 			deletedServicesFromStorage.forEach(deletedService => {
