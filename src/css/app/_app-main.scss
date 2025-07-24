@@ -24,7 +24,7 @@
 			visibility: hidden;
 			background-color: var(--color-black);
 			border-radius: 0 var(--border-radius-small) var(--border-radius-small) 0;
-			transition: set-short-animation-transition(transform);
+			transition: set-short-animation-transition(all);
 
 			&--is-shown {
 				transform: translateX(0);
@@ -131,8 +131,13 @@
 				position: absolute;
 				top: 100%;
 				left: 0;
+				display: none;
 				width: 100%;
 				height: 100vh;
+
+				&--is-active {
+					display: block;
+				}
 			}
 		}
 	}
@@ -157,6 +162,21 @@
 .schedule {
 	width: 100%;
 	overflow-x: auto;
+
+	&::-webkit-scrollbar-track {
+		border-radius: var(--border-radius-small);
+		border: set-border(2px, var(--color-accent));
+	}
+
+	&::-webkit-scrollbar {
+		height: 10px;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+		border-radius: var(--border-radius-small);
+		background-color: var(--color-accent);
+	}
 
 	table {
 		width: 100%;

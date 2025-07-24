@@ -389,15 +389,46 @@
 				<span class="content-form__field-error form__field-error"></span>
 			</p>
 
-			<p>
-				<label for="service">Выберите услугу</label>
+			<p class="content-form__field-select">
+				<label for="service">Услуга:</label>
 				<select name="service" id="service"></select>
 			</p>
 
-			<p>
-				<label for="master">Выберите мастера</label>
+			<p class="content-form__field-select">
+				<label for="master">Мастер:</label>
 				<select name="master" id="master"></select>
 			</p>
+
+			<p class="content-form__field-select">
+				<label for="date">Дата:</label>
+				<select name="date" id="date"></select>
+			</p>
+
+			<p class="content-form__field-select">
+				<label for="time">Время:</label>
+				<select name="time" id="time">
+					<option value="09-00">09:00</option>
+					<option value="10-00">10:00</option>
+					<option value="11-00">11:00</option>
+					<option value="12-00">12:00</option>
+					<option value="13-00">13:00</option>
+					<option value="14-00">14:00</option>
+					<option value="15-00">15:00</option>
+					<option value="16-00">16:00</option>
+					<option value="17-00">17:00</option>
+					<option value="18-00">18:00</option>
+					<option value="19-00">19:00</option>
+					<option value="20-00">20:00</option>
+					<option value="21-00">21:00</option>
+				</select>
+			</p>
+
+			<button
+				class="content-form__button button button--black-text"
+				type="submit"
+			>
+				Записаться
+			</button>
 
 			<button
 				class="modal__content-close-button"

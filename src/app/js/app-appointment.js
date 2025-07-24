@@ -3,6 +3,8 @@ import { dbServicesObj, dbMastersObj } from "../../db";
 import { ServicesModalForClient } from "./app-services-modal-for-client";
 import { MastersModalForClient } from "./app-masters-modal-for-client";
 
+import { weekDatesArray } from "./app-schedule";
+
 class Appointment {
 	constructor() {}
 
@@ -16,10 +18,13 @@ class Appointment {
 			appointmentModalFormServicesSelect =
 				appointmentModal.querySelector("select#service"),
 			appointmentModalFormMastersSelect =
-				appointmentModal.querySelector("select#master");
+				appointmentModal.querySelector("select#master"),
+			appointmentModalFormDatesSelect =
+				appointmentModal.querySelector("select#date");
 
 		this.createModalFormServicesOptions(appointmentModalFormServicesSelect);
 		this.createModalFormMastersOptions(appointmentModalFormMastersSelect);
+		this.createModalFormDateOptions(appointmentModalFormDatesSelect);
 
 		appointmentModal.showModal();
 
@@ -30,6 +35,7 @@ class Appointment {
 			appointmentModalCloseButton,
 			appointmentModalFormServicesSelect,
 			appointmentModalFormMastersSelect,
+			appointmentModalFormDatesSelect,
 		);
 	}
 
@@ -79,13 +85,41 @@ class Appointment {
 		}
 	}
 
-	closeModal(modal, modalCloseButton, servicesSelect, mastersSelect) {
+	createModalFormDateOptions(datesSelect) {
+		const columnHeadersWithDate = document.querySelectorAll(
+			".schedule-column-header",
+		);
+
+		columnHeadersWithDate.forEach((date, i) => {
+			const monthDay = date.querySelector(
+					".schedule-column-header__month-day",
+				).textContent,
+				weekDay = date.querySelector(
+					".schedule-column-header__week-day",
+				).textContent,
+				option = document.createElement("option");
+
+			option.textContent = `${monthDay}, ${weekDay}`;
+			option.setAttribute("value", weekDatesArray[i].replaceAll(".", "-"));
+
+			datesSelect.append(option);
+		});
+	}
+
+	closeModal(
+		modal,
+		modalCloseButton,
+		servicesSelect,
+		mastersSelect,
+		datesSelect,
+	) {
 		modal.onclick = ({ currentTarget, target }) => {
 			const isClickedOnBackdrop = target === currentTarget;
 			if (isClickedOnBackdrop) {
 				modal.close();
 				clearSelect(servicesSelect);
 				clearSelect(mastersSelect);
+				clearSelect(datesSelect);
 			}
 		};
 
@@ -93,21 +127,23 @@ class Appointment {
 			modal.close();
 			clearSelect(servicesSelect);
 			clearSelect(mastersSelect);
+			clearSelect(datesSelect);
 		};
 
 		document.addEventListener("keyup", closeModalWithEsc);
-
-		function clearSelect(select) {
-			select.innerHTML = "";
-		}
 
 		function closeModalWithEsc(evt) {
 			if (evt.code === "Escape") {
 				modal.close();
 				clearSelect(servicesSelect);
 				clearSelect(mastersSelect);
+				clearSelect(datesSelect);
 				document.removeEventListener("keyup", closeModalWithEsc);
 			}
+		}
+
+		function clearSelect(select) {
+			select.innerHTML = "";
 		}
 	}
 }

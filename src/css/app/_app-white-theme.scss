@@ -19,6 +19,22 @@ body:has(input#theme-color:checked) {
 		}
 	}
 
+	.app {
+		&__main-actions {
+			&-mobile-wrapper,
+			&-mobile-title span::before,
+			&-mobile {
+				background-color: var(--color-white);
+			}
+		}
+	}
+
+	.schedule {
+		&-row-header {
+			background-color: var(--color-white);
+		}
+	}
+
 	.footer {
 		&__show-contacts-button {
 			color: var(--color-black);

@@ -18,6 +18,10 @@ function showMobileMenu() {
 
 			mobileMenu.classList.toggle("app__main-actions-mobile--is-shown");
 
+			mobileMenuBackdrop.classList.toggle(
+				"app__main-actions-mobile-backdrop--is-active",
+			);
+
 			recolorClientsText();
 		}
 
@@ -30,6 +34,10 @@ function showMobileMenu() {
 			);
 
 			mobileMenu.classList.toggle("app__main-actions-mobile--is-shown");
+
+			mobileMenuBackdrop.classList.toggle(
+				"app__main-actions-mobile-backdrop--is-active",
+			);
 
 			recolorClientsText();
 		}
