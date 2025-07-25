@@ -5,6 +5,8 @@ import { MastersModalForClient } from "./app-masters-modal-for-client";
 
 import { weekDatesArray } from "./app-schedule";
 
+import { addBlockScroll, removeBlockScroll } from "./app-general-functions";
+
 class Appointment {
 	constructor() {}
 
@@ -15,80 +17,180 @@ class Appointment {
 			appointmentModalCloseButton = appointmentModal.querySelector(
 				"[data-action-button='close']",
 			),
-			appointmentModalFormServicesSelect =
-				appointmentModal.querySelector("select#service"),
-			appointmentModalFormMastersSelect =
-				appointmentModal.querySelector("select#master"),
-			appointmentModalFormDatesSelect =
-				appointmentModal.querySelector("select#date");
+			appointmentModalServicesSelect = appointmentModal.querySelector(
+				"[data-custom-select='service']",
+			),
+			appointmentModalMastersSelect = appointmentModal.querySelector(
+				"[data-custom-select='master']",
+			),
+			appointmentModalDatesSelect = appointmentModal.querySelector(
+				"[data-custom-select='date']",
+			),
+			appointmentModalTimesSelect = appointmentModal.querySelector(
+				"[data-custom-select='time']",
+			);
 
-		this.createModalFormServicesOptions(appointmentModalFormServicesSelect);
-		this.createModalFormMastersOptions(appointmentModalFormMastersSelect);
-		this.createModalFormDateOptions(appointmentModalFormDatesSelect);
+		this.createAppointmentModalServicesSelectListItems(
+			appointmentModalServicesSelect,
+		);
+		this.createAppointmentModalMastersSelectListItems(
+			appointmentModalMastersSelect,
+		);
+		this.createAppointmentModalDatesSelectListItems(
+			appointmentModalDatesSelect,
+		);
+
+		this.addModalSelectDropdown(
+			appointmentModal,
+			appointmentModalServicesSelect,
+		);
+
+		this.addModalSelectDropdown(
+			appointmentModal,
+			appointmentModalMastersSelect,
+		);
+
+		this.addModalSelectDropdown(appointmentModal, appointmentModalDatesSelect);
+
+		this.addModalSelectDropdown(appointmentModal, appointmentModalTimesSelect);
 
 		appointmentModal.showModal();
+		addBlockScroll();
 
 		//this.validate
 
 		this.closeModal(
 			appointmentModal,
 			appointmentModalCloseButton,
-			appointmentModalFormServicesSelect,
-			appointmentModalFormMastersSelect,
-			appointmentModalFormDatesSelect,
+			appointmentModalServicesSelect,
+			appointmentModalMastersSelect,
+			appointmentModalDatesSelect,
 		);
 	}
 
-	createModalFormServicesOptions(servicesSelect) {
-		const servicesModal = new ServicesModalForClient(
+	addModalSelectDropdown(modal, select) {
+		const dropdownButton = select.querySelector(
+				".content-form__field-select-button",
+			),
+			dropdownList = select.querySelector(".content-form__field-select-list"),
+			dropdownListItems = dropdownList.querySelectorAll(
+				".content-form__field-select-list-item",
+			);
+
+		dropdownButton.onclick = () => {
+			dropdownList.style.width = getComputedStyle(dropdownButton).width;
+			dropdownList.classList.toggle("content-form__field-select-list--is-open");
+		};
+
+		dropdownButton.textContent = dropdownListItems[0].textContent;
+		dropdownButton.setAttribute(
+			"data-value",
+			dropdownListItems[0].getAttribute("data-value"),
+		);
+
+		dropdownListItems.forEach(listItem => {
+			listItem.onclick = () => {
+				const dataValue = listItem.getAttribute("data-value");
+				dropdownButton.setAttribute("data-value", dataValue);
+				dropdownButton.textContent = listItem.textContent;
+				dropdownList.classList.remove(
+					"content-form__field-select-list--is-open",
+				);
+			};
+		});
+
+		modal.querySelector(".modal__content-wrapper").onclick = evt => {
+			if (
+				!dropdownButton.contains(evt.target) &&
+				!dropdownList.contains(evt.target)
+			) {
+				dropdownList.classList.remove(
+					"content-form__field-select-list--is-open",
+				);
+			}
+		};
+	}
+
+	createAppointmentModalServicesSelectListItems(
+		appointmentModalServicesSelect,
+	) {
+		const servicesMainModal = new ServicesModalForClient(
 				dbServicesObj,
 			).createMainModal(),
-			servicesModalListItems = servicesModal.querySelectorAll("li");
+			servicesMainModalListItems = servicesMainModal.querySelectorAll("li"),
+			appointmentModalServicesSelectList =
+				appointmentModalServicesSelect.querySelector(
+					".content-form__field-select-list",
+				);
 
-		if (servicesModalListItems.length === 0) {
-			servicesSelect.innerHTML = `<option>Услуги отсутствуют</option>`;
+		if (servicesMainModalListItems.length === 0) {
+			appointmentModalServicesSelectList.innerHTML = `<li class="content-form__field-select-list-item">Услуги отсутствуют</li>`;
 		} else {
-			servicesModalListItems.forEach(listItem => {
+			servicesMainModalListItems.forEach(listItem => {
 				const serviceName = listItem
 						.querySelector("div span:first-child")
 						.textContent.slice(0, -2),
-					serviceId = listItem.getAttribute("data-id"),
-					option = document.createElement("option");
+					serviceValue = listItem.getAttribute("data-value"),
+					appointmentModalServicesSelectListItem = document.createElement("li");
 
-				option.textContent = serviceName;
-				option.setAttribute("value", serviceId);
+				appointmentModalServicesSelectListItem.textContent = serviceName;
+				appointmentModalServicesSelectListItem.classList.add(
+					"content-form__field-select-list-item",
+				);
+				appointmentModalServicesSelectListItem.setAttribute(
+					"data-value",
+					serviceValue,
+				);
 
-				servicesSelect.append(option);
+				appointmentModalServicesSelectList.append(
+					appointmentModalServicesSelectListItem,
+				);
 			});
 		}
 	}
 
-	createModalFormMastersOptions(mastersSelect) {
-		const mastersModal = new MastersModalForClient(
+	createAppointmentModalMastersSelectListItems(appointmentModalMastersSelect) {
+		const mastersMainModal = new MastersModalForClient(
 				dbMastersObj,
 			).createMainModal(),
-			mastersModalListItems = mastersModal.querySelectorAll("li");
+			mastersMainModalListItems = mastersMainModal.querySelectorAll("li"),
+			appointmentModalMastersSelectList =
+				appointmentModalMastersSelect.querySelector(
+					".content-form__field-select-list",
+				);
 
-		if (mastersModalListItems.length === 0) {
-			mastersSelect.innerHTML = `<option>Мастера отсутствуют</option>`;
+		if (mastersMainModalListItems.length === 0) {
+			appointmentModalMastersSelectList.innerHTML = `<li class="content-form__field-select-list-item">Мастера отсутствуют</li>`;
 		} else {
-			mastersModalListItems.forEach(listItem => {
+			mastersMainModalListItems.forEach(listItem => {
 				const masterFullName = listItem.querySelector("div span").textContent,
-					masterId = listItem.getAttribute("data-id"),
-					option = document.createElement("option");
+					masterValue = listItem.getAttribute("data-value"),
+					appointmentModalMastersSelectListItem = document.createElement("li");
 
-				option.textContent = masterFullName;
-				option.setAttribute("value", masterId);
+				appointmentModalMastersSelectListItem.textContent = masterFullName;
+				appointmentModalMastersSelectListItem.classList.add(
+					"content-form__field-select-list-item",
+				);
+				appointmentModalMastersSelectListItem.setAttribute(
+					"data-value",
+					masterValue,
+				);
 
-				mastersSelect.append(option);
+				appointmentModalMastersSelectList.append(
+					appointmentModalMastersSelectListItem,
+				);
 			});
 		}
 	}
 
-	createModalFormDateOptions(datesSelect) {
+	createAppointmentModalDatesSelectListItems(appointmentModalDatesSelect) {
 		const columnHeadersWithDate = document.querySelectorAll(
-			".schedule-column-header",
-		);
+				".schedule-column-header",
+			),
+			appointmentModalDatesSelectList =
+				appointmentModalDatesSelect.querySelector(
+					".content-form__field-select-list",
+				);
 
 		columnHeadersWithDate.forEach((date, i) => {
 			const monthDay = date.querySelector(
@@ -97,12 +199,20 @@ class Appointment {
 				weekDay = date.querySelector(
 					".schedule-column-header__week-day",
 				).textContent,
-				option = document.createElement("option");
+				appointmentModalDatesSelectListItem = document.createElement("li");
 
-			option.textContent = `${monthDay}, ${weekDay}`;
-			option.setAttribute("value", weekDatesArray[i].replaceAll(".", "-"));
+			appointmentModalDatesSelectListItem.textContent = `${monthDay}, ${weekDay}`;
+			appointmentModalDatesSelectListItem.classList.add(
+				"content-form__field-select-list-item",
+			);
+			appointmentModalDatesSelectListItem.setAttribute(
+				"data-value",
+				weekDatesArray[i].replaceAll(".", "-"),
+			);
 
-			datesSelect.append(option);
+			appointmentModalDatesSelectList.append(
+				appointmentModalDatesSelectListItem,
+			);
 		});
 	}
 
@@ -113,6 +223,8 @@ class Appointment {
 		mastersSelect,
 		datesSelect,
 	) {
+		document.addEventListener("keyup", closeModalWithEsc);
+
 		modal.onclick = ({ currentTarget, target }) => {
 			const isClickedOnBackdrop = target === currentTarget;
 			if (isClickedOnBackdrop) {
@@ -120,6 +232,8 @@ class Appointment {
 				clearSelect(servicesSelect);
 				clearSelect(mastersSelect);
 				clearSelect(datesSelect);
+				removeBlockScroll();
+				document.removeEventListener("keyup", closeModalWithEsc);
 			}
 		};
 
@@ -128,9 +242,9 @@ class Appointment {
 			clearSelect(servicesSelect);
 			clearSelect(mastersSelect);
 			clearSelect(datesSelect);
+			removeBlockScroll();
+			document.removeEventListener("keyup", closeModalWithEsc);
 		};
-
-		document.addEventListener("keyup", closeModalWithEsc);
 
 		function closeModalWithEsc(evt) {
 			if (evt.code === "Escape") {
@@ -138,12 +252,16 @@ class Appointment {
 				clearSelect(servicesSelect);
 				clearSelect(mastersSelect);
 				clearSelect(datesSelect);
+				removeBlockScroll();
 				document.removeEventListener("keyup", closeModalWithEsc);
 			}
 		}
 
 		function clearSelect(select) {
-			select.innerHTML = "";
+			const selectList = select.querySelector(
+				".content-form__field-select-list",
+			);
+			selectList.innerHTML = "";
 		}
 	}
 }

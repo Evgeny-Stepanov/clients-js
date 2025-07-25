@@ -24,25 +24,27 @@ function addBlockScroll() {
 	document.body.style.overflow = "hidden";
 }
 
+function removeBlockScroll() {
+	document.body.style.overflow = "";
+}
+
 function closeModalWithRemoveAndEsc(modal, modalCloseButton) {
+	document.addEventListener("keyup", closeMainModalWithEsc);
+
 	modal.addEventListener("click", ({ currentTarget, target }) => {
 		const isClickedOnBackdrop = target === currentTarget;
 		if (isClickedOnBackdrop) {
 			modal.remove();
 			removeBlockScroll();
+			document.removeEventListener("keyup", closeMainModalWithEsc);
 		}
 	});
 
 	modalCloseButton.addEventListener("click", () => {
 		modal.remove();
 		removeBlockScroll();
+		document.removeEventListener("keyup", closeMainModalWithEsc);
 	});
-
-	document.addEventListener("keyup", closeMainModalWithEsc);
-
-	function removeBlockScroll() {
-		document.body.style.overflow = "";
-	}
 
 	/*
 		The function was written via onclick() but in the class modal masters 
@@ -64,5 +66,6 @@ export {
 	getOnlineUserType,
 	getOnlineUserStorage,
 	addBlockScroll,
+	removeBlockScroll,
 	closeModalWithRemoveAndEsc,
 };

@@ -112,7 +112,7 @@ class MastersModalForClient {
 		const listItem = document.createElement("li");
 		listItem.classList.add("content-list-item", "content-list-item--grid");
 
-		listItem.setAttribute("data-id", dbObject[i].id);
+		listItem.setAttribute("data-value", dbObject[i].id);
 
 		this.createMainModalListItemStructure(dbObject, listItem, i);
 

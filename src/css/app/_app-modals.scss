@@ -237,6 +237,7 @@
 
 				&-item {
 					padding-block: calculate-from-font-size(0.3125);
+					cursor: pointer;
 				}
 
 				&--is-open {
@@ -246,29 +247,50 @@
 		}
 
 		&-select {
-			margin-top: calculate-from-font-size(0.625) !important;
+			position: relative;
 			display: flex;
 			align-items: center;
-			justify-content: space-between;
 			gap: 10px;
+			margin-top: calculate-from-font-size(0.625) !important;
 
-			label {
+			&-label {
 				width: calculate-from-font-size(3.875);
 			}
 
-			select {
-				text-align: center;
-				padding: 0 calculate-from-font-size(0.625);
+			&-button {
 				flex-grow: 1;
-				cursor: pointer;
-				height: calc(var(--font-size) * 2.5);
-				border: 2px solid var(--color-gray-dark);
-				border-radius: var(--border-radius-small);
-				transition: border-color var(--transition-hover-duration) ease 0s;
+				width: calculate-from-font-size(13.75);
+				color: var(--color-black);
 
-				&:focus {
-					outline: none;
-					border: 2px solid var(--color-accent);
+				@include hover {
+					background-color: transparent;
+				}
+			}
+
+			&-list {
+				position: absolute;
+				top: 100%;
+				right: 0;
+				z-index: 1000;
+				display: none;
+				flex-direction: column;
+				background-color: var(--color-white);
+				border: set-border(2px, var(--color-gray-dark));
+				border-radius: var(--border-radius-small);
+
+				&-item {
+					padding: calculate-from-font-size(0.625);
+					text-align: center;
+					transition: set-hover-transition(background-color);
+					cursor: pointer;
+
+					@include hover {
+						background-color: var(--color-gray-light);
+					}
+				}
+
+				&--is-open {
+					display: flex;
 				}
 			}
 		}
