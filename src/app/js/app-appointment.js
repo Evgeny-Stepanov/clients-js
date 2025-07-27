@@ -40,24 +40,19 @@ class Appointment {
 			appointmentModalDatesSelect,
 		);
 
-		this.addModalSelectDropdown(
-			appointmentModal,
-			appointmentModalServicesSelect,
-		);
-
-		this.addModalSelectDropdown(
-			appointmentModal,
-			appointmentModalMastersSelect,
-		);
-
-		this.addModalSelectDropdown(appointmentModal, appointmentModalDatesSelect);
-
-		this.addModalSelectDropdown(appointmentModal, appointmentModalTimesSelect);
-
 		appointmentModal.showModal();
 		addBlockScroll();
-
 		//this.validate
+
+		this.addModalSelectDropdown(appointmentModalServicesSelect);
+
+		this.addModalSelectDropdown(appointmentModalMastersSelect);
+
+		this.addModalSelectDropdown(appointmentModalDatesSelect);
+
+		this.addModalSelectDropdown(appointmentModalTimesSelect);
+
+		this.closeModalSelectDropdownWithBackdropClick(appointmentModal);
 
 		this.closeModal(
 			appointmentModal,
@@ -66,49 +61,6 @@ class Appointment {
 			appointmentModalMastersSelect,
 			appointmentModalDatesSelect,
 		);
-	}
-
-	addModalSelectDropdown(modal, select) {
-		const dropdownButton = select.querySelector(
-				".content-form__field-select-button",
-			),
-			dropdownList = select.querySelector(".content-form__field-select-list"),
-			dropdownListItems = dropdownList.querySelectorAll(
-				".content-form__field-select-list-item",
-			);
-
-		dropdownButton.onclick = () => {
-			dropdownList.style.width = getComputedStyle(dropdownButton).width;
-			dropdownList.classList.toggle("content-form__field-select-list--is-open");
-		};
-
-		dropdownButton.textContent = dropdownListItems[0].textContent;
-		dropdownButton.setAttribute(
-			"data-value",
-			dropdownListItems[0].getAttribute("data-value"),
-		);
-
-		dropdownListItems.forEach(listItem => {
-			listItem.onclick = () => {
-				const dataValue = listItem.getAttribute("data-value");
-				dropdownButton.setAttribute("data-value", dataValue);
-				dropdownButton.textContent = listItem.textContent;
-				dropdownList.classList.remove(
-					"content-form__field-select-list--is-open",
-				);
-			};
-		});
-
-		modal.querySelector(".modal__content-wrapper").onclick = evt => {
-			if (
-				!dropdownButton.contains(evt.target) &&
-				!dropdownList.contains(evt.target)
-			) {
-				dropdownList.classList.remove(
-					"content-form__field-select-list--is-open",
-				);
-			}
-		};
 	}
 
 	createAppointmentModalServicesSelectListItems(
@@ -214,6 +166,71 @@ class Appointment {
 				appointmentModalDatesSelectListItem,
 			);
 		});
+	}
+
+	addModalSelectDropdown(select) {
+		const dropdownButton = select.querySelector(
+				".content-form__field-select-button",
+			),
+			dropdownList = select.querySelector(".content-form__field-select-list"),
+			dropdownListItems = dropdownList.querySelectorAll(
+				".content-form__field-select-list-item",
+			);
+
+		dropdownButton.onclick = () => {
+			const openDropdownList = document.querySelector(
+				".content-form__field-select-list--is-open",
+			);
+
+			if (openDropdownList && openDropdownList !== dropdownList) {
+				openDropdownList.classList.remove(
+					"content-form__field-select-list--is-open",
+				);
+			}
+
+			dropdownList.style.width = getComputedStyle(dropdownButton).width;
+			dropdownList.classList.toggle("content-form__field-select-list--is-open");
+		};
+
+		dropdownButton.textContent = dropdownListItems[0].textContent;
+		dropdownButton.setAttribute(
+			"data-value",
+			dropdownListItems[0].getAttribute("data-value"),
+		);
+
+		dropdownListItems.forEach(listItem => {
+			listItem.onclick = () => {
+				const dataValue = listItem.getAttribute("data-value");
+				dropdownButton.setAttribute("data-value", dataValue);
+				dropdownButton.textContent = listItem.textContent;
+				dropdownList.classList.remove(
+					"content-form__field-select-list--is-open",
+				);
+			};
+		});
+	}
+
+	closeModalSelectDropdownWithBackdropClick(modal) {
+		modal.querySelector(".modal__content-wrapper").onclick = evt => {
+			const openDropdownList = modal.querySelector(
+				".content-form__field-select-list--is-open",
+			);
+
+			if (openDropdownList) {
+				const openDropdownButton = openDropdownList.previousElementSibling;
+
+				if (
+					!openDropdownButton.contains(evt.target) &&
+					!openDropdownList
+						.querySelector(".content-form__field-select-list-item")
+						.contains(evt.target)
+				) {
+					openDropdownList.classList.remove(
+						"content-form__field-select-list--is-open",
+					);
+				}
+			}
+		};
 	}
 
 	closeModal(
