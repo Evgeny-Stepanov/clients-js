@@ -258,9 +258,29 @@
 			}
 
 			&-button {
+				position: relative;
 				flex-grow: 1;
 				width: calculate-from-font-size(13.75);
 				color: var(--color-black);
+
+				&::before {
+					content: "";
+					position: absolute;
+					top: 50%;
+					right: calculate-from-font-size(0.125);
+					width: calculate-from-font-size(1.25);
+					height: calculate-from-font-size(1.25);
+					background: url("./../images/app/icons/arrow-dropdown-icon.svg")
+						no-repeat center / cover;
+					transform: translateY(-50%);
+					transition: set-hover-transition(transform);
+				}
+
+				&--is-active {
+					&::before {
+						transform: translateY(-50%) rotate(180deg);
+					}
+				}
 
 				@include hover {
 					background-color: transparent;

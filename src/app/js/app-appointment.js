@@ -44,13 +44,19 @@ class Appointment {
 		addBlockScroll();
 		//this.validate
 
-		this.addModalSelectDropdown(appointmentModalServicesSelect);
+		this.addModalSelectDropdown(
+			appointmentModal,
+			appointmentModalServicesSelect,
+		);
 
-		this.addModalSelectDropdown(appointmentModalMastersSelect);
+		this.addModalSelectDropdown(
+			appointmentModal,
+			appointmentModalMastersSelect,
+		);
 
-		this.addModalSelectDropdown(appointmentModalDatesSelect);
+		this.addModalSelectDropdown(appointmentModal, appointmentModalDatesSelect);
 
-		this.addModalSelectDropdown(appointmentModalTimesSelect);
+		this.addModalSelectDropdown(appointmentModal, appointmentModalTimesSelect);
 
 		this.closeModalSelectDropdownWithBackdropClick(appointmentModal);
 
@@ -168,7 +174,7 @@ class Appointment {
 		});
 	}
 
-	addModalSelectDropdown(select) {
+	addModalSelectDropdown(modal, select) {
 		const dropdownButton = select.querySelector(
 				".content-form__field-select-button",
 			),
@@ -178,9 +184,12 @@ class Appointment {
 			);
 
 		dropdownButton.onclick = () => {
-			const openDropdownList = document.querySelector(
-				".content-form__field-select-list--is-open",
-			);
+			const openDropdownList = modal.querySelector(
+					".content-form__field-select-list--is-open",
+				),
+				activeDropdownButton = modal.querySelector(
+					".content-form__field-select-button--is-active",
+				);
 
 			if (openDropdownList && openDropdownList !== dropdownList) {
 				openDropdownList.classList.remove(
@@ -188,8 +197,17 @@ class Appointment {
 				);
 			}
 
+			if (activeDropdownButton && activeDropdownButton !== dropdownButton) {
+				activeDropdownButton.classList.remove(
+					"content-form__field-select-button--is-active",
+				);
+			}
+
 			dropdownList.style.width = getComputedStyle(dropdownButton).width;
 			dropdownList.classList.toggle("content-form__field-select-list--is-open");
+			dropdownButton.classList.toggle(
+				"content-form__field-select-button--is-active",
+			);
 		};
 
 		dropdownButton.textContent = dropdownListItems[0].textContent;
@@ -203,6 +221,9 @@ class Appointment {
 				const dataValue = listItem.getAttribute("data-value");
 				dropdownButton.setAttribute("data-value", dataValue);
 				dropdownButton.textContent = listItem.textContent;
+				dropdownButton.classList.remove(
+					"content-form__field-select-button--is-active",
+				);
 				dropdownList.classList.remove(
 					"content-form__field-select-list--is-open",
 				);
@@ -227,6 +248,9 @@ class Appointment {
 				) {
 					openDropdownList.classList.remove(
 						"content-form__field-select-list--is-open",
+					);
+					openDropdownButton.classList.remove(
+						"content-form__field-select-button--is-active",
 					);
 				}
 			}
