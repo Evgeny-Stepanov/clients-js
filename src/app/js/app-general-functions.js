@@ -62,10 +62,35 @@ function closeModalWithRemoveAndEsc(modal, modalCloseButton) {
 	}
 }
 
+function resetModalStates(form, inputs, errorSpans, notification) {
+	inputs.forEach(input => {
+		if (input.classList.contains("form__field-control--is-invalid")) {
+			input.classList.remove("form__field-control--is-invalid");
+		}
+	});
+
+	errorSpans.forEach(errorSpan => {
+		if (errorSpan.textContent.length > 0) {
+			errorSpan.textContent = "";
+		}
+	});
+
+	form.reset();
+
+	if (notification.classList.contains("notification-animation")) {
+		notification.classList.remove("notification-animation");
+	}
+
+	if (notification.textContent.length > 0) {
+		notification.textContent = "";
+	}
+}
+
 export {
 	getOnlineUserType,
 	getOnlineUserStorage,
 	addBlockScroll,
 	removeBlockScroll,
 	closeModalWithRemoveAndEsc,
+	resetModalStates,
 };

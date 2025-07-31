@@ -5,7 +5,20 @@ import { MastersModalForClient } from "./app-masters-modal-for-client";
 
 import { weekDatesArray } from "./app-schedule";
 
-import { addBlockScroll, removeBlockScroll } from "./app-general-functions";
+import {
+	getOnlineUserStorage,
+	addBlockScroll,
+	removeBlockScroll,
+	resetModalStates,
+} from "./app-general-functions";
+
+import {
+	createInputErrorMessage,
+	showInputErrorMessage,
+	recolorInvalidInputBorder,
+} from "../../auth/js/auth-form-general-functions";
+
+import { showNotification } from "../../auth/js/auth-notification";
 
 class Appointment {
 	constructor() {}
@@ -40,10 +53,6 @@ class Appointment {
 			appointmentModalDatesSelect,
 		);
 
-		appointmentModal.showModal();
-		addBlockScroll();
-		//this.validate
-
 		this.addModalSelectDropdown(
 			appointmentModal,
 			appointmentModalServicesSelect,
@@ -57,6 +66,16 @@ class Appointment {
 		this.addModalSelectDropdown(appointmentModal, appointmentModalDatesSelect);
 
 		this.addModalSelectDropdown(appointmentModal, appointmentModalTimesSelect);
+
+		appointmentModal.showModal();
+		addBlockScroll();
+
+		this.validateModalForm(
+			appointmentModal,
+			appointmentModalServicesSelect,
+			appointmentModalMastersSelect,
+			appointmentModalDatesSelect,
+		);
 
 		this.closeModalSelectDropdownWithBackdropClick(appointmentModal);
 
@@ -231,6 +250,116 @@ class Appointment {
 		});
 	}
 
+	validateModalForm(modal, servicesSelect, mastersSelect, datesSelect) {
+		const form = modal.querySelector(".modal__content-form"),
+			inputs = form.querySelectorAll("input"),
+			submitButton = form.querySelector("button[type='submit']");
+
+		inputs.forEach(input => {
+			bindBlurEvents(input);
+		});
+
+		const validateOnSubmit = (submitButton, modal) => {
+			submitButton.onclick = evt => {
+				evt.preventDefault();
+
+				let countOfInvalidTextInputs = 0;
+
+				inputs.forEach(input => {
+					if (createInputErrorMessage(input)) {
+						showInputErrorMessage(createInputErrorMessage(input), input, null);
+						recolorInvalidInputBorder(createInputErrorMessage(input), input);
+						countOfInvalidTextInputs++;
+					}
+				});
+
+				if (countOfInvalidTextInputs === 0) {
+					const formData = new FormData(form),
+						selectedListOption = form.querySelectorAll(
+							".content-form__field-select-button",
+						);
+
+					selectedListOption.forEach(selectedOption => {
+						const formDataKey =
+								selectedOption.parentElement.getAttribute("data-custom-select"),
+							formDataValue = selectedOption.getAttribute("data-value");
+
+						formData.append(formDataKey, formDataValue);
+					});
+
+					const formDataObj = Object.fromEntries(formData.entries());
+
+					this.setAppointmentItemInStorage(
+						formDataObj,
+						modal,
+						servicesSelect,
+						mastersSelect,
+						datesSelect,
+					);
+				}
+			};
+		};
+
+		validateOnSubmit(submitButton, modal);
+
+		function bindBlurEvents(input) {
+			input.onblur = () => {
+				showInputErrorMessage(createInputErrorMessage(input), input, null);
+				recolorInvalidInputBorder(createInputErrorMessage(input), input);
+			};
+		}
+	}
+
+	setAppointmentItemInStorage(
+		formDataObj,
+		modal,
+		servicesSelect,
+		mastersSelect,
+		datesSelect,
+	) {
+		const { date, time } = formDataObj,
+			storage = getOnlineUserStorage(),
+			itemsArray = [formDataObj];
+
+		let matchingCondition = false;
+
+		if (storage.getItem("appointments")) {
+			const itemsArray = JSON.parse(storage.getItem("appointments"));
+
+			itemsArray.forEach(itemArray => {
+				if (itemArray.date === date && itemArray.time === time) {
+					showNotification(
+						"[data-notification='create-appointment']",
+						"Данная дата и время уже заняты. Выберите другой день или время",
+						"error",
+					);
+					matchingCondition = true;
+				}
+			});
+
+			if (matchingCondition) {
+				return;
+			}
+
+			itemsArray.push(formDataObj);
+			storage.setItem("appointments", JSON.stringify(itemsArray));
+		} else {
+			storage.setItem("appointments", JSON.stringify(itemsArray));
+		}
+
+		modal.close();
+		this.clearSelect(servicesSelect);
+		this.clearSelect(mastersSelect);
+		this.clearSelect(datesSelect);
+		this.resetModalStates(modal);
+		removeBlockScroll();
+	}
+
+	clearSelect(select) {
+		const selectList = select.querySelector(".content-form__field-select-list");
+		selectList.innerHTML = "";
+	}
+
 	closeModalSelectDropdownWithBackdropClick(modal) {
 		modal.querySelector(".modal__content-wrapper").onclick = evt => {
 			const openDropdownList = modal.querySelector(
@@ -238,10 +367,10 @@ class Appointment {
 			);
 
 			if (openDropdownList) {
-				const openDropdownButton = openDropdownList.previousElementSibling;
+				const activeDropdownButton = openDropdownList.previousElementSibling;
 
 				if (
-					!openDropdownButton.contains(evt.target) &&
+					!activeDropdownButton.contains(evt.target) &&
 					!openDropdownList
 						.querySelector(".content-form__field-select-list-item")
 						.contains(evt.target)
@@ -249,7 +378,7 @@ class Appointment {
 					openDropdownList.classList.remove(
 						"content-form__field-select-list--is-open",
 					);
-					openDropdownButton.classList.remove(
+					activeDropdownButton.classList.remove(
 						"content-form__field-select-button--is-active",
 					);
 				}
@@ -264,15 +393,14 @@ class Appointment {
 		mastersSelect,
 		datesSelect,
 	) {
-		document.addEventListener("keyup", closeModalWithEsc);
-
 		modal.onclick = ({ currentTarget, target }) => {
 			const isClickedOnBackdrop = target === currentTarget;
 			if (isClickedOnBackdrop) {
 				modal.close();
-				clearSelect(servicesSelect);
-				clearSelect(mastersSelect);
-				clearSelect(datesSelect);
+				this.clearSelect(servicesSelect);
+				this.clearSelect(mastersSelect);
+				this.clearSelect(datesSelect);
+				this.resetModalStates(modal);
 				removeBlockScroll();
 				document.removeEventListener("keyup", closeModalWithEsc);
 			}
@@ -280,30 +408,50 @@ class Appointment {
 
 		modalCloseButton.onclick = () => {
 			modal.close();
-			clearSelect(servicesSelect);
-			clearSelect(mastersSelect);
-			clearSelect(datesSelect);
+			this.clearSelect(servicesSelect);
+			this.clearSelect(mastersSelect);
+			this.clearSelect(datesSelect);
+			this.resetModalStates(modal);
 			removeBlockScroll();
 			document.removeEventListener("keyup", closeModalWithEsc);
 		};
 
-		function closeModalWithEsc(evt) {
+		const closeModalWithEsc = evt => {
 			if (evt.code === "Escape") {
 				modal.close();
-				clearSelect(servicesSelect);
-				clearSelect(mastersSelect);
-				clearSelect(datesSelect);
+				this.clearSelect(servicesSelect);
+				this.clearSelect(mastersSelect);
+				this.clearSelect(datesSelect);
+				this.resetModalStates(modal);
 				removeBlockScroll();
 				document.removeEventListener("keyup", closeModalWithEsc);
 			}
+		};
+
+		document.addEventListener("keyup", closeModalWithEsc);
+	}
+
+	resetModalStates(modal) {
+		const form = modal.querySelector(".modal__content-form"),
+			formInputs = form.querySelectorAll("input"),
+			formErrorSpans = form.querySelectorAll(".content-form__field-error"),
+			openDropdownList = form.querySelector(
+				".content-form__field-select-list--is-open",
+			),
+			modalNotification = modal.querySelector(".notification");
+
+		if (openDropdownList) {
+			const activeDropdownButton = openDropdownList.previousElementSibling;
+
+			openDropdownList.classList.remove(
+				"content-form__field-select-list--is-open",
+			);
+			activeDropdownButton.classList.remove(
+				"content-form__field-select-button--is-active",
+			);
 		}
 
-		function clearSelect(select) {
-			const selectList = select.querySelector(
-				".content-form__field-select-list",
-			);
-			selectList.innerHTML = "";
-		}
+		resetModalStates(form, formInputs, formErrorSpans, modalNotification);
 	}
 }
 

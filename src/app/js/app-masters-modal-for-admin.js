@@ -2,7 +2,11 @@ import { MastersModalForClient } from "./app-masters-modal-for-client";
 
 import { dbIconsObj, dbMastersObj } from "../../db";
 
-import { getOnlineUserStorage, addBlockScroll } from "./app-general-functions";
+import {
+	getOnlineUserStorage,
+	addBlockScroll,
+	resetModalStates,
+} from "./app-general-functions";
 
 import {
 	createInputErrorMessage,
@@ -260,12 +264,14 @@ class MastersModalForAdmin extends MastersModalForClient {
 			if (isClickedOnBackdrop) {
 				modal.close();
 				this.resetAddModalStates(modal);
+				document.removeEventListener("keyup", closeAddModalWithEsc);
 			}
 		};
 
 		modalCloseButton.onclick = () => {
 			modal.close();
 			this.resetAddModalStates(modal);
+			document.removeEventListener("keyup", closeAddModalWithEsc);
 		};
 
 		// Arrow function due to loss this
@@ -283,40 +289,18 @@ class MastersModalForAdmin extends MastersModalForClient {
 		const form = modal.querySelector(".modal__content-form"),
 			formInputs = form.querySelectorAll("input"),
 			formErrorSpans = form.querySelectorAll(".content-form__field-error"),
-			dropdownList = form.querySelector(".content-form__field-dropdown-list"),
+			openDropdownList = form.querySelector(
+				".content-form__field-dropdown-list--is-open",
+			),
 			modalNotification = modal.querySelector(".notification");
 
-		if (
-			dropdownList.classList.contains(
-				"content-form__field-dropdown-list--is-open",
-			)
-		) {
-			dropdownList.classList.remove(
+		if (openDropdownList) {
+			openDropdownList.classList.remove(
 				"content-form__field-dropdown-list--is-open",
 			);
 		}
 
-		formInputs.forEach(input => {
-			if (input.classList.contains("form__field-control--is-invalid")) {
-				input.classList.remove("form__field-control--is-invalid");
-			}
-		});
-
-		formErrorSpans.forEach(errorSpan => {
-			if (errorSpan.textContent.length > 0) {
-				errorSpan.textContent = "";
-			}
-		});
-
-		form.reset();
-
-		if (modalNotification.classList.contains("notification-animation")) {
-			modalNotification.classList.remove("notification-animation");
-		}
-
-		if (modalNotification.textContent.length > 0) {
-			modalNotification.textContent = "";
-		}
+		resetModalStates(form, formInputs, formErrorSpans, modalNotification);
 	}
 
 	validateAddModalForm(modal, selectedImage) {

@@ -68,6 +68,7 @@ function resetAllInStorageExceptUsers(triggerButton) {
 		storage.removeItem("deletedMasters");
 		storage.removeItem("addedServices");
 		storage.removeItem("addedMasters");
+		storage.removeItem("appointments");
 	});
 }
 
