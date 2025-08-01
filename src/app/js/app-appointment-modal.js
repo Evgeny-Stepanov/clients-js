@@ -20,7 +20,7 @@ import {
 
 import { showNotification } from "../../auth/js/auth-notification";
 
-class Appointment {
+class AppointmentModal {
 	constructor() {}
 
 	showModal() {
@@ -275,11 +275,11 @@ class Appointment {
 
 				if (countOfInvalidTextInputs === 0) {
 					const formData = new FormData(form),
-						selectedListOption = form.querySelectorAll(
+						selectedListOptions = form.querySelectorAll(
 							".content-form__field-select-button",
 						);
 
-					selectedListOption.forEach(selectedOption => {
+					selectedListOptions.forEach(selectedOption => {
 						const formDataKey =
 								selectedOption.parentElement.getAttribute("data-custom-select"),
 							formDataValue = selectedOption.getAttribute("data-value");
@@ -455,4 +455,4 @@ class Appointment {
 	}
 }
 
-export { Appointment };
+export { AppointmentModal };
