@@ -9,7 +9,7 @@ import { MastersModalForClient } from "./app-masters-modal-for-client";
 import { MastersModalForAdmin } from "./app-masters-modal-for-admin";
 import { ServicesModalForClient } from "./app-services-modal-for-client";
 import { ServicesModalForAdmin } from "./app-services-modal-for-admin";
-import { Appointment } from "./app-appointment";
+import { AppointmentModal } from "./app-appointment-modal";
 
 const servicesButton = document.querySelector(
 		"[data-action-button='services']",
@@ -102,10 +102,10 @@ createAndShowServicesOrMastersModal(
 	new MastersModalForAdmin(dbMastersObj),
 );
 
-createAppointment(createAppointmentButton, new Appointment(dbServicesObj));
+createAppointment(createAppointmentButton, new AppointmentModal(dbServicesObj));
 createAppointment(
 	createAppointmentButtonOnMobile,
-	new Appointment(dbServicesObj),
+	new AppointmentModal(dbServicesObj),
 );
 
 resetAllInStorageExceptUsers(resetButton);
