@@ -186,6 +186,11 @@
 
 	td {
 		padding: 0;
+		/* 
+		I don't know why, but all the cells are the same 
+		width when there is a cell with an appointment
+		*/
+		max-width: 1px;
 		border: set-border(2px, var(--color-gray-dark));
 
 		&:first-child {
@@ -232,6 +237,23 @@
 			width: 2px;
 			height: 100%;
 			background-color: var(--color-gray-dark);
+		}
+	}
+
+	&-appointment {
+		div {
+			padding: 10px;
+			margin: 0 auto;
+			background-color: var(--color-accent);
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			cursor: pointer;
+			transition: set-hover-transition(background-color);
+
+			@include hover {
+				background-color: transparent;
+			}
 		}
 	}
 }
