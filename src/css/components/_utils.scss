@@ -43,6 +43,7 @@
 	border: set-border(2px, var(--color-gray-dark));
 	border-radius: var(--border-radius-small);
 	transition: set-hover-transition(all);
+	-webkit-tap-highlight-color: transparent;
 
 	@include hover {
 		background-color: var(--color-accent);

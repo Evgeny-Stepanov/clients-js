@@ -37,6 +37,11 @@
 			width: 100%;
 		}
 
+		&-delete-button {
+			width: 100%;
+			margin-top: calculate-from-font-size(0.625);
+		}
+
 		&-close-button {
 			position: absolute;
 			top: 10px;
@@ -125,6 +130,27 @@
 			height: calculate-from-font-size(6.25);
 		}
 	}
+
+	&__delete-button {
+		width: 100%;
+	}
+
+	&--flex {
+		display: flex;
+		flex-direction: column;
+
+		li {
+			@include mobile-s {
+				text-align: center;
+			}
+
+			span {
+				@include mobile-s {
+					display: block;
+				}
+			}
+		}
+	}
 }
 
 .content-form {
@@ -194,6 +220,7 @@
 
 		&-dropdown {
 			&-button {
+				position: relative;
 				display: flex;
 				align-items: center;
 				width: 110px;
@@ -201,29 +228,35 @@
 				border: set-border(2px, var(--color-gray-dark));
 				border-radius: var(--border-radius-small);
 				cursor: pointer;
+				transition: set-hover-transition(all);
+
+				@include hover {
+					border: set-border(2px, var(--color-accent));
+					box-shadow: set-box-shadow(var(--color-gray-dark));
+				}
+
+				&::before {
+					content: "";
+					position: absolute;
+					top: 50%;
+					right: calculate-from-font-size(0.125);
+					width: calculate-from-font-size(1.25);
+					height: calculate-from-font-size(1.25);
+					background: url("./../images/app/icons/arrow-dropdown-icon.svg")
+						no-repeat center / cover;
+					transform: translateY(-50%);
+					transition: set-hover-transition(transform);
+				}
+
+				&--is-active {
+					&::before {
+						transform: translateY(-50%) rotate(180deg);
+					}
+				}
+
 				img {
 					width: 80px;
 					height: 80px;
-				}
-
-				&-icons {
-					position: relative;
-					width: 24px;
-					height: 50px;
-					svg {
-						position: absolute;
-						width: 24px;
-						height: 24px;
-						transform: translate(50%, 50%);
-						&:first-child {
-							top: -10%;
-							right: 50%;
-						}
-						&:last-child {
-							top: 10%;
-							right: 50%;
-						}
-					}
 				}
 			}
 
@@ -236,8 +269,13 @@
 				border-radius: var(--border-radius-small);
 
 				&-item {
-					padding-block: calculate-from-font-size(0.3125);
+					padding: calculate-from-font-size(0.3125);
 					cursor: pointer;
+					transition: set-hover-transition(background-color);
+
+					@include hover {
+						background-color: var(--color-gray-light);
+					}
 				}
 
 				&--is-open {
@@ -253,15 +291,29 @@
 			gap: 10px;
 			margin-top: calculate-from-font-size(0.625) !important;
 
+			@include mobile-s {
+				flex-direction: column;
+				gap: 5px;
+			}
+
 			&-label {
 				width: calculate-from-font-size(3.875);
+
+				@include mobile-s {
+					width: auto;
+				}
 			}
 
 			&-button {
 				position: relative;
-				flex-grow: 1;
 				width: calculate-from-font-size(13.75);
 				color: var(--color-black);
+
+				@include mobile-s {
+					width: 100%;
+					padding: calculate-from-font-size(0.625)
+						calculate-from-font-size(1.5625);
+				}
 
 				&::before {
 					content: "";
@@ -301,11 +353,16 @@
 				&-item {
 					padding: calculate-from-font-size(0.625);
 					text-align: center;
-					transition: set-hover-transition(background-color);
 					cursor: pointer;
+					transition: set-hover-transition(background-color);
 
 					@include hover {
 						background-color: var(--color-gray-light);
+					}
+
+					@include mobile-s {
+						padding: calculate-from-font-size(0.625)
+							calculate-from-font-size(1.5625);
 					}
 				}
 
@@ -343,5 +400,25 @@
 [data-modal="delete"] p {
 	@include mobile-s {
 		text-align: center;
+	}
+}
+
+[data-modal="create-appointment"] button[type="submit"] {
+	@include mobile-s {
+		color: var(--color-white);
+		background-color: var(--color-accent);
+		border: 2px solid var(--color-accent);
+
+		@include hover {
+			color: var(--color-black);
+			background-color: transparent;
+			border: 2px solid var(--color-gray-dark);
+		}
+	}
+}
+
+[data-modal="show-appointment"] {
+	@include mobile-s {
+		width: fit-content;
 	}
 }

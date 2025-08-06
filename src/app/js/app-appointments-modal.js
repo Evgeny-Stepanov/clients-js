@@ -60,7 +60,11 @@ class AppointmentsModal {
 		modalDivForScroll.classList.add("modal__content-wrapper");
 		modalContent.classList.add("modal__content");
 		modalTitle.classList.add("visually-hidden");
-		modalList.classList.add("modal__content-list", "content-list");
+		modalList.classList.add(
+			"modal__content-list",
+			"content-list",
+			"content-list--flex",
+		);
 		modalCloseButton.classList.add("modal__content-close-button");
 		modalCloseButton.setAttribute("type", "button");
 		modalCloseButton.setAttribute("data-action-button", "close");
@@ -91,26 +95,17 @@ class AppointmentsModal {
 		} = this.getAppointmentDataFromStorage(neededTableCell);
 
 		list.innerHTML = `
-			<li>Клиент: ${appointmentClientName}</li>
-			<li>Номер телефона: ${appointmentClientPhone}</li>
-			<li>Дата: ${dateFromNeededTableCell} </li>
-			<li>Время: ${timeFromNeededTableCell}</li>
-			<li>Услуга: ${serviceName}</li>
-			<li>Мастер: ${masterFullName}</li>
-			<li>Стоимость: ${servicePrice}</li>
-			<li><button class="button button--black-text" type="button">Удалить</button></li>
+			<li><span>Клиент: </span><span>${appointmentClientName}</span></li>
+			<li><span>Номер телефона: </span><span>${appointmentClientPhone}</span></li>
+			<li><span>Дата: </span><span>${dateFromNeededTableCell}</span></li>
+			<li><span>Время: </span><span>${timeFromNeededTableCell}</span></li>
+			<li><span>Услуга: </span><span>${serviceName}</span></li>
+			<li><span>Мастер: </span><span>${masterFullName}</span></li>
+			<li><span>Стоимость: </span><span>${servicePrice}</span></li>
+			<li>
+				<button class="content-list__delete-button button button--black-text button--wide" type="button">Удалить</button>
+			</li>
 		`;
-	}
-
-	showMainModal(neededTableCell) {
-		const modal = this.createMainModal(neededTableCell),
-			modalCloseButton = modal.querySelector("[data-action-button='close']");
-
-		document.body.append(modal);
-		modal.showModal();
-		addBlockScroll();
-
-		this.closeMainModal(modal, modalCloseButton);
 	}
 
 	getAppointmentDataFromStorage(neededTableCell) {
@@ -135,9 +130,6 @@ class AppointmentsModal {
 			masterFullName,
 			serviceMatchCondition = false,
 			masterMatchCondition = false;
-
-		//console.log("masters", this.dbMastersObj);
-		//console.log("services", this.dbServicesObj);
 
 		this.dbServicesObj.forEach(serviceObject => {
 			if (serviceObject.id === appointmentServiceId) {
@@ -184,8 +176,102 @@ class AppointmentsModal {
 		};
 	}
 
-	closeMainModal(modal, modalCloseButton) {
-		closeModalWithRemoveAndEsc(modal, modalCloseButton);
+	showMainModal(neededTableCell) {
+		const modal = this.createMainModal(neededTableCell),
+			modalDeleteButton = modal.querySelector(".content-list__delete-button"),
+			modalCloseButton = modal.querySelector("[data-action-button='close']");
+
+		document.body.append(modal);
+		modal.showModal();
+		addBlockScroll();
+
+		this.closeMainModal(modal, modalCloseButton);
+
+		modalDeleteButton.addEventListener("click", () => {
+			this.showDeleteModal(modal, neededTableCell);
+		});
+	}
+
+	showDeleteModal(mainModal, neededTableCell) {
+		const deleteModal = document.querySelector("[data-modal='delete']"),
+			deleteModalTitle = deleteModal.querySelector("h2"),
+			deleteModalMessage = deleteModal.querySelector("p"),
+			deleteModalYesButton = deleteModal.querySelector(
+				"[data-confirm-button='yes']",
+			),
+			deleteModalNoButton = deleteModal.querySelector(
+				"[data-confirm-button='no']",
+			),
+			deleteModalCloseButton = deleteModal.querySelector(
+				"[data-action-button='close']",
+			);
+
+		deleteModalTitle.textContent = "Удаление записи";
+		deleteModalMessage.textContent = "Вы уверены, что хотите удалить запись?";
+
+		deleteModal.showModal();
+
+		this.closeDeleteModal(
+			deleteModal,
+			deleteModalNoButton,
+			deleteModalCloseButton,
+		);
+
+		deleteModalYesButton.onclick = () => {
+			this.deleteAppointmentInStorage(neededTableCell);
+			deleteModal.close();
+			removeBlockScroll();
+			mainModal.remove();
+		};
+	}
+
+	closeDeleteModal(modal, modalNoButton, modalCloseButton) {
+		modal.onclick = ({ currentTarget, target }) => {
+			const isClickedOnBackdrop = target === currentTarget;
+			if (isClickedOnBackdrop) {
+				modal.close();
+			}
+		};
+
+		modalCloseButton.onclick = () => {
+			modal.close();
+		};
+
+		modalNoButton.onclick = () => {
+			modal.close();
+		};
+	}
+
+	deleteAppointmentInStorage(neededTableCell) {
+		const storage = getOnlineUserStorage(),
+			appointmentsFromStorage = JSON.parse(storage.getItem("appointments")),
+			{
+				dateFromNeededTableCell: appointmentDate,
+				timeFromNeededTableCell: appointmentTime,
+			} = this.getAppointmentDataFromStorage(neededTableCell);
+
+		let filteredAppointments = [...appointmentsFromStorage];
+
+		for (let i = 0; i < filteredAppointments.length; i++) {
+			if (
+				filteredAppointments[i].date === appointmentDate &&
+				filteredAppointments[i].time === appointmentTime
+			) {
+				filteredAppointments = filteredAppointments.filter(
+					item => item !== filteredAppointments[i],
+				);
+			}
+		}
+
+		neededTableCell.classList.remove("schedule-appointment");
+		neededTableCell.querySelector("div").textContent = "";
+		neededTableCell.onclick = () => {};
+
+		if (filteredAppointments.length === 0) {
+			storage.removeItem("appointments");
+		} else {
+			storage.setItem("appointments", JSON.stringify(filteredAppointments));
+		}
 	}
 
 	showAddModal() {
@@ -376,110 +462,8 @@ class AppointmentsModal {
 		});
 	}
 
-	validateAddModalForm(modal, servicesSelect, mastersSelect, datesSelect) {
-		const form = modal.querySelector(".modal__content-form"),
-			inputs = form.querySelectorAll("input"),
-			submitButton = form.querySelector("button[type='submit']");
-
-		inputs.forEach(input => {
-			bindBlurEvents(input);
-		});
-
-		const validateOnSubmit = (submitButton, modal) => {
-			submitButton.onclick = evt => {
-				evt.preventDefault();
-
-				let countOfInvalidTextInputs = 0;
-
-				inputs.forEach(input => {
-					if (createInputErrorMessage(input)) {
-						showInputErrorMessage(createInputErrorMessage(input), input, null);
-						recolorInvalidInputBorder(createInputErrorMessage(input), input);
-						countOfInvalidTextInputs++;
-					}
-				});
-
-				if (countOfInvalidTextInputs === 0) {
-					const formData = new FormData(form),
-						selectedSelectOptions = form.querySelectorAll(
-							".content-form__field-select-button",
-						);
-
-					selectedSelectOptions.forEach(selectedOption => {
-						const formDataKey =
-								selectedOption.parentElement.getAttribute("data-custom-select"),
-							formDataValue = selectedOption.getAttribute("data-value");
-
-						formData.append(formDataKey, formDataValue);
-					});
-
-					const formDataObj = Object.fromEntries(formData.entries());
-
-					this.setAddedItemInStorage(
-						formDataObj,
-						modal,
-						servicesSelect,
-						mastersSelect,
-						datesSelect,
-					);
-				}
-			};
-		};
-
-		validateOnSubmit(submitButton, modal);
-
-		function bindBlurEvents(input) {
-			input.onblur = () => {
-				showInputErrorMessage(createInputErrorMessage(input), input, null);
-				recolorInvalidInputBorder(createInputErrorMessage(input), input);
-			};
-		}
-	}
-
-	setAddedItemInStorage(
-		formDataObj,
-		addModal,
-		servicesSelect,
-		mastersSelect,
-		datesSelect,
-	) {
-		const { date, time } = formDataObj,
-			storage = getOnlineUserStorage(),
-			itemsArray = [formDataObj];
-
-		let matchingCondition = false;
-
-		if (storage.getItem("appointments")) {
-			const itemsArray = JSON.parse(storage.getItem("appointments"));
-
-			itemsArray.forEach(itemArray => {
-				if (itemArray.date === date && itemArray.time === time) {
-					showNotification(
-						"[data-notification='create-appointment']",
-						"Данная дата и время уже заняты. Выберите другой день или время",
-						"error",
-					);
-					matchingCondition = true;
-				}
-			});
-
-			if (matchingCondition) {
-				return;
-			}
-
-			itemsArray.push(formDataObj);
-			storage.setItem("appointments", JSON.stringify(itemsArray));
-		} else {
-			storage.setItem("appointments", JSON.stringify(itemsArray));
-		}
-
-		addModal.close();
-		showAppointmentsInTable(this.dbServicesObj, this.dbMastersObj);
-		this.clearSelect(servicesSelect);
-		this.clearSelect(mastersSelect);
-		this.clearSelect(datesSelect);
-		this.resetAddModalStates(addModal);
-		removeBlockScroll();
+	closeMainModal(modal, modalCloseButton) {
+		closeModalWithRemoveAndEsc(modal, modalCloseButton);
 	}
 
 	clearSelect(select) {
@@ -579,6 +563,150 @@ class AppointmentsModal {
 		}
 
 		resetModalStates(form, formInputs, formErrorSpans, modalNotification);
+	}
+
+	validateAddModalForm(modal, servicesSelect, mastersSelect, datesSelect) {
+		const form = modal.querySelector(".modal__content-form"),
+			inputs = form.querySelectorAll("input"),
+			serviceSelectButton = form.querySelector(
+				"[data-custom-select='service'] button",
+			),
+			masterSelectButton = form.querySelector(
+				"[data-custom-select='master'] button",
+			),
+			submitButton = form.querySelector("button[type='submit']");
+
+		inputs.forEach(input => {
+			bindBlurEvents(input);
+		});
+
+		const validateOnSubmit = (submitButton, modal) => {
+			submitButton.onclick = evt => {
+				evt.preventDefault();
+
+				let countOfInvalidTextInputs = 0,
+					countOfMissingServicesOrMasters = 0;
+
+				inputs.forEach(input => {
+					if (createInputErrorMessage(input)) {
+						showInputErrorMessage(createInputErrorMessage(input), input, null);
+						recolorInvalidInputBorder(createInputErrorMessage(input), input);
+						countOfInvalidTextInputs++;
+					}
+				});
+
+				if (serviceSelectButton.textContent === "Услуги отсутствуют") {
+					countOfMissingServicesOrMasters++;
+					showNotification(
+						"[data-notification='create-appointment']",
+						"Добавьте услугу",
+						"error",
+					);
+				}
+				if (masterSelectButton.textContent === "Мастера отсутствуют") {
+					countOfMissingServicesOrMasters++;
+					showNotification(
+						"[data-notification='create-appointment']",
+						"Добавьте мастера",
+						"error",
+					);
+				}
+
+				if (
+					serviceSelectButton.textContent === "Услуги отсутствуют" &&
+					masterSelectButton.textContent === "Мастера отсутствуют"
+				) {
+					showNotification(
+						"[data-notification='create-appointment']",
+						"Добавьте услугу и мастера",
+						"error",
+					);
+				}
+
+				if (
+					countOfInvalidTextInputs === 0 &&
+					countOfMissingServicesOrMasters === 0
+				) {
+					const formData = new FormData(form),
+						selectedSelectOptions = form.querySelectorAll(
+							".content-form__field-select-button",
+						);
+
+					selectedSelectOptions.forEach(selectedOption => {
+						const formDataKey =
+								selectedOption.parentElement.getAttribute("data-custom-select"),
+							formDataValue = selectedOption.getAttribute("data-value");
+
+						formData.append(formDataKey, formDataValue);
+					});
+
+					const formDataObj = Object.fromEntries(formData.entries());
+
+					this.setAddedItemInStorage(
+						formDataObj,
+						modal,
+						servicesSelect,
+						mastersSelect,
+						datesSelect,
+					);
+				}
+			};
+		};
+
+		validateOnSubmit(submitButton, modal);
+
+		function bindBlurEvents(input) {
+			input.onblur = () => {
+				showInputErrorMessage(createInputErrorMessage(input), input, null);
+				recolorInvalidInputBorder(createInputErrorMessage(input), input);
+			};
+		}
+	}
+
+	setAddedItemInStorage(
+		formDataObj,
+		addModal,
+		servicesSelect,
+		mastersSelect,
+		datesSelect,
+	) {
+		const { date, time } = formDataObj,
+			storage = getOnlineUserStorage(),
+			itemsArray = [formDataObj];
+
+		let matchingCondition = false;
+
+		if (storage.getItem("appointments")) {
+			const itemsArray = JSON.parse(storage.getItem("appointments"));
+
+			itemsArray.forEach(itemArray => {
+				if (itemArray.date === date && itemArray.time === time) {
+					showNotification(
+						"[data-notification='create-appointment']",
+						"Данная дата и время уже заняты. Выберите другой день или время",
+						"error",
+					);
+					matchingCondition = true;
+				}
+			});
+
+			if (matchingCondition) {
+				return;
+			}
+
+			itemsArray.push(formDataObj);
+			storage.setItem("appointments", JSON.stringify(itemsArray));
+		} else {
+			storage.setItem("appointments", JSON.stringify(itemsArray));
+		}
+
+		addModal.close();
+		showAppointmentsInTable(this.dbServicesObj, this.dbMastersObj);
+		this.clearSelect(servicesSelect);
+		this.clearSelect(mastersSelect);
+		this.clearSelect(datesSelect);
+		this.resetAddModalStates(addModal);
+		removeBlockScroll();
 	}
 }
 

@@ -29,9 +29,22 @@ body:has(input#theme-color:checked) {
 		}
 	}
 
+	.content-form__field-select-button {
+		@include hover {
+			color: var(--color-black);
+		}
+	}
+
 	.schedule {
 		&-row-header {
 			background-color: var(--color-white);
+		}
+
+		&-appointment {
+			color: var(--color-white);
+			@include hover {
+				color: var(--color-black);
+			}
 		}
 	}
 

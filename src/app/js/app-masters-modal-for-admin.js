@@ -222,6 +222,9 @@ class MastersModalForAdmin extends MastersModalForClient {
 			dropdownList.classList.toggle(
 				"content-form__field-dropdown-list--is-open",
 			);
+			dropdownButton.classList.toggle(
+				"content-form__field-dropdown-button--is-active",
+			);
 		};
 
 		dropdownButtonImage.src = dropdownListItems[0].querySelector("img").src;
@@ -241,6 +244,9 @@ class MastersModalForAdmin extends MastersModalForClient {
 				dropdownList.classList.remove(
 					"content-form__field-dropdown-list--is-open",
 				);
+				dropdownButton.classList.remove(
+					"content-form__field-dropdown-button--is-active",
+				);
 			};
 		});
 
@@ -253,6 +259,9 @@ class MastersModalForAdmin extends MastersModalForClient {
 			) {
 				dropdownList.classList.remove(
 					"content-form__field-dropdown-list--is-open",
+				);
+				dropdownButton.classList.remove(
+					"content-form__field-dropdown-button--is-active",
 				);
 			}
 		};
