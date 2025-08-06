@@ -27,7 +27,16 @@
 
 @keyframes fade-in-top {
 	0% {
-		transform: translateY(-300%);
+		transform: translateY(-200%);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+
+@keyframes fade-in-bottom {
+	0% {
+		transform: translateY(200%);
 	}
 	100% {
 		transform: translateY(0);
@@ -73,6 +82,11 @@
 
 .fade-in-bottom {
 	animation-name: fade-in-top;
+	animation-duration: var(--transition-long-animation-duration);
+}
+
+.fade-in-top {
+	animation-name: fade-in-bottom;
 	animation-duration: var(--transition-long-animation-duration);
 }
 
